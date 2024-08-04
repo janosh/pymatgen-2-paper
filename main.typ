@@ -90,25 +90,29 @@ These packages demonstrate #pmg's extensibility and its role in the materials in
 
 == Features
 
+#set text(size: 9pt)
+
 #figure(
   table(
-    columns: (auto, auto),
-    inset: 10pt,
+    columns: (auto, auto, auto, auto, auto),
+    inset: 8pt,
     align: horizon,
-    [*Feature*], [*Description*],
-    [Core Structure Manipulation], [Crystal structure creation, manipulation, and symmetry analysis],
-    [Electronic Structure Analysis], [Band structure and density of states analysis],
-    [Ab Initio Analysis], [Interfaces to various DFT codes],
-    [Thermodynamics], [Phase diagram and Pourbaix diagram generation],
-    [Transport Properties], [Boltzmann transport properties calculation],
-    [Machine Learning Integration], [Featurization and ML library integration],
-    [I/O and Data Conversion], [Support for various file formats and databases],
-    [Visualization], [Structure and data visualization tools],
-    [High-throughput Tools], [Utilities for large-scale calculations],
-    [Command Line Scripts], [Scripts for common analyses]
+    [*Module/Submodule*], [*Key Features*], [*Original Implementation*], [*Example Usage / Citation*], [*Change from v1*],
+    [`core`], [Fundamental data structures], [@ong_python_2013], [jain_commentary_2013], [Expanded and optimized],
+    [`analysis.chemenv`], [Chemical bonding environments], [waroquiers2020chemical], [zhang2017facile], [New],
+    [`analysis.diffraction`], [X-ray, neutron, electron diffraction], [ong_python_2013], [yang2020predicting], [Added electron diffraction],
+    [`analysis.magnetism`], [Magnetic structure analysis], [pandey2017pymatgen], [wang2021high], [New],
+    [`electronic_structure.cohp`], [Crystal Orbital Hamilton Populations], [esters2022lobsterpy], [esters2023lobster], [New],
+    [`ext.matproj`], [Materials Project API integration], [ong_python_2013], [jain_commentary_2013], [Adapted for new API versions],
+    [`io.vasp`], [VASP input/output handling], [ong_python_2013], [jain_commentary_2013], [Expanded file support],
+    [`phonon`], [Phonon calculations and analysis], [petretto2018high], [george2020machine], [New],
+    [`transformations`], [Structure manipulations], [ong_python_2013], [wang2021materials], [Expanded transformations],
+    [`vis`], [Visualization tools], [ong_python_2013], [horton2023crystal], [New plotly integration]
   ),
-  caption: [Key modules of #pmg and the features they provide]
+  caption: [Key modules of pymatgen and their evolution from v1 to current version]
 )
+
+#set text(size: 11pt)
 
 == Similar and Related Software
 

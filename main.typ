@@ -1,38 +1,40 @@
+#import "./template.typ": template, float
+#import "@preview/muchpdf:0.1.0": muchpdf
+
 #let pmg = "pymatgen"
+#let pdf-img(path, ..args) = muchpdf(read(path, encoding: none), ..args)
 
-#let project(title: "", authors: (), date: none, body) = {
-  set document(author: authors, title: title)
-  set page(numbering: "1", number-align: center)
-  set text(font: "New Computer Modern", lang: "en")
+#let title = "pymatgen: A decade of community growth, new functionality, and future prospects"
 
-  align(center, image("figs/pymatgen-2-logo.svg", width: 20%))
-
-  align(center)[
-    #block(text(weight: 700, 1.75em, title))
-    #v(1em)
-    #date
-  ]
-  pad(
-    top: 0.5em,
-    bottom: 0.5em,
-    x: 2em,
-    grid(
-      columns: (1fr,) * calc.min(3, authors.len()),
-      gutter: 1em,
-      ..authors.map(author => align(center, author)),
+#show: template.with(
+  title: title,
+  abstract: (
+    [
+      Some fancy abstract text.
+    ],
+    (
+      title: "Plain Language Abstract",
+      content: [#pmg is a software tool that helps scientists...],
     ),
-  )
-
-  set par(justify: true)
-  body
-}
-
-#show: project.with(
-  title: "pymatgen: A decade of community growth, new functionality, and future prospects",
-  authors: ("TBD",),
-  date: datetime.today().display("[month repr:long] [day], [year]")
+  ),
+  venue: [_Digital Discovery_],
+  header: (
+    article-color: rgb("#364f66"),
+    article-type: "Preprint",
+    article-meta: [Not Peer-Reviewed],
+  ),
+  authors: ((name: "TBD", corresponding: true),),
+  // affiliations: affiliations,
+  dates: (
+    (type: [Received Date], date: datetime.today()),
+    (type: [Revised Date], date: datetime.today()),
+    (type: [Accepted Date], date: datetime.today()),
+  ),
+  doi: "00.0000/XXXXXXXXXX",
+  citation: [MP et al., _Digital Discovery_, 2025, *1*, 1---2],
 )
 
+#align(center, image("figs/pymatgen-2-logo.svg", width: 20%))
 
 = Abstract
 
@@ -97,19 +99,39 @@ These packages demonstrate #pmg's extensibility and its role in the materials in
     columns: (auto, auto, auto, auto, auto),
     inset: 8pt,
     align: horizon,
-    [*Module/Submodule*], [*Key Features*], [*Original Implementation*], [*Example Usage / Citation*], [*Change from v1*],
+    [*Module/Submodule*],
+    [*Key Features*],
+    [*Original Implementation*],
+    [*Example Usage / Citation*],
+    [*Change from v1*],
+
     [`core`], [Fundamental data structures], [@ong_python_2013], [jain_commentary_2013], [Expanded and optimized],
     [`analysis.chemenv`], [Chemical bonding environments], [waroquiers2020chemical], [zhang2017facile], [New],
-    [`analysis.diffraction`], [X-ray, neutron, electron diffraction], [ong_python_2013], [yang2020predicting], [Added electron diffraction],
+    [`analysis.diffraction`],
+    [X-ray, neutron, electron diffraction],
+    [ong_python_2013],
+    [yang2020predicting],
+    [Added electron diffraction],
+
     [`analysis.magnetism`], [Magnetic structure analysis], [pandey2017pymatgen], [wang2021high], [New],
-    [`electronic_structure.cohp`], [Crystal Orbital Hamilton Populations], [esters2022lobsterpy], [esters2023lobster], [New],
-    [`ext.matproj`], [Materials Project API integration], [ong_python_2013], [jain_commentary_2013], [Adapted for new API versions],
+    [`electronic_structure.cohp`],
+    [Crystal Orbital Hamilton Populations],
+    [esters2022lobsterpy],
+    [esters2023lobster],
+    [New],
+
+    [`ext.matproj`],
+    [Materials Project API integration],
+    [ong_python_2013],
+    [jain_commentary_2013],
+    [Adapted for new API versions],
+
     [`io.vasp`], [VASP input/output handling], [ong_python_2013], [jain_commentary_2013], [Expanded file support],
     [`phonon`], [Phonon calculations and analysis], [petretto2018high], [george2020machine], [New],
     [`transformations`], [Structure manipulations], [ong_python_2013], [wang2021materials], [Expanded transformations],
-    [`vis`], [Visualization tools], [ong_python_2013], [horton2023crystal], [New plotly integration]
+    [`vis`], [Visualization tools], [ong_python_2013], [horton2023crystal], [New plotly integration],
   ),
-  caption: [Key modules of pymatgen and their evolution from v1 to current version]
+  caption: [Key modules of pymatgen and their evolution from v1 to current version],
 )
 
 #set text(size: 11pt)
@@ -173,6 +195,13 @@ This example demonstrates #pmg's ability to simplify complex materials analysis 
 
 = Community Impact
 
+#figure(
+  pdf-img("figs/pmg-contributors-over-time.pdf", width: 100%),
+  caption: [
+    #pmg's growth over time, with contributors and commits.
+  ],
+)<fig:contributions-over-time>
+
 #pmg's impact on the materials science community includes:
 
 + Accelerated research across various domains //@jain2016computational
@@ -215,4 +244,3 @@ We thank the numerous developers, researchers, and users who have contributed to
 Special thanks to the broader open-source scientific computing community for their invaluable tools and libraries.
 
 #bibliography("refs.bib", style: "ieee")
-

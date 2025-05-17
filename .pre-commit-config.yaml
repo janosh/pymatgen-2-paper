@@ -1,6 +1,5 @@
 ci:
   autoupdate_schedule: quarterly
-  skip: [validate-typst]
 
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit

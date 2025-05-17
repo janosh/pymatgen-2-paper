@@ -25,3 +25,5 @@ jobs:
 
       - name: Run pre-commit
         run: pre-commit run --all-files --show-diff-on-failure
+        env:
+          PRE_COMMIT_SKIP: validate-typst

@@ -131,7 +131,7 @@ def get_git_data(repo_path: str, log_type: str, author: str | None = None) -> li
 
 try:  # only works if pymatgen is installed in editable mode
     pmg_repo_path = pymatgen.__path__[-1]
-except:  # otherwise, use the path to the repo
+except:  # otherwise, use the path to the repo  # noqa: E722
     pmg_repo_path = f"{os.path.expanduser('~')}/dev/pmg"
 
 # %% Fetch contributor data and populate DataFrame

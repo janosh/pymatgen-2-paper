@@ -4,6 +4,8 @@ years since first commit.
 
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
+
 
 # GLOBAL: binning interval in months
 PERIOD_MONTHS = 3
@@ -14,6 +16,7 @@ df_commits = pd.read_csv("contributor_commits_by_month.csv")
 # Melt to long format (name, email, month, n_commits)
 df_long = df_commits.melt(id_vars=["name", "email"], var_name="month", value_name="n_commits")
 df_long["month"] = pd.to_datetime(df_long["month"], format="%Y-%m")
+
 
 # Filter out rows with 0 commits
 df_long = df_long[df_long["n_commits"] > 0]
@@ -33,11 +36,15 @@ first_commit.columns = ["name", "email", "first_commit"]
 df_binned = df_binned.merge(first_commit, on=["name", "email"])
 df_binned["years_since_first"] = (df_binned["period"] - df_binned["first_commit"]).dt.days / 365
 
+# Add a small jitter to avoid overlapping of contributor with the same number of commits
+jitter_strength = 0.1
+df_binned["n_commits_jittered"] = df_binned["n_commits"] + np.random.uniform(-jitter_strength, jitter_strength, size=len(df_binned))
+
 # Plotting
 plt.figure(figsize=(14, 6))
 sc = plt.scatter(
     df_binned["period"],
-    df_binned["n_commits"],
+    df_binned["n_commits_jittered"],
     c=df_binned["years_since_first"],
     cmap="plasma",
     alpha=0.7,

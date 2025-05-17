@@ -1,5 +1,5 @@
 """
-Extracts Git commit history from a local pymatgen repo and summarizes the number of commits
+Extract Git commit history from a local pymatgen repo and summarizes the number of commits
 and number of lines changed per contributor for each calendar month.
 
 Environment Variables:
@@ -9,13 +9,13 @@ Output:
     A CSV file named 'contributor_commits_by_month.csv' is saved in the current directory.
 
 Notes:
-- Contributors may appear multiple times due to variations in name or email. For example:
+- The same person may appear multiple times due to variations in name or email. For example:
     First Last, personal@email.com
     First M. Last, personal@email.com
     First M. Last, work@email.com
 
-    While I don't think there's fully robust automated solution, grouping by either
-    name OR email (in the plotter script) may be a good starting point.
+    A contributor ID is assigned heuristically: if either name or email matches a known contributor,
+    they share the same ID.
 """
 
 
@@ -30,7 +30,6 @@ if PMG_REPO_PATH is None or not os.path.isdir(PMG_REPO_PATH):
 
 print("Extracting git commit metadata and line changes...")
 
-# Get commit metadata and lines added/removed
 git_log_output = subprocess.check_output([
     "git", "-C", PMG_REPO_PATH,
     "log", "--numstat", "--pretty=format:--COMMIT--|%H|%an|%ae|%ad", "--date=short"
@@ -48,8 +47,8 @@ for line in git_log_output.strip().split("\n"):
                 date = datetime.strptime(date_str, "%Y-%m-%d")
                 current_commit = {
                     "commit": commit_hash,
-                    "name": name,
-                    "email": email,
+                    "name": name.strip(),
+                    "email": email.strip().lower(),
                     "date": date,
                     "lines_added": 0,
                     "lines_removed": 0,
@@ -74,17 +73,38 @@ df = pd.DataFrame(rows)
 df["month"] = df["date"].dt.to_period("M").dt.to_timestamp()
 df["lines_changed"] = df["lines_added"] + df["lines_removed"]
 
-# Group: commits per user/month
-commit_counts = df.groupby(["name", "email", "month"]).size().unstack(fill_value=0)
+# Generate contributor IDs by walking through (name, email)
+contributor_id_map = {}
+next_id = 1
+ids = []
+
+for name, email in zip(df["name"], df["email"]):
+    key = None
+    for existing_key, id_val in contributor_id_map.items():
+        if name == existing_key[0] or email == existing_key[1]:
+            key = existing_key
+            break
+    if key is None:
+        key = (name, email)
+        contributor_id_map[key] = f"user_{next_id:04d}"
+        next_id += 1
+    ids.append(contributor_id_map[key])
+
+df["contributor_id"] = ids
+
+# Group for commits per user/month
+commit_counts = df.groupby(["contributor_id", "name", "email", "month"]).size().unstack(fill_value=0)
 commit_counts.columns = [d.strftime("%Y-%m") for d in commit_counts.columns]
+commit_counts = commit_counts.reset_index()
 
-# Group: lines changed per user/month
-lines_changed = df.groupby(["name", "email", "month"])["lines_changed"].sum().unstack(fill_value=0)
+# Group for lines changed per user/month
+lines_changed = df.groupby(["contributor_id", "name", "email", "month"])["lines_changed"].sum().unstack(fill_value=0)
 lines_changed.columns = [d.strftime("%Y-%m") for d in lines_changed.columns]
+lines_changed = lines_changed.reset_index()
 
-# Save both
-commit_counts.reset_index().to_csv("contributor_commits_by_month.csv", index=False)
-lines_changed.reset_index().to_csv("contributor_lines_changed_by_month.csv", index=False)
+# Save both CSVs
+commit_counts.to_csv("contributor_commits_by_month.csv", index=False)
+lines_changed.to_csv("contributor_lines_changed_by_month.csv", index=False)
 
 print("✅ CSV files saved:")
 print(" - contributor_commits_by_month.csv")

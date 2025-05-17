@@ -10,10 +10,9 @@ Output:
 
 Notes:
 - Contributors may appear multiple times due to variations in name or email. For example:
-    Andrew, asrosen93@gmail.com
-    Andrew Rosen, asrosen93@gmail.com
-    Andrew S. Rosen, asrosen93@gmail.com
-    Andrew S. Rosen, rosen@u.northwestern.edu
+    First Last, personal@email.com
+    First M. Last, personal@email.com
+    First M. Last, work@email.com
 
     While I don't think there's fully robust automated solution, grouping by either
     name OR email (in the plotter script) may be a good starting point.

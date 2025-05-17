@@ -70,6 +70,7 @@ for line in git_log_output.strip().split("\n"):
 
 # Convert to DataFrame
 df = pd.DataFrame(rows)
+df = df[~df["name"].str.contains(r"\[bot\]", case=False, na=False)]  # drop bots
 df["month"] = df["date"].dt.to_period("M").dt.to_timestamp()
 df["lines_changed"] = df["lines_added"] + df["lines_removed"]
 

@@ -1,11 +1,11 @@
-"""Plot a logscale monthly commit by contributor plot, with colorbar showing
-years since first commit.
+"""
+Plot a logscale monthly commit-by-contributor scatter plot, with colorbar showing
+years since first commit. Contributors are uniquely identified by contributor_id.
 """
 
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-
 
 # GLOBAL: binning interval in months
 PERIOD_MONTHS = 3
@@ -13,34 +13,39 @@ PERIOD_MONTHS = 3
 # Load the commit data
 df_commits = pd.read_csv("contributor_commits_by_month.csv")
 
-# Melt to long format (name, email, month, n_commits)
-df_long = df_commits.melt(id_vars=["name", "email"], var_name="month", value_name="n_commits")
+# Melt everything from the 4th column onward (assumed to be months)
+df_long = df_commits.melt(
+    id_vars=["contributor_id"],
+    value_vars=df_commits.columns[3:],  # months start from 4th column
+    var_name="month",
+    value_name="n_commits"
+)
 df_long["month"] = pd.to_datetime(df_long["month"], format="%Y-%m")
-
 
 # Filter out rows with 0 commits
 df_long = df_long[df_long["n_commits"] > 0]
 
-# Round the month to a binned period
+# Round each date to the nearest PERIOD_MONTHS interval
 def floor_to_n_months(date, n=PERIOD_MONTHS):
     return pd.Timestamp(year=date.year, month=((date.month - 1) // n) * n + 1, day=1)
 
 df_long["period"] = df_long["month"].apply(lambda x: floor_to_n_months(x, n=PERIOD_MONTHS))
 
-# Aggregate total commits per contributor per binned period
-df_binned = df_long.groupby(["name", "email", "period"])["n_commits"].sum().reset_index()
+# Aggregate total commits per contributor per period
+df_binned = df_long.groupby(["contributor_id", "period"])["n_commits"].sum().reset_index()
 
-# Determine first contribution period for each contributor
-first_commit = df_binned.groupby(["name", "email"])["period"].min().reset_index()
-first_commit.columns = ["name", "email", "first_commit"]
-df_binned = df_binned.merge(first_commit, on=["name", "email"])
+# Calculate first commit period for each contributor
+first_commit = df_binned.groupby("contributor_id")["period"].min().reset_index()
+first_commit.columns = ["contributor_id", "first_commit"]
+df_binned = df_binned.merge(first_commit, on="contributor_id")
 df_binned["years_since_first"] = (df_binned["period"] - df_binned["first_commit"]).dt.days / 365
 
-# Add a small jitter to avoid overlapping of contributor with the same number of commits
+# Add small jitter to reduce overplotting
 jitter_strength = 0.1
-df_binned["n_commits_jittered"] = df_binned["n_commits"] + np.random.uniform(-jitter_strength, jitter_strength, size=len(df_binned))
+df_binned["n_commits_jittered"] = df_binned["n_commits"] + np.random.uniform(
+    -jitter_strength, jitter_strength, size=len(df_binned)
+)
 
-# Plotting
 plt.figure(figsize=(14, 6))
 sc = plt.scatter(
     df_binned["period"],
@@ -57,6 +62,8 @@ plt.ylabel("Commits (log scale)")
 plt.title(f"Contributor Activity Binned by {PERIOD_MONTHS}-Month Periods")
 plt.grid(True, which="both", linestyle="--", linewidth=0.5)
 plt.tight_layout()
+
+# Save with a dynamic filename
 fig_name = f"commits_per_contributor_{PERIOD_MONTHS}m_bins.png"
 plt.savefig(fig_name, dpi=300)
 print(f"Plot saved as: {fig_name}")

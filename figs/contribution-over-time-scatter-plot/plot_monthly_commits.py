@@ -56,11 +56,20 @@ sc = plt.scatter(
     s=35
 )
 plt.yscale("log")
-plt.colorbar(sc, label="Years Since First Commit")
-plt.xlabel(f"Time (Binned Every {PERIOD_MONTHS} Months)")
-plt.ylabel("Commits (log scale)")
-plt.title(f"Contributor Activity Binned by {PERIOD_MONTHS}-Month Periods")
+
+plt.xticks(fontsize=16)
+plt.yticks(fontsize=16)
+plt.xlabel(f"Year (Binned Every {PERIOD_MONTHS} Months)", fontsize=18)
+plt.ylabel("Number of Commits", fontsize=18)
+
+plt.title(f"Contributor Activity Binned by {PERIOD_MONTHS}-Month Periods", fontsize=18)
+
 plt.grid(True, which="both", linestyle="--", linewidth=0.5)
+
+cbar = plt.colorbar(sc)
+cbar.set_label("Years Since First Commit", fontsize=18)
+cbar.ax.tick_params(labelsize=16)
+
 plt.tight_layout()
 
 # Save with a dynamic filename

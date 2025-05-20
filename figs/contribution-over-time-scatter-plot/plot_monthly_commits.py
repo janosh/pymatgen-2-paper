@@ -40,7 +40,7 @@ first_commit.columns = ["contributor_id", "first_commit"]
 df_binned = df_binned.merge(first_commit, on="contributor_id")
 df_binned["years_since_first"] = (df_binned["period"] - df_binned["first_commit"]).dt.days / 365
 
-# Add small jitter to reduce overplotting
+# Add small jitter to reduce scatter dots overlap
 jitter_strength = 0.1
 df_binned["n_commits_jittered"] = df_binned["n_commits"] + np.random.uniform(
     -jitter_strength, jitter_strength, size=len(df_binned)
@@ -52,8 +52,8 @@ sc = plt.scatter(
     df_binned["n_commits_jittered"],
     c=df_binned["years_since_first"],
     cmap="plasma",
-    alpha=0.7,
-    s=35
+    alpha=0.75,
+    s=35,
 )
 plt.yscale("log")
 
@@ -62,17 +62,24 @@ plt.yticks(fontsize=16)
 plt.xlabel(f"Year (Binned Every {PERIOD_MONTHS} Months)", fontsize=18)
 plt.ylabel("Number of Commits", fontsize=18)
 
+ax = plt.gca()
+ax.tick_params(axis='both', width=1.5, length=5)
+
 plt.title(f"Contributor Activity Binned by {PERIOD_MONTHS}-Month Periods", fontsize=18)
 
-plt.grid(True, which="both", linestyle="--", linewidth=0.5)
+# TODO: put grid to the bottom
+plt.grid(True, which="both", linestyle="--", linewidth=0.75)
+
+# Thicken plot borders
+for spine in plt.gca().spines.values():
+    spine.set_linewidth(2)
 
 cbar = plt.colorbar(sc)
 cbar.set_label("Years Since First Commit", fontsize=18)
-cbar.ax.tick_params(labelsize=16)
+cbar.ax.tick_params(labelsize=16, width=1.5, length=5)
 
 plt.tight_layout()
 
-# Save with a dynamic filename
 fig_name = f"commits_per_contributor_{PERIOD_MONTHS}m_bins.png"
 plt.savefig(fig_name, dpi=300)
 print(f"Plot saved as: {fig_name}")

@@ -2,6 +2,7 @@
 TODO:
 - fill docstring.
 - use a cutoff date (otherwise data change frequently)?
+- Cache data (for dev)?
 """
 
 from collections import Counter
@@ -61,5 +62,10 @@ fig = px.choropleth(
     color_continuous_scale="Plasma",
     title="Citations by Country for W2015197254",
 )
-fig.write_image("citations_by_country.pdf")  # need kaleido
+fig.write_image(
+    "citations_by_country.png",
+    width=1200,          # in pixels
+    height=600,          # in pixels
+    scale=3              # ≈ 288 DPI
+)  # need kaleido
 fig.show()

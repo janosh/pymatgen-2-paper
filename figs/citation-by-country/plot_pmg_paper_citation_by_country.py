@@ -2,9 +2,10 @@
 TODO:
 - fill docstring.
 - use a cutoff date (otherwise data change frequently)?
-- Cache data (for quick debug)?
 """
 
+import os
+import json
 from collections import Counter
 
 import requests
@@ -39,20 +40,40 @@ def get_citing_countries(work_id):
 
     return countries_counter
 
+CACHE_FILE = "citation_country_counts.json"
+
+def load_or_fetch_countries(work_id, cache_file=CACHE_FILE, force_refresh=False):
+    if os.path.exists(cache_file) and not force_refresh:
+        print("Loading cached data...")
+        with open(cache_file, "r", encoding="utf-8") as f:
+            return Counter(json.load(f))
+
+    print("Fetching citation data... (expect ~30 sec)")
+    country_counts = get_citing_countries(work_id)
+    with open(cache_file, "w", encoding="utf-8") as f:
+        json.dump(dict(country_counts), f, indent=2)
+    return country_counts
+
 def convert_iso2_to_iso3(iso2_code):
     try:
         return pycountry.countries.get(alpha_2=iso2_code).alpha_3
     except:
         return None
 
+def iso3_to_country_name(code3):
+    try:
+        return pycountry.countries.get(alpha_3=code3).name
+    except:
+        return "Unknown"
+
 # Step 1: Collect data
-print("Fetching citation data... (quite slow, expect ~ 30 sec)")
-country_counts = get_citing_countries(WORK_ID)
+country_counts = load_or_fetch_countries(WORK_ID)
 
 # Step 2: Convert to DataFrame
 df = pd.DataFrame(country_counts.items(), columns=["country_code_2", "citations"])
 df["iso_alpha"] = df["country_code_2"].apply(convert_iso2_to_iso3)
 df = df.dropna(subset=["iso_alpha"])
+df["country_name"] = df["iso_alpha"].apply(iso3_to_country_name)
 
 # Step 3: Plot
 fig = px.choropleth(
@@ -60,12 +81,19 @@ fig = px.choropleth(
     locations="iso_alpha",
     color="citations",
     color_continuous_scale="Plasma",
-    title="Citations by Country for W2015197254",
+    title="Citations by Country for 1ˢᵗ pymatgen Paper",
+    hover_name="country_name",
+    hover_data={
+        "citations": True,
+        "iso_alpha": False,
+        "country_code_2": False,
+    },
 )
+
 fig.write_image(
     "citations_by_country.svg",
     width=1200,
     height=600,
     scale=3  # ≈ 288 DPI
-)  # need kaleido
+)
 fig.show()

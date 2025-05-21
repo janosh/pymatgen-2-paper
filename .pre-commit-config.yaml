@@ -44,31 +44,11 @@ repos:
   - repo: local
     hooks:
       - id: validate-typst
-        name: Install and Validate Typst files
+        name: Validate Typst files compile without errors
         language: system
-        entry: |
-          bash -c '
-          set -e
-
-          TYPST_VERSION="v0.13.1"
-          INSTALL_DIR="$HOME/.cache/typst/bin"
-          TYPST_PATH="$INSTALL_DIR/typst"
-
-          if [ "$CI" = "true" ] && ! command -v typst >/dev/null && [ ! -x "$TYPST_PATH" ]; then
-            mkdir -p "$INSTALL_DIR"
-            TMPDIR=$(mktemp -d)
-            curl -L "https://github.com/typst/typst/releases/download/${TYPST_VERSION}/typst-x86_64-unknown-linux-musl.tar.xz" -o "$TMPDIR/typst.tar.xz"
-            tar -xf "$TMPDIR/typst.tar.xz" -C "$TMPDIR"
-            cp "$TMPDIR"/typst-*/typst "$TYPST_PATH"
-            chmod +x "$TYPST_PATH"
-          fi
-
-          export PATH="$INSTALL_DIR:$PATH"
-
-          for x in "$@"; do
-            typst compile "$x" - > /dev/null || exit 255
-          done
-          ' --
-
+        # xargs exit 255 to fail on first compile error https://stackoverflow.com/a/26485626/4034025
+        # bash for-loop adapted from https://github.com/pre-commit/pre-commit/issues/394#issuecomment-588562966
+        # typst check command tracked in https://github.com/typst/typst/issues/3792
+        entry: bash -c 'if [ "$CI" = "true" ]; then exit 0; fi; for x in "$@"; do typst compile "$x" - > /dev/null || exit 255; done' --
         files: \.typ$
         types: [file]

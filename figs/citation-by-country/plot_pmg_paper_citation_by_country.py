@@ -2,7 +2,7 @@
 TODO:
 - fill docstring.
 - use a cutoff date (otherwise data change frequently)?
-- Cache data (for dev)?
+- Cache data (for quick debug)?
 """
 
 from collections import Counter
@@ -14,7 +14,7 @@ import plotly.express as px
 
 
 # Target OpenAlex Work ID
-WORK_ID = "W2015197254"
+WORK_ID = "W2015197254"  # https://openalex.org/works/w2015197254
 BASE_URL = "https://api.openalex.org/works"
 PER_PAGE = 200
 
@@ -63,9 +63,9 @@ fig = px.choropleth(
     title="Citations by Country for W2015197254",
 )
 fig.write_image(
-    "citations_by_country.png",
-    width=1200,          # in pixels
-    height=600,          # in pixels
-    scale=3              # ≈ 288 DPI
+    "citations_by_country.svg",
+    width=1200,
+    height=600,
+    scale=3  # ≈ 288 DPI
 )  # need kaleido
 fig.show()

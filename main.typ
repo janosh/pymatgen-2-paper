@@ -196,7 +196,7 @@ This example demonstrates #pmg's ability to simplify complex materials analysis 
 = Community Impact
 
 #figure(
-  pdf-img("figs/pmg-contributors-over-time.pdf", width: 100%),
+  pdf-img("figs/total-contributor-activity-over-time/contributors-over-time.pdf", width: 100%),
   caption: [
     #pmg's growth over time, with contributors and commits.
   ],

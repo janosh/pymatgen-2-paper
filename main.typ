@@ -1,9 +1,6 @@
 #import "./template.typ": template, float
-#import "@preview/muchpdf:0.1.0": muchpdf
 
 #let pmg = "pymatgen"
-#let pdf-img(path, ..args) = muchpdf(read(path, encoding: none), ..args)
-
 #let title = "pymatgen: A decade of community growth, new functionality, and future prospects"
 
 // commands for attributed notes in different colors and with initials prefix
@@ -71,7 +68,7 @@
 
 // TODOs
 // Sustainability section?
-// * Discuss code standards (+ also challenges, evolving best practices balanced with backwards compat, funding, maintainance vs new features, churn and people leaving and joining, incentives to document + structured documentation)
+// * Discuss code standards (+ also challenges, evolving best practices balanced with backwards compat, funding, maintenance vs new features, churn and people leaving and joining, incentives to document + structured documentation)
 // * Test coverage https://app.codecov.io/gh/materialsproject/pymatgen/tree/master/pymatgen (trade-off between test coverage and choice of tests)
 // * Highlight uniqueness in cover letter (not many codes developed over ten+ years!)
 

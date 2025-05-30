@@ -18,27 +18,35 @@ df_long = df_commits.melt(
     id_vars=["contributor_id"],
     value_vars=df_commits.columns[3:],  # months start from 4th column
     var_name="month",
-    value_name="n_commits"
+    value_name="n_commits",
 )
 df_long["month"] = pd.to_datetime(df_long["month"], format="%Y-%m")
 
 # Filter out rows with 0 commits
 df_long = df_long[df_long["n_commits"] > 0]
 
+
 # Round each date to the nearest PERIOD_MONTHS interval
 def floor_to_n_months(date, n=PERIOD_MONTHS):
     return pd.Timestamp(year=date.year, month=((date.month - 1) // n) * n + 1, day=1)
 
-df_long["period"] = df_long["month"].apply(lambda x: floor_to_n_months(x, n=PERIOD_MONTHS))
+
+df_long["period"] = df_long["month"].apply(
+    lambda x: floor_to_n_months(x, n=PERIOD_MONTHS)
+)
 
 # Aggregate total commits per contributor per period
-df_binned = df_long.groupby(["contributor_id", "period"])["n_commits"].sum().reset_index()
+df_binned = (
+    df_long.groupby(["contributor_id", "period"])["n_commits"].sum().reset_index()
+)
 
 # Calculate first commit period for each contributor
 first_commit = df_binned.groupby("contributor_id")["period"].min().reset_index()
 first_commit.columns = ["contributor_id", "first_commit"]
 df_binned = df_binned.merge(first_commit, on="contributor_id")
-df_binned["years_since_first"] = (df_binned["period"] - df_binned["first_commit"]).dt.days / 365
+df_binned["years_since_first"] = (
+    df_binned["period"] - df_binned["first_commit"]
+).dt.days / 365
 
 # Add small jitter to reduce scatters overlap
 jitter_strength = 0.1
@@ -64,7 +72,7 @@ plt.xlabel(f"Year (Binned Every {PERIOD_MONTHS} Months)", fontsize=18)
 plt.ylabel("Number of Commits", fontsize=18)
 
 ax = plt.gca()
-ax.tick_params(axis='both', width=1.5, length=5)
+ax.tick_params(axis="both", width=1.5, length=5)
 
 plt.title(f"Contributor Activity Binned by {PERIOD_MONTHS}-Month Periods", fontsize=18)
 

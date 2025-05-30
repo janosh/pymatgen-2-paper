@@ -18,7 +18,6 @@ Notes:
     they share the same ID.
 """
 
-
 import os
 import subprocess
 from datetime import datetime
@@ -30,10 +29,17 @@ if PMG_REPO_PATH is None or not os.path.isdir(PMG_REPO_PATH):
 
 print("Extracting git commit metadata and line changes...")
 
-git_log_output = subprocess.check_output([
-    "git", "-C", PMG_REPO_PATH,
-    "log", "--numstat", "--pretty=format:--COMMIT--|%H|%an|%ae|%ad", "--date=short"
-]).decode("utf-8")
+git_log_output = subprocess.check_output(
+    [
+        "git",
+        "-C",
+        PMG_REPO_PATH,
+        "log",
+        "--numstat",
+        "--pretty=format:--COMMIT--|%H|%an|%ae|%ad",
+        "--date=short",
+    ]
+).decode("utf-8")
 
 rows = []
 current_commit = None
@@ -94,12 +100,20 @@ for name, email in zip(df["name"], df["email"]):
 df["contributor_id"] = ids
 
 # Group for commits per user/month
-commit_counts = df.groupby(["contributor_id", "name", "email", "month"]).size().unstack(fill_value=0)
+commit_counts = (
+    df.groupby(["contributor_id", "name", "email", "month"])
+    .size()
+    .unstack(fill_value=0)
+)
 commit_counts.columns = [d.strftime("%Y-%m") for d in commit_counts.columns]
 commit_counts = commit_counts.reset_index()
 
 # Group for lines changed per user/month
-lines_changed = df.groupby(["contributor_id", "name", "email", "month"])["lines_changed"].sum().unstack(fill_value=0)
+lines_changed = (
+    df.groupby(["contributor_id", "name", "email", "month"])["lines_changed"]
+    .sum()
+    .unstack(fill_value=0)
+)
 lines_changed.columns = [d.strftime("%Y-%m") for d in lines_changed.columns]
 lines_changed = lines_changed.reset_index()
 

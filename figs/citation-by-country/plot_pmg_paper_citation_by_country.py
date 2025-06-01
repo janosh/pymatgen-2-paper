@@ -8,6 +8,7 @@ TODO:
 
 import os
 import json
+import gzip
 from collections import Counter
 
 import requests
@@ -20,7 +21,7 @@ import numpy as np
 WORK_ID: str = "W2015197254"  # https://openalex.org/works/w2015197254
 BASE_URL: str = "https://api.openalex.org/works"
 
-CACHE_FILE = "citation_country_counts.json"
+CACHE_FILE = "citation_country_counts.json.gz"
 
 
 def get_citing_countries(work_id: str) -> Counter:
@@ -54,13 +55,13 @@ def load_or_fetch_countries(
 ) -> Counter:
     if os.path.exists(cache_file) and not force_refresh:
         print("Loading cached data...")
-        with open(cache_file, "r", encoding="utf-8") as f:
+        with gzip.open(cache_file, "rt", encoding="utf-8") as f:
             return Counter(json.load(f))
 
     print("Fetching citation data... (expect ~30 sec)")
     country_counts = get_citing_countries(work_id)
-    with open(cache_file, "w", encoding="utf-8") as f:
-        json.dump(dict(country_counts), f, indent=2)
+    with gzip.open(cache_file, "wt", encoding="utf-8") as f:
+        json.dump(dict(country_counts), f, separators=(",", ":"))  # no pretty-print
     return country_counts
 
 

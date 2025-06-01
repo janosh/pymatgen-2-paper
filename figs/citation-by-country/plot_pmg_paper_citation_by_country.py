@@ -105,10 +105,45 @@ fig.add_trace(
 )
 
 # Text labels on top
+
+# Hide labels for selected countries as labels overlap (sorry EU)
+HIDE_COUNTRIES: set[str] = {
+    "AUT",
+    "BEL",
+    "BGR",
+    "HRV",
+    "CYP",
+    "CZE",
+    "DNK",
+    "EST",
+    "FIN",
+    "FRA",
+    "DEU",
+    "GRC",
+    "HUN",
+    "IRL",
+    "ITA",
+    "LVA",
+    "LTU",
+    "LUX",
+    "MLT",
+    "NLD",
+    "POL",
+    "PRT",
+    "ROU",
+    "SVK",
+    "SVN",
+    "ESP",
+    "SWE",
+    "SRB",
+    "CHE",
+}
+df_labels = df[~df["iso_alpha"].isin(HIDE_COUNTRIES)].copy()
+
 fig.add_trace(
     go.Scattergeo(
-        locations=df["iso_alpha"],
-        text=df["citations"],
+        locations=df_labels["iso_alpha"],
+        text=df_labels["citations"],
         mode="text",
         textfont=dict(size=8, color="black"),
         showlegend=False,

@@ -7,7 +7,7 @@ References:
 TODO:
     - logscale (colorscale incorrect)
     - use a cutoff date (otherwise data change frequently)?
-    - maybe only show labels for citation over certain threshold?
+    - only show labels when citation over certain threshold?
 """
 
 import os
@@ -55,9 +55,8 @@ def get_citing_countries(work_id: str) -> Counter:
 def load_or_fetch_countries(
     work_id: str,
     cache_file: str = CACHE_FILE,
-    force_refresh: bool = False,
 ) -> Counter:
-    if os.path.exists(cache_file) and not force_refresh:
+    if os.path.exists(cache_file):
         print("Loading cached data...")
         with gzip.open(cache_file, "rt", encoding="utf-8") as f:
             return Counter(json.load(f))

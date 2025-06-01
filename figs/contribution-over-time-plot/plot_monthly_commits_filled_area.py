@@ -40,11 +40,11 @@ fig = px.area(
     x="month",
     y="commits",
     color="contributor_id",
-    title="Monthly Git Commits by Contributor (Stacked Area)",
+    title=f"Monthly Git Commits by Contributor (≥ {MIN_TOTAL_COMMITS} commits)",
 )
 
 fig.update_layout(
-    xaxis_title="Month",
+    xaxis_title="Year",
     yaxis_title="Commits",
     hovermode="x unified",
     template="plotly_white",

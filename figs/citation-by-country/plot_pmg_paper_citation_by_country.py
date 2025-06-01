@@ -5,7 +5,6 @@ References:
     - https://plotly.com/python/map-configuration/
 
 TODO:
-    - logscale (colorscale incorrect)
     - use a cutoff date (otherwise data change frequently)?
     - only show labels when citation over certain threshold?
 """
@@ -13,6 +12,7 @@ TODO:
 import os
 import json
 import gzip
+import math
 from collections import Counter
 
 import requests
@@ -94,16 +94,28 @@ df["country_name"] = df["iso_alpha"].apply(iso3_to_country_name)
 fig = go.Figure()
 
 # Choropleth base map with log color scaling
+max_citation = df["citations"].max()
+rounded_max = 10 ** math.ceil(math.log10(max_citation))  # e.g., 9500 → 10000
+
+powers_of_10 = [10**i for i in range(0, int(math.log10(rounded_max)) + 1)]
+tick_vals = np.log10(powers_of_10)
+tick_text = [str(v) if v < 1000 else f"{v // 1000}k" for v in powers_of_10]
+
 fig.add_trace(
     go.Choropleth(
         locations=df["iso_alpha"],
         z=df["log_citations"],
         text=df["country_name"],
-        colorscale="temps",  # https://plotly.com/python/builtin-colorscales/
-        colorbar=dict(title="log₁₀(Citations)"),
-        hovertemplate="<b>%{text}</b><br>Citations: %{z:.0f}<extra></extra>",
-        zmin=0.1,  # log10(1) = 0, so 0.1 is a safe low end
-        zmax=df["log_citations"].max(),
+        colorscale="temps",
+        colorbar=dict(
+            title="Citations",
+            tickvals=tick_vals,
+            ticktext=tick_text,
+        ),
+        hovertemplate="<b>%{text}</b><br>Citations: %{customdata}<extra></extra>",
+        customdata=df["citations"],  # keep real citation count in hover
+        zmin=np.log10(1),
+        zmax=np.log10(rounded_max),
     )
 )
 

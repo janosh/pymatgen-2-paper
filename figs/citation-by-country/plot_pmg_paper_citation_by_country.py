@@ -46,9 +46,9 @@ def get_citing_countries(work_id: str) -> Counter:
 
 
 def load_or_fetch_countries(
-        work_id: str,
-        cache_file: str = CACHE_FILE,
-        force_refresh: bool = False,
+    work_id: str,
+    cache_file: str = CACHE_FILE,
+    force_refresh: bool = False,
 ) -> Counter:
     if os.path.exists(cache_file) and not force_refresh:
         print("Loading cached data...")
@@ -61,8 +61,10 @@ def load_or_fetch_countries(
         json.dump(dict(country_counts), f, indent=2)
     return country_counts
 
+
 # Collect data
 country_counts = load_or_fetch_countries(WORK_ID)
+
 
 # Convert to DataFrame
 def convert_iso2_to_iso3(iso2_code: str) -> str:
@@ -71,8 +73,10 @@ def convert_iso2_to_iso3(iso2_code: str) -> str:
     """
     return pycountry.countries.get(alpha_2=iso2_code).alpha_3
 
+
 def iso3_to_country_name(code3: str) -> str:
     return pycountry.countries.get(alpha_3=code3).name
+
 
 df = pd.DataFrame(country_counts.items(), columns=["country_code_2", "citations"])
 df["iso_alpha"] = df["country_code_2"].apply(convert_iso2_to_iso3)
@@ -98,6 +102,6 @@ fig.write_image(
     "citations_by_country.svg",
     width=1200,
     height=600,
-    scale=3  # ≈ 288 DPI
+    scale=3,  # ≈ 288 DPI
 )
 fig.show()

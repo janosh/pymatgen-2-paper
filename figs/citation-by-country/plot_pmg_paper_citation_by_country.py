@@ -3,9 +3,6 @@ Plot a citation by country world map.
 
 References:
     - https://plotly.com/python/map-configuration/
-
-TODO:
-    - use a cutoff date (otherwise data change frequently)?
 """
 
 import os
@@ -24,19 +21,28 @@ import numpy as np
 WORK_ID: str = "W2015197254"  # https://openalex.org/works/w2015197254
 BASE_URL: str = "https://api.openalex.org/works"
 
-CACHE_FILE = "citation_country_counts.json.gz"
+CACHE_FILE: str = "citation_country_counts.json.gz"
 
-LABEL_THRESHOLD = 100  # Only show text labels for countries above the citation count
+CUTOFF_DATE: str = (
+    "2025-06-01"  # cutoff date for collecting citation data from OpenAlex
+)
+
+LABEL_THRESHOLD: int = 100  # Only show labels for countries above this
 
 
-def get_citing_countries(work_id: str) -> Counter:
-    PER_PAGE: int = 200
+def get_citing_countries(work_id: str, cutoff_date: str | None = None) -> Counter:
+    PER_PAGE = 200
+    countries_counter = Counter()
+    cursor = "*"
 
-    countries_counter: Counter = Counter()
-    cursor: str = "*"
+    # Build filter string
+    filters = [f"cites:{work_id}"]
+    if cutoff_date:
+        filters.append(f"from_publication_date:<{cutoff_date}")
+    filter_str = ",".join(filters)
 
     while cursor:
-        url = f"{BASE_URL}?filter=cites:{work_id}&per-page={PER_PAGE}&cursor={cursor}"
+        url = f"{BASE_URL}?filter={filter_str}&per-page={PER_PAGE}&cursor={cursor}"
         response = requests.get(url, timeout=5)
         response.raise_for_status()
         data = response.json()
@@ -63,7 +69,7 @@ def load_or_fetch_countries(
             return Counter(json.load(f))
 
     print("Fetching citation data... (expect ~30 sec)")
-    country_counts = get_citing_countries(work_id)
+    country_counts = get_citing_countries(work_id, CUTOFF_DATE)
     with gzip.open(cache_file, "wt", encoding="utf-8") as f:
         json.dump(dict(country_counts), f, separators=(",", ":"))  # no pretty-print
     return country_counts

@@ -115,12 +115,16 @@ fig.add_trace(
         text=df["country_name"],
         colorscale="temps",
         colorbar=dict(
-            title="Citations",
+            title=dict(
+                text="Citations",
+                font=dict(size=18),
+            ),
             tickvals=tick_vals,
             ticktext=tick_text,
+            tickfont=dict(size=18),
         ),
         hovertemplate="<b>%{text}</b><br>Citations: %{customdata}<extra></extra>",
-        customdata=df["citations"],  # keep real citation count in hover
+        customdata=df["citations"],  # citation count in hover
         zmin=np.log10(1),
         zmax=np.log10(rounded_max),
     )
@@ -134,13 +138,18 @@ fig.add_trace(
         locations=df_labels["iso_alpha"],
         text=df_labels["citations"],
         mode="text",
-        textfont=dict(size=8, color="black"),
+        textfont=dict(size=12, color="black"),
         showlegend=False,
     )
 )
 
 fig.update_layout(
-    title="Citations by Country for 1ˢᵗ pymatgen Paper",
+    title=dict(
+        text="Citations by Country for 1ˢᵗ pymatgen Paper",
+        font=dict(size=28),
+        x=0.5,
+        xanchor="center",
+    ),
     geo=dict(showframe=True, showcoastlines=False, projection_type="natural earth"),
 )
 

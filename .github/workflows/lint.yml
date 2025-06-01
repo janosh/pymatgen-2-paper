@@ -23,5 +23,7 @@ jobs:
       - name: Install dependencies
         run: pip install pre-commit
 
+      - uses: typst-community/setup-typst@v4
+
       - name: Run pre-commit
         run: pre-commit run --all-files --show-diff-on-failure

@@ -1,9 +1,13 @@
 """
 Plot a citation by country world map.
 
+References:
+    - https://plotly.com/python/map-configuration/
+
 TODO:
     - logscale (colorscale incorrect)
     - use a cutoff date (otherwise data change frequently)?
+    - maybe only show labels for citation over certain threshold?
 """
 
 import os
@@ -72,7 +76,7 @@ country_counts = load_or_fetch_countries(WORK_ID)
 # Convert to DataFrame
 def convert_iso2_to_iso3(iso2_code: str) -> str:
     """
-    Plotly choropleth maps require ISO alpha-3 codes.
+    Plotly choropleth requires ISO alpha-3 codes, e.g. USA instead of US.
     """
     return pycountry.countries.get(alpha_2=iso2_code).alpha_3
 
@@ -152,7 +156,7 @@ fig.add_trace(
 
 fig.update_layout(
     title="Citations by Country for 1ˢᵗ pymatgen Paper",
-    geo=dict(showframe=False, showcoastlines=False, projection_type="natural earth"),
+    geo=dict(showframe=True, showcoastlines=False, projection_type="natural earth"),
 )
 
 fig.write_image("citations_by_country.svg", width=1200, height=600, scale=3)

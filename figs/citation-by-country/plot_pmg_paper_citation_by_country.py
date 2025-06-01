@@ -2,6 +2,7 @@
 Plot a citation by country world map.
 
 TODO:
+    - logscale (colorscale incorrect)
     - use a cutoff date (otherwise data change frequently)?
 """
 
@@ -12,7 +13,8 @@ from collections import Counter
 import requests
 import pandas as pd
 import pycountry
-import plotly.express as px
+import plotly.graph_objects as go
+import numpy as np
 
 
 WORK_ID: str = "W2015197254"  # https://openalex.org/works/w2015197254
@@ -79,29 +81,43 @@ def iso3_to_country_name(code3: str) -> str:
 
 
 df = pd.DataFrame(country_counts.items(), columns=["country_code_2", "citations"])
+df["log_citations"] = np.log10(df["citations"].replace(0, np.nan))
 df["iso_alpha"] = df["country_code_2"].apply(convert_iso2_to_iso3)
 df = df.dropna(subset=["iso_alpha"])
 df["country_name"] = df["iso_alpha"].apply(iso3_to_country_name)
 
 # Plot
-fig = px.choropleth(
-    df,
-    locations="iso_alpha",
-    color="citations",
-    color_continuous_scale="Plasma",
-    title="Citations by Country for 1ˢᵗ pymatgen Paper",
-    hover_name="country_name",
-    hover_data={
-        "citations": True,
-        "iso_alpha": False,
-        "country_code_2": False,
-    },
+fig = go.Figure()
+
+# Choropleth base map with log color scaling
+fig.add_trace(
+    go.Choropleth(
+        locations=df["iso_alpha"],
+        z=df["log_citations"],
+        text=df["country_name"],
+        colorscale="Plasma",
+        colorbar=dict(title="log₁₀(Citations)"),
+        hovertemplate="<b>%{text}</b><br>Citations: %{z:.0f}<extra></extra>",
+        zmin=0.1,  # log10(1) = 0, so 0.1 is a safe low end
+        zmax=df["log_citations"].max(),
+    )
 )
 
-fig.write_image(
-    "citations_by_country.svg",
-    width=1200,
-    height=600,
-    scale=3,  # ≈ 288 DPI
+# Text labels on top
+fig.add_trace(
+    go.Scattergeo(
+        locations=df["iso_alpha"],
+        text=df["citations"],
+        mode="text",
+        textfont=dict(size=8, color="black"),
+        showlegend=False,
+    )
 )
+
+fig.update_layout(
+    title="Citations by Country for 1ˢᵗ pymatgen Paper",
+    geo=dict(showframe=False, showcoastlines=False, projection_type="natural earth"),
+)
+
+fig.write_image("citations_by_country.svg", width=1200, height=600, scale=3)
 fig.show()

@@ -6,7 +6,6 @@ References:
 
 TODO:
     - use a cutoff date (otherwise data change frequently)?
-    - only show labels when citation over certain threshold?
 """
 
 import os
@@ -26,6 +25,8 @@ WORK_ID: str = "W2015197254"  # https://openalex.org/works/w2015197254
 BASE_URL: str = "https://api.openalex.org/works"
 
 CACHE_FILE = "citation_country_counts.json.gz"
+
+LABEL_THRESHOLD = 100  # Only show text labels for countries above the citation count
 
 
 def get_citing_countries(work_id: str) -> Counter:
@@ -120,40 +121,7 @@ fig.add_trace(
 )
 
 # Text labels on top
-
-# Hide labels for selected countries as labels overlap (sorry EU)
-HIDE_COUNTRIES: set[str] = {
-    "AUT",
-    "BEL",
-    "BGR",
-    "HRV",
-    "CYP",
-    "CZE",
-    "DNK",
-    "EST",
-    "FIN",
-    "FRA",
-    "DEU",
-    "GRC",
-    "HUN",
-    "IRL",
-    "ITA",
-    "LVA",
-    "LTU",
-    "LUX",
-    "MLT",
-    "NLD",
-    "POL",
-    "PRT",
-    "ROU",
-    "SVK",
-    "SVN",
-    "ESP",
-    "SWE",
-    "SRB",
-    "CHE",
-}
-df_labels = df[~df["iso_alpha"].isin(HIDE_COUNTRIES)].copy()
+df_labels = df[df["citations"] >= LABEL_THRESHOLD].copy()
 
 fig.add_trace(
     go.Scattergeo(

@@ -96,7 +96,7 @@ fig.add_trace(
         locations=df["iso_alpha"],
         z=df["log_citations"],
         text=df["country_name"],
-        colorscale="Plasma",
+        colorscale="temps",  # https://plotly.com/python/builtin-colorscales/
         colorbar=dict(title="log₁₀(Citations)"),
         hovertemplate="<b>%{text}</b><br>Citations: %{z:.0f}<extra></extra>",
         zmin=0.1,  # log10(1) = 0, so 0.1 is a safe low end

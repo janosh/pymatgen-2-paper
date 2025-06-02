@@ -10,18 +10,21 @@ import json
 import gzip
 import math
 from collections import Counter
+import zipfile
+import tempfile
 
 import requests
 import pandas as pd
 import pycountry
 import plotly.graph_objects as go
 import numpy as np
+import geopandas as gpd
 
 
 WORK_ID: str = "W2015197254"  # https://openalex.org/works/w2015197254
 BASE_URL: str = "https://api.openalex.org/works"
 
-CACHE_FILE: str = "citation_country_counts.json.gz"
+CACHE_FILE: str = "_citation_country_counts.json.gz"
 
 CUTOFF_DATE: str = (
     "2025-06-01"  # cutoff date for collecting citation data from OpenAlex
@@ -97,6 +100,21 @@ df["iso_alpha"] = df["country_code_2"].apply(convert_iso2_to_iso3)
 df = df.dropna(subset=["iso_alpha"])
 df["country_name"] = df["iso_alpha"].apply(iso3_to_country_name)
 
+# Get country area using GeoPandas
+with tempfile.TemporaryDirectory() as tmpdir:
+    with zipfile.ZipFile("_110m_cultural.zip", "r") as z:
+        z.extractall(tmpdir)
+
+    full_shp_path = os.path.join(tmpdir, "ne_110m_admin_0_countries.shp")
+
+    # Load with geopandas
+    gdf = gpd.read_file(full_shp_path).to_crs("ESRI:54009")
+
+gdf["area_km2"] = gdf.geometry.area / 1e6
+df = df.merge(
+    gdf[["ISO_A3", "area_km2"]], left_on="iso_alpha", right_on="ISO_A3", how="left"
+)
+
 # Plot
 fig = go.Figure()
 
@@ -130,18 +148,21 @@ fig.add_trace(
     )
 )
 
-# Text labels on top
-df_labels = df[df["citations"] >= LABEL_THRESHOLD].copy()
+# Labels on top (scaled by area if available)
+df_labels = df[(df["citations"] >= LABEL_THRESHOLD) & df["area_km2"].notna()].copy()
+df_labels["font_size"] = np.clip(np.log10(df_labels["area_km2"]) * 2, 6, 14)
 
-fig.add_trace(
-    go.Scattergeo(
-        locations=df_labels["iso_alpha"],
-        text=df_labels["citations"],
-        mode="text",
-        textfont=dict(size=12, color="black"),
-        showlegend=False,
+# Plot one label per trace
+for _, row in df_labels.iterrows():
+    fig.add_trace(
+        go.Scattergeo(
+            locations=[row["iso_alpha"]],
+            text=[row["citations"]],
+            mode="text",
+            textfont=dict(size=row["font_size"], color="black"),
+            showlegend=False,
+        )
     )
-)
 
 fig.update_layout(
     title=dict(

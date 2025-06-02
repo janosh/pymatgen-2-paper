@@ -1,10 +1,6 @@
 """
 Plot a logscale monthly commit-by-contributor scatter plot, with colorbar showing
 years since first commit. Contributors are identified by `contributor_id`.
-
-TODO:
-    - use `plotly` strip chart to replace manual jitter:
-        https://plotly.com/python/violin/#violin-plot-with-only-points
 """
 
 import pandas as pd
@@ -92,5 +88,5 @@ cbar.ax.tick_params(labelsize=16, width=1.5, length=5)
 
 plt.tight_layout()
 
-fig_name = f"commits_per_contributor_{PERIOD_MONTHS}m_bins.png"
-plt.savefig(fig_name, dpi=300)
+plt.savefig(f"commits_per_contributor_{PERIOD_MONTHS}m_bins.png", dpi=300)
+plt.show()

@@ -3,7 +3,7 @@ Plot a logscale monthly commit-by-contributor scatter plot, with colorbar showin
 years since first commit. Contributors are identified by `contributor_id`.
 
 TODO:
-    - use `plotly` strip chart to replace manually jitter:
+    - use `plotly` strip chart to replace manual jitter:
         https://plotly.com/python/violin/#violin-plot-with-only-points
 """
 
@@ -11,11 +11,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-# GLOBAL: binning interval in months
-PERIOD_MONTHS = 3
+PERIOD_MONTHS: int = 6
 
-# Load the commit data
-df_commits = pd.read_csv("contributor_commits_by_month.csv")
+df_commits: pd.DataFrame = pd.read_csv("contributor_commits_by_month.csv")
 
 # Melt everything from the 4th column onward (assumed to be months)
 df_long = df_commits.melt(
@@ -96,4 +94,3 @@ plt.tight_layout()
 
 fig_name = f"commits_per_contributor_{PERIOD_MONTHS}m_bins.png"
 plt.savefig(fig_name, dpi=300)
-print(f"Plot saved as: {fig_name}")

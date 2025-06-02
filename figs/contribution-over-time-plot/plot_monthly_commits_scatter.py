@@ -1,6 +1,6 @@
 """
 Plot a logscale monthly commit-by-contributor scatter plot, with colorbar showing
-years since first commit. Contributors are uniquely identified by contributor_id.
+years since first commit. Contributors are identified by `contributor_id`.
 """
 
 import pandas as pd

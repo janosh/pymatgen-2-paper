@@ -1,3 +1,8 @@
+# /// script
+# dependencies = ["geopandas", "numpy", "pandas", "plotly", "pycountry", "requests"]
+# ///
+
+
 """
 Plot a citation by country world map.
 
@@ -5,21 +10,20 @@ References:
     - https://plotly.com/python/map-configuration/
 """
 
-import os
-import json
 import gzip
+import json
 import math
-from collections import Counter
-import zipfile
+import os
 import tempfile
+import zipfile
+from collections import Counter
 
-import requests
-import pandas as pd
-import pycountry
-import plotly.graph_objects as go
-import numpy as np
 import geopandas as gpd
-
+import numpy as np
+import pandas as pd
+import plotly.graph_objects as go
+import pycountry
+import requests
 
 WORK_ID: str = "W2015197254"  # https://openalex.org/works/w2015197254
 BASE_URL: str = "https://api.openalex.org/works"

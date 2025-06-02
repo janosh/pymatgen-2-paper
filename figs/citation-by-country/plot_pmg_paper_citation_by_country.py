@@ -1,5 +1,5 @@
 # /// script
-# dependencies = ["geopandas", "numpy", "pandas", "plotly", "pycountry", "requests"]
+# dependencies = ["geopandas", "numpy", "pandas", "plotly", "pycountry", "requests", "kaleido"]
 # ///
 
 
@@ -30,9 +30,8 @@ BASE_URL: str = "https://api.openalex.org/works"
 
 CACHE_FILE: str = "_citation_country_counts.json.gz"
 
-CUTOFF_DATE: str = (
-    "2025-06-01"  # cutoff date for collecting citation data from OpenAlex
-)
+# cutoff date for collecting citation data from OpenAlex
+CUTOFF_DATE: str = "2025-06-01"
 
 LABEL_THRESHOLD: int = 100  # Only show labels for countries above this
 
@@ -88,9 +87,7 @@ country_counts = load_or_fetch_countries(WORK_ID)
 
 # Convert to DataFrame
 def convert_iso2_to_iso3(iso2_code: str) -> str:
-    """
-    Plotly choropleth requires ISO alpha-3 codes, e.g. USA instead of US.
-    """
+    """Plotly choropleth requires ISO alpha-3 codes, e.g. USA instead of US."""
     return pycountry.countries.get(alpha_2=iso2_code).alpha_3
 
 
@@ -100,9 +97,9 @@ def iso3_to_country_name(code3: str) -> str:
 
 df = pd.DataFrame(country_counts.items(), columns=["country_code_2", "citations"])
 df["log_citations"] = np.log10(df["citations"].replace(0, np.nan))
-df["iso_alpha"] = df["country_code_2"].apply(convert_iso2_to_iso3)
+df["iso_alpha"] = df["country_code_2"].map(convert_iso2_to_iso3)
 df = df.dropna(subset=["iso_alpha"])
-df["country_name"] = df["iso_alpha"].apply(iso3_to_country_name)
+df["country_name"] = df["iso_alpha"].map(iso3_to_country_name)
 
 # Get country area using GeoPandas
 with tempfile.TemporaryDirectory() as tmpdir:
@@ -130,26 +127,24 @@ powers_of_10 = [10**i for i in range(0, int(math.log10(rounded_max)) + 1)]
 tick_vals = np.log10(powers_of_10)
 tick_text = [str(v) if v < 1000 else f"{v // 1000}k" for v in powers_of_10]
 
-fig.add_trace(
-    go.Choropleth(
-        locations=df["iso_alpha"],
-        z=df["log_citations"],
-        text=df["country_name"],
-        colorscale="temps",
-        colorbar=dict(
-            title=dict(
-                text="Citations",
-                font=dict(size=18),
-            ),
-            tickvals=tick_vals,
-            ticktext=tick_text,
-            tickfont=dict(size=18),
+fig.add_choropleth(
+    locations=df["iso_alpha"],
+    z=df["log_citations"],
+    text=df["country_name"],
+    colorscale="temps",
+    colorbar=dict(
+        title=dict(
+            text="Citations",
+            font=dict(size=18),
         ),
-        hovertemplate="<b>%{text}</b><br>Citations: %{customdata}<extra></extra>",
-        customdata=df["citations"],  # citation count in hover
-        zmin=np.log10(1),
-        zmax=np.log10(rounded_max),
-    )
+        tickvals=tick_vals,
+        ticktext=tick_text,
+        tickfont=dict(size=18),
+    ),
+    hovertemplate="<b>%{text}</b><br>Citations: %{customdata}<extra></extra>",
+    customdata=df["citations"],  # citation count in hover
+    zmin=np.log10(1),
+    zmax=np.log10(rounded_max),
 )
 
 # Labels on top (scaled by area if available)
@@ -158,25 +153,19 @@ df_labels["font_size"] = np.clip(np.log10(df_labels["area_km2"]) * 2, 6, 14)
 
 # Plot one label per trace
 for _, row in df_labels.iterrows():
-    fig.add_trace(
-        go.Scattergeo(
-            locations=[row["iso_alpha"]],
-            text=[row["citations"]],
-            mode="text",
-            textfont=dict(size=row["font_size"], color="black"),
-            showlegend=False,
-        )
+    fig.add_scattergeo(
+        locations=[row["iso_alpha"]],
+        text=[row["citations"]],
+        mode="text",
+        textfont=dict(size=row["font_size"], color="black"),
+        showlegend=False,
     )
 
-fig.update_layout(
-    title=dict(
-        text="Citations by Country for 1ˢᵗ pymatgen Paper",
-        font=dict(size=28),
-        x=0.5,
-        xanchor="center",
-    ),
-    geo=dict(showframe=True, showcoastlines=False, projection_type="natural earth"),
+fig_title = "Citations by Country for 1ˢᵗ pymatgen Paper"
+fig.layout.title.update(text=fig_title, font=dict(size=28), x=0.5, xanchor="center")
+fig.layout.geo.update(
+    showframe=True, showcoastlines=False, projection_type="natural earth"
 )
 
-fig.write_image("citations_by_country.svg", width=1200, height=600, scale=3)
+fig.write_image("citations-by-country.svg", width=1200, height=600, scale=3)
 fig.show()

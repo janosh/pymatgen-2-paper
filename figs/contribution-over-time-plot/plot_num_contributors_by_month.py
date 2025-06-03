@@ -75,7 +75,7 @@ fig.update_layout(
         x=0.5,
         font=dict(size=24),
     ),
-    width=900,
+    width=1100,
     height=600,
     template="plotly_white",
     xaxis=dict(
@@ -89,6 +89,12 @@ fig.update_layout(
         gridwidth=1.2,
     ),
     font=dict(size=14),
+)
+
+# Show a frame around the plot
+fig.update_layout(
+    xaxis=dict(showline=True, linewidth=1, linecolor="black", mirror=True),
+    yaxis=dict(showline=True, linewidth=1, linecolor="black", mirror=True),
 )
 
 fig.write_image("active_contributors_colored.svg")

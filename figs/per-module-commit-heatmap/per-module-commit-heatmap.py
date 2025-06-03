@@ -1,5 +1,7 @@
 """
 Number of commits by module heatmap (logscale).
+
+Rows (modules) sorted by total number of commits (descending).
 """
 
 import pandas as pd
@@ -31,6 +33,11 @@ df_binned = df.resample(f"{BIN_MONTHS}ME").sum().rename_axis("time_binned")
 # Transpose to (module vs time)
 heatmap_data = df_binned.T
 heatmap_data.columns = heatmap_data.columns.to_series().dt.strftime("%Y-%m")
+
+# Sort modules (rows) by total commit count (descending)
+heatmap_data["__total__"] = heatmap_data.sum(axis=1)
+heatmap_data = heatmap_data.sort_values("__total__", ascending=False)
+heatmap_data = heatmap_data.drop(columns="__total__")
 
 # Replace 0 with NaN (invisible) and apply log10
 log_data = heatmap_data.replace(0, np.nan)

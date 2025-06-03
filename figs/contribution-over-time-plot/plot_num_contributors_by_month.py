@@ -53,7 +53,7 @@ fig.add_trace(
         y=[None],
         mode="markers",
         marker=dict(
-            colorscale="RdYlGn_r",
+            colorscale="temps",
             cmin=commits_binned.min(),
             cmax=commits_binned.max(),
             color=[commits_binned.max()],

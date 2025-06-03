@@ -1,5 +1,5 @@
 """
-Number of commits by module heatmap (logscale).
+Number of commits by module heatmap (logscale colorscale).
 
 Rows (modules) sorted by total number of commits (descending).
 """
@@ -43,6 +43,13 @@ heatmap_data = heatmap_data.drop(columns="__total__")
 log_data = heatmap_data.replace(0, np.nan)
 log_data = np.log10(log_data)
 
+# Colorbar ticks still show original value
+zmin = np.nanmin(log_data.values)
+zmax = np.nanmax(log_data.values)
+
+tick_vals = np.arange(np.floor(zmin), np.ceil(zmax) + 1)
+tick_text = [str(int(10**v)) for v in tick_vals]
+
 # Create heatmap
 fig = go.Figure(
     data=go.Heatmap(
@@ -51,9 +58,9 @@ fig = go.Figure(
         y=log_data.index,
         colorscale="temps",
         colorbar=dict(
-            title=dict(
-                text="log₁₀(Number of Commits)", font=dict(size=20), side="right"
-            ),
+            title=dict(text="Number of Commits", font=dict(size=20), side="right"),
+            tickvals=tick_vals.tolist(),
+            ticktext=tick_text,
             tickfont=dict(size=18),
         ),
         zmin=np.nanmin(log_data.values),

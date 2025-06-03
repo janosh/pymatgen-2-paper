@@ -8,8 +8,12 @@ import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
 
+from typing import Literal
+
 INPUT_CSV: str = "monthly_commits_per_module.csv"
 BIN_MONTHS: int = 6  # bin width in months
+
+SORTING: Literal["total_num_of_commits", "chronology"] = "chronology"
 
 EXCLUDE_MODULES: list[str] = [
     "ext",
@@ -35,9 +39,33 @@ heatmap_data = df_binned.T
 heatmap_data.columns = heatmap_data.columns.to_series().dt.strftime("%Y-%m")
 
 # Sort modules (rows) by total commit count (descending)
-heatmap_data["__total__"] = heatmap_data.sum(axis=1)
-heatmap_data = heatmap_data.sort_values("__total__", ascending=False)
-heatmap_data = heatmap_data.drop(columns="__total__")
+print(f"Sorting modules by {SORTING}.")
+if SORTING == "total_num_of_commits":
+    heatmap_data["__total__"] = heatmap_data.sum(axis=1)
+    heatmap_data = heatmap_data.sort_values("__total__", ascending=False)
+    heatmap_data = heatmap_data.drop(columns="__total__")
+
+# Sort modules from oldest (top) to latest
+elif SORTING == "chronology":
+    # Reload the original (unbinned) data to extract true first commit time
+    df_raw = pd.read_csv(INPUT_CSV, index_col="time")
+    df_raw.index = pd.to_datetime(df_raw.index, format="%Y-%m")
+
+    df_raw = df_raw.drop(columns=EXCLUDE_MODULES)
+
+    # Find the earliest month with a non-zero commit for each module
+    first_commit_time = {
+        module: df_raw[df_raw[module] > 0].index.min() for module in df_raw.columns
+    }
+
+    # Use this order to reorder the heatmap_data rows
+    module_order = [
+        mod for mod, _ in sorted(first_commit_time.items(), key=lambda x: x[1])
+    ]
+    heatmap_data = heatmap_data.loc[module_order]
+
+else:
+    raise ValueError(f"{SORTING=} not supported")
 
 # Replace 0 with NaN (invisible) and apply log10
 log_data = heatmap_data.replace(0, np.nan)

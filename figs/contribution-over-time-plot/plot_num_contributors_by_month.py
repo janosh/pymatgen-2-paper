@@ -46,7 +46,6 @@ fig = go.Figure(
     ]
 )
 
-# Add colorbar using a dummy scatter trace
 # Colorbar using a dummy scatter trace
 fig.add_trace(
     go.Scatter(
@@ -60,8 +59,9 @@ fig.add_trace(
             color=[commits_binned.max()],
             showscale=True,
             colorbar=dict(
-                title="Total Commits",
-                title_side="right",  # ← this line fixes it
+                title=dict(text="Total Commits", font=dict(size=20)),
+                tickfont=dict(size=13),
+                title_side="right",
             ),
         ),
         hoverinfo="skip",
@@ -70,14 +70,25 @@ fig.add_trace(
 )
 
 fig.update_layout(
-    title=f"Active Contributors per {BINNED_PERIOD_MONTH}-Month Period",
-    title_x=0.5,
-    xaxis_title="Date",
-    yaxis_title="Number of Contributors",
-    template="plotly_white",
-    # xaxis_tickangle=45,
+    title=dict(
+        text=f"Active Contributors per {BINNED_PERIOD_MONTH}-Month Period",
+        x=0.5,
+        font=dict(size=24),
+    ),
     width=900,
     height=600,
+    template="plotly_white",
+    xaxis=dict(
+        title=dict(text="Year", font=dict(size=20)),
+        tickfont=dict(size=16),
+    ),
+    yaxis=dict(
+        title=dict(text="Number of Contributors", font=dict(size=20)),
+        tickfont=dict(size=20),
+        gridcolor="rgba(0,0,0,0.2)",
+        gridwidth=1.2,
+    ),
+    font=dict(size=14),
 )
 
 fig.write_image("active_contributors_colored.svg")

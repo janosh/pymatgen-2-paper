@@ -9,9 +9,21 @@ import plotly.graph_objects as go
 INPUT_CSV: str = "monthly_commits_per_module.csv"
 BIN_MONTHS: int = 6  # bin width in months
 
+EXCLUDE_MODULES: list[str] = [
+    "ext",
+    "cli",
+    "vis",
+    "command_line",
+    "apps",
+    "alchemy",
+    "optimization",
+]
+
 # Load data
 df = pd.read_csv(INPUT_CSV, index_col="time")
 df.index = pd.to_datetime(df.index, format="%Y-%m")
+
+df = df.drop(columns=EXCLUDE_MODULES)
 
 # Resample into X-month bins
 df_binned = df.resample(f"{BIN_MONTHS}ME").sum().rename_axis("time_binned")

@@ -7,7 +7,7 @@ import sys
 import subprocess
 import pandas as pd
 
-MODULES: tuple[str, ...] = (
+MODULES: list[str] = [
     "command_line",
     "ext",
     "symmetry",
@@ -23,7 +23,7 @@ MODULES: tuple[str, ...] = (
     "vis",
     "cli",
     "entries",
-)
+]
 
 # Start/end identifiers (can be dates or commit hashes)
 START_COMMIT: str = "fa7f41d8bd769a04cca1f78242ebf072664c871d"

@@ -16,7 +16,7 @@ df.index = pd.to_datetime(df.index, format="%Y-%m")
 # Resample into X-month bins
 df_binned = df.resample(f"{BIN_MONTHS}ME").sum().rename_axis("time_binned")
 
-# Transpose to (module x time)
+# Transpose to (module vs time)
 heatmap_data = df_binned.T
 heatmap_data.columns = heatmap_data.columns.to_series().dt.strftime("%Y-%m")
 
@@ -32,7 +32,10 @@ fig = go.Figure(
         y=log_data.index,
         colorscale="temps",
         colorbar=dict(
-            title="log₁₀(# Commits)",
+            title=dict(
+                text="log₁₀(Number of Commits)", font=dict(size=20), side="right"
+            ),
+            tickfont=dict(size=18),
         ),
         zmin=np.nanmin(log_data.values),
         zmax=np.nanmax(log_data.values),
@@ -43,17 +46,18 @@ fig = go.Figure(
     )
 )
 
-# Style layout
 fig.update_layout(
     title=f"Commits per Module (log scale, every {BIN_MONTHS} months)",
     title_x=0.5,
-    title_font=dict(size=20),
+    title_font=dict(size=24),
     xaxis=dict(
-        title="Year",
+        title=dict(text="Year", font=dict(size=20)),
+        tickfont=dict(size=18),
         showgrid=False,
     ),
     yaxis=dict(
-        title="Module",
+        title=dict(text="Module", font=dict(size=20)),
+        tickfont=dict(size=18),
         autorange="reversed",
         showgrid=False,
     ),

@@ -13,7 +13,7 @@ from typing import Literal
 INPUT_CSV: str = "monthly_commits_per_module.csv"
 BIN_MONTHS: int = 6  # bin width in months
 
-SORTING: Literal["total_num_of_commits", "chronology"] = "chronology"
+SORTING: Literal["total_num_of_commits", "chronology", "alphabetical"] = "chronology"
 
 EXCLUDE_MODULES: list[str] = [
     "ext",
@@ -63,6 +63,9 @@ elif SORTING == "chronology":
         mod for mod, _ in sorted(first_commit_time.items(), key=lambda x: x[1])
     ]
     heatmap_data = heatmap_data.loc[module_order]
+
+elif SORTING == "alphabetical":
+    heatmap_data = heatmap_data.sort_index()
 
 else:
     raise ValueError(f"{SORTING=} not supported")

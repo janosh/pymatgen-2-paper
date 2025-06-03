@@ -1,5 +1,5 @@
 """
-Extract per-module number of commits data.
+Extract per-package number of commits data.
 """
 
 import os
@@ -7,7 +7,7 @@ import sys
 import subprocess
 import pandas as pd
 
-MODULES: list[str] = [
+PACKAGES: list[str] = [
     "command_line",
     "ext",
     "symmetry",
@@ -64,36 +64,36 @@ def get_git_dates(path_prefix: str, since: str, until: str) -> list[str]:
     return run_git_command(cmd).stdout.strip().splitlines()
 
 
-def get_monthly_commits_per_module() -> pd.DataFrame:
+def get_monthly_commits_per_package() -> pd.DataFrame:
     run_git_command(["checkout", "master"])
 
-    module_series = {}
+    package_series = {}
 
-    for module in MODULES:
+    for package in PACKAGES:
         all_dates = []
 
         # Flat layout (before June 2024)
-        flat_path = f"pymatgen/{module}/"
+        flat_path = f"pymatgen/{package}/"
         all_dates.extend(get_git_dates(flat_path, START_COMMIT, LAYOUT_SWITCH_DATE))
 
         # Src layout (from June 2024 onward)
-        src_path = f"src/pymatgen/{module}/"
+        src_path = f"src/pymatgen/{package}/"
         all_dates.extend(get_git_dates(src_path, LAYOUT_SWITCH_DATE, END_COMMIT))
 
         # Count commits per month
         dates = pd.to_datetime(all_dates, format="%Y-%m-%d")
         monthly = dates.to_series().dt.to_period("M").value_counts().sort_index()
         monthly.index = monthly.index.to_timestamp()
-        module_series[module] = monthly
+        package_series[package] = monthly
 
-    return pd.concat(module_series, axis=1).fillna(0).astype(int)
+    return pd.concat(package_series, axis=1).fillna(0).astype(int)
 
 
 if __name__ == "__main__":
-    df = get_monthly_commits_per_module()
+    df = get_monthly_commits_per_package()
 
     # Format index as YYYY-MM string
     df.index = df.index.to_period("M").astype(str)
     df.index.name = "time"
 
-    df.to_csv("monthly_commits_per_module.csv")
+    df.to_csv("monthly_commits_per_package.csv")

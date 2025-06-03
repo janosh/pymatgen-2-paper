@@ -1,7 +1,7 @@
 """
-Number of commits by module heatmap (logscale colorscale).
+Number of commits by package heatmap (logscale colorscale).
 
-Rows (modules) sorted by total number of commits (descending).
+Rows (packages) sorted by total number of commits (descending).
 """
 
 import pandas as pd
@@ -10,12 +10,12 @@ import plotly.graph_objects as go
 
 from typing import Literal
 
-INPUT_CSV: str = "monthly_commits_per_module.csv"
+INPUT_CSV: str = "monthly_commits_per_package.csv"
 BIN_MONTHS: int = 6  # bin width in months
 
 SORTING: Literal["total_num_of_commits", "chronology", "alphabetical"] = "chronology"
 
-EXCLUDE_MODULES: list[str] = [
+EXCLUDE_PACKAGES: list[str] = [
     "ext",
     "cli",
     "vis",
@@ -29,40 +29,40 @@ EXCLUDE_MODULES: list[str] = [
 df = pd.read_csv(INPUT_CSV, index_col="time")
 df.index = pd.to_datetime(df.index, format="%Y-%m")
 
-df = df.drop(columns=EXCLUDE_MODULES)
+df = df.drop(columns=EXCLUDE_PACKAGES)
 
 # Resample into X-month bins
 df_binned = df.resample(f"{BIN_MONTHS}ME").sum().rename_axis("time_binned")
 
-# Transpose to (module vs time)
+# Transpose to (package vs time)
 heatmap_data = df_binned.T
 heatmap_data.columns = heatmap_data.columns.to_series().dt.strftime("%Y-%m")
 
-# Sort modules (rows) by total commit count (descending)
-print(f"Sorting modules by {SORTING}.")
+# Sort packages (rows) by total commit count (descending)
+print(f"Sorting packages by {SORTING}.")
 if SORTING == "total_num_of_commits":
     heatmap_data["__total__"] = heatmap_data.sum(axis=1)
     heatmap_data = heatmap_data.sort_values("__total__", ascending=False)
     heatmap_data = heatmap_data.drop(columns="__total__")
 
-# Sort modules from oldest (top) to latest
+# Sort packages from oldest (top) to latest
 elif SORTING == "chronology":
     # Reload the original (unbinned) data to extract true first commit time
     df_raw = pd.read_csv(INPUT_CSV, index_col="time")
     df_raw.index = pd.to_datetime(df_raw.index, format="%Y-%m")
 
-    df_raw = df_raw.drop(columns=EXCLUDE_MODULES)
+    df_raw = df_raw.drop(columns=EXCLUDE_PACKAGES)
 
-    # Find the earliest month with a non-zero commit for each module
+    # Find the earliest month with a non-zero commit for each package
     first_commit_time = {
-        module: df_raw[df_raw[module] > 0].index.min() for module in df_raw.columns
+        package: df_raw[df_raw[package] > 0].index.min() for package in df_raw.columns
     }
 
     # Use this order to reorder the heatmap_data rows
-    module_order = [
+    package_order = [
         mod for mod, _ in sorted(first_commit_time.items(), key=lambda x: x[1])
     ]
-    heatmap_data = heatmap_data.loc[module_order]
+    heatmap_data = heatmap_data.loc[package_order]
 
 elif SORTING == "alphabetical":
     heatmap_data = heatmap_data.sort_index()
@@ -96,7 +96,7 @@ fig = go.Figure(
         ),
         zmin=np.nanmin(log_data.values),
         zmax=np.nanmax(log_data.values),
-        hovertemplate="Module=%{y}<br>Time=%{x}<br>log₁₀(Commits)=%{z:.2f}<extra></extra>",
+        hovertemplate="Package=%{y}<br>Time=%{x}<br>log₁₀(Commits)=%{z:.2f}<extra></extra>",
         hoverongaps=False,
         showscale=True,
         connectgaps=False,
@@ -104,7 +104,7 @@ fig = go.Figure(
 )
 
 fig.update_layout(
-    title=f"Commits per Module (log scale, every {BIN_MONTHS} months)",
+    title=f"Commits per Package (log scale, every {BIN_MONTHS} months)",
     title_x=0.5,
     title_font=dict(size=24),
     xaxis=dict(
@@ -113,7 +113,7 @@ fig.update_layout(
         showgrid=False,
     ),
     yaxis=dict(
-        title=dict(text="Module", font=dict(size=20)),
+        title=dict(text="Package", font=dict(size=20)),
         tickfont=dict(size=18),
         autorange="reversed",
         showgrid=False,
@@ -123,5 +123,5 @@ fig.update_layout(
     plot_bgcolor="lightgrey",
 )
 
-fig.write_image("commits-per-module-heatmap-log.svg")
+fig.write_image("commits-per-package-heatmap-log.svg")
 fig.show()

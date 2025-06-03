@@ -37,7 +37,7 @@ index_str = active_contributors_binned.index.strftime("%Y-%m")
 norm = mpl.colors.Normalize(
     vmin=total_commits_binned.min(), vmax=total_commits_binned.max()
 )
-cmap = mpl.cm.coolwarm  # TODO: better colormap
+cmap = plt.get_cmap("RdYlGn_r")  # TODO: better colormap
 colors = cmap(norm(total_commits_binned.values))
 
 fig, ax = plt.subplots(figsize=(12, 6))

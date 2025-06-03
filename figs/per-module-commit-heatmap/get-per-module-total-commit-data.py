@@ -29,7 +29,7 @@ MODULES: tuple[str, ...] = (
 START_COMMIT: str = "fa7f41d8bd769a04cca1f78242ebf072664c871d"
 END_COMMIT: str = "2025-06-01"
 
-# Switch point when pymatgen layout changed from flat to src layout
+# Switch point when pymatgen changed from flat to src layout
 LAYOUT_SWITCH_DATE: str = "2024-06-01"
 
 # Get repo path from environment

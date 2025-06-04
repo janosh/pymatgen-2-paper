@@ -117,6 +117,10 @@ fig.update_layout(
         tickfont=dict(size=18),
         autorange="reversed",
         showgrid=False,
+        # Following is a hack to add pad to y-tick labels
+        ticks="outside",
+        tickcolor="white",
+        ticklen=15,
     ),
     height=600,
     width=1400,

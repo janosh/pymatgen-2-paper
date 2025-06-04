@@ -20,7 +20,9 @@ from typing import Literal
 INPUT_CSV: str = "monthly_commits_per_package.csv"
 BIN_MONTHS: int = 6  # bin width in months
 
-SORTING: Literal["total_num_of_commits", "chronology", "alphabetical"] = "chronology"
+SORTING: Literal["total_num_of_commits", "chronology", "alphabetical"] = (
+    "total_num_of_commits"
+)
 
 EXCLUDE_PACKAGES: list[str] = [
     "ext",

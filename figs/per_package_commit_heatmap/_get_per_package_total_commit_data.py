@@ -7,8 +7,9 @@ Extract per-package number of commits data.
 """
 
 import os
-import sys
 import subprocess
+import sys
+
 import pandas as pd
 
 PACKAGES: list[str] = [

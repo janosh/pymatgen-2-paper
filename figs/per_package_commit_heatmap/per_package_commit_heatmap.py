@@ -10,12 +10,11 @@ Rows (packages) sorted by total number of commits (descending).
 
 import os
 import subprocess
-
-import pandas as pd
-import numpy as np
-import plotly.graph_objects as go
-
 from typing import Literal
+
+import numpy as np
+import pandas as pd
+import plotly.graph_objects as go
 
 INPUT_CSV: str = "monthly_commits_per_package.csv"
 BIN_MONTHS: int = 6  # bin width in months

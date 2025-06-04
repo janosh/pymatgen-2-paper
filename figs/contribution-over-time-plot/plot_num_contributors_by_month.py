@@ -7,12 +7,23 @@ Plot a X-monthly number of active contributors bar plot,
 with the color of bars showing total number of commits.
 """
 
+import os
+import subprocess
+
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
 
 BINNED_PERIOD_MONTH = 6
 CSV_PATH = "contributor_commits_by_month.csv"
+
+if not os.path.isfile(CSV_PATH):
+    print("Data CSV not found. Running script to generate it...")
+    result = subprocess.run(
+        ["uv", "run", "_retrieve_commit_info_over_time.py"],
+        capture_output=True,
+        text=True,
+    )
 
 df = pd.read_csv(CSV_PATH)
 df_grouped = df.groupby("contributor_id").sum(numeric_only=True)

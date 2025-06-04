@@ -1,3 +1,7 @@
+# /// script
+# dependencies = ["pandas", "plotly", "kaleido"]
+# ///
+
 """
 Plot a X-monthly number of active contributors bar plot,
 with the color of bars showing total number of commits.

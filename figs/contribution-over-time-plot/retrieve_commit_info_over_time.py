@@ -1,3 +1,7 @@
+# /// script
+# dependencies = ["pandas"]
+# ///
+
 """
 Extract Git commit history from a local pymatgen repo and summarizes the number of commits
 and number of lines changed per contributor for each calendar month.

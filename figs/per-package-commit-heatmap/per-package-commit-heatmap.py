@@ -96,6 +96,7 @@ fig = go.Figure(
         ),
         zmin=np.nanmin(log_data.values),
         zmax=np.nanmax(log_data.values),
+        # TODO: hover data should show original data
         hovertemplate="Package=%{y}<br>Time=%{x}<br>log₁₀(Commits)=%{z:.2f}<extra></extra>",
         hoverongaps=False,
         showscale=True,

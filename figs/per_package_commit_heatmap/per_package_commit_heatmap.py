@@ -34,11 +34,9 @@ EXCLUDE_PACKAGES: list[str] = [
 
 # Load data
 if not os.path.isfile(INPUT_CSV):
-    print(
-        f"{INPUT_CSV} not found. Running 'uv run _get-per-package-total-commit-data.py' to generate it..."
-    )
+    print(f"{INPUT_CSV} not found. Running script to generate it...")
     result = subprocess.run(
-        ["uv", "run", "_get-per-package-total-commit-data.py"],
+        ["uv", "run", "_get_per_package_total_commit_data.py"],
         capture_output=True,
         text=True,
         check=True,
@@ -146,5 +144,5 @@ fig.update_layout(
     plot_bgcolor="lightgrey",
 )
 
-fig.write_image("commits-per-package-heatmap-log.svg")
+fig.write_image("commits_per_package_heatmap_log.svg")
 fig.show()

@@ -11,8 +11,8 @@ import os
 import subprocess
 
 import pandas as pd
-import plotly.graph_objects as go
 import plotly.express as px
+import plotly.graph_objects as go
 
 BINNED_PERIOD_MONTH = 6
 CSV_PATH = "contributor_commits_by_month.csv"

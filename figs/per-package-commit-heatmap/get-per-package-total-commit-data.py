@@ -1,3 +1,7 @@
+# /// script
+# dependencies = ["pandas"]
+# ///
+
 """
 Extract per-package number of commits data.
 """

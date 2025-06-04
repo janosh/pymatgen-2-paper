@@ -1,3 +1,7 @@
+# /// script
+# dependencies = ["pandas", "numpy", "plotly", "kaleido"]
+# ///
+
 """
 Number of commits by package heatmap (logscale colorscale).
 

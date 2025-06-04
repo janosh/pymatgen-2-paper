@@ -8,6 +8,9 @@ Number of commits by package heatmap (logscale colorscale).
 Rows (packages) sorted by total number of commits (descending).
 """
 
+import os
+import subprocess
+
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
@@ -30,6 +33,17 @@ EXCLUDE_PACKAGES: list[str] = [
 ]
 
 # Load data
+if not os.path.isfile(INPUT_CSV):
+    print(
+        f"{INPUT_CSV} not found. Running 'uv run _get-per-package-total-commit-data.py' to generate it..."
+    )
+    result = subprocess.run(
+        ["uv", "run", "_get-per-package-total-commit-data.py"],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+
 df = pd.read_csv(INPUT_CSV, index_col="time")
 df.index = pd.to_datetime(df.index, format="%Y-%m")
 

@@ -32,8 +32,8 @@ PMG_REPO_PATH = os.environ.get("PMG_REPO_PATH")
 if PMG_REPO_PATH is None or not os.path.isdir(PMG_REPO_PATH):
     raise EnvironmentError("PMG_REPO_PATH is not set or is invalid.")
 
+subprocess.run(["git", "-C", PMG_REPO_PATH, "checkout", "master"], check=True)
 print("Extracting git commit metadata and line changes...")
-
 git_log_output = subprocess.check_output(
     [
         "git",
@@ -123,9 +123,13 @@ lines_changed.columns = [d.strftime("%Y-%m") for d in lines_changed.columns]
 lines_changed = lines_changed.reset_index()
 
 # Save both CSVs
-commit_counts.to_csv("contributor_commits_by_month.csv", index=False)
-lines_changed.to_csv("contributor_lines_changed_by_month.csv", index=False)
+commit_counts.to_csv(
+    "contributor_commits_by_month.csv.gz", index=False, compression="gzip"
+)
+lines_changed.to_csv(
+    "contributor_lines_changed_by_month.csv.gz", index=False, compression="gzip"
+)
 
 print("✅ CSV files saved:")
-print(" - contributor_commits_by_month.csv")
-print(" - contributor_lines_changed_by_month.csv")
+print("  - contributor_commits_by_month.csv.gz")
+print("  - contributor_lines_changed_by_month.csv.gz")

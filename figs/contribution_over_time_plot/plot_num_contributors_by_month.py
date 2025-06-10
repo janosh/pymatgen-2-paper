@@ -15,7 +15,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 BINNED_PERIOD_MONTH = 6
-CSV_PATH = "contributor_commits_by_month.csv"
+CSV_PATH = "contributor_commits_by_month.csv.gz"
 
 if not os.path.isfile(CSV_PATH):
     print("Data CSV not found. Running script to generate it...")
@@ -25,7 +25,7 @@ if not os.path.isfile(CSV_PATH):
         text=True,
     )
 
-df = pd.read_csv(CSV_PATH)
+df = pd.read_csv("contributor_commits_by_month.csv.gz", compression="gzip")
 df_grouped = df.groupby("contributor_id").sum(numeric_only=True)
 
 # Convert columns to datetime

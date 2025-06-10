@@ -179,4 +179,4 @@ fig.layout.title.update(text="Pymatgen Contributors & Commits Over Time", x=0.5)
 fig.layout.legend.update(x=0.01, y=0.99, xanchor="left", yanchor="top")
 
 fig.show()
-save_fig(fig, "pmg-contributors-over-time.pdf")
+save_fig(fig, "contributors-over-time.pdf")

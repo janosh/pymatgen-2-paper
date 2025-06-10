@@ -197,8 +197,8 @@ Case study: Battery materials research with #pmg
 = Community Impact
 
 #figure(
-  // pdf-img("figs/pmg-contributors-over-time.pdf", width: 100%),
-  image("figs/pmg-contributors-over-time.svg"),
+  // pdf-img("figs/total-contributor-activity-over-time/contributors-over-time.pdf", width: 100%),
+  image("figs/total-contributor-activity-over-time/contributors-over-time.svg"),
   caption: [
     #pmg's growth over time, with contributors and commits.
   ],

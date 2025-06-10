@@ -134,9 +134,9 @@ fig.layout.yaxis.update(
     showgrid=False,
     ticks="outside",
     tickcolor="white",
-    ticklen=15,
+    ticksuffix=" ",
 )
-fig.layout.update(height=600, width=1400, plot_bgcolor="lightgrey")
+fig.layout.update(height=500, width=1400, plot_bgcolor="lightgrey")
 
 fig.write_image("commits_per_package_heatmap_log.svg")
 fig.show()

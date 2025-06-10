@@ -48,69 +48,51 @@ normed = (commits_binned - commits_binned.min()) / (
 colors = [px.colors.sample_colorscale("RdYlGn_r", val)[0] for val in normed]
 
 # Build bar plot
-fig = go.Figure(
-    [
-        go.Bar(
-            x=active_binned.index.strftime("%Y-%m"),
-            y=active_binned.values,
-            marker=dict(color=colors),
-            customdata=commits_binned.values.reshape(-1, 1),
-            hovertemplate="Period: %{x}<br>Contributors: %{y}<br>Total Commits: %{customdata[0]}",
-            showlegend=False,
-        )
-    ]
+fig = go.Figure()
+fig.add_bar(
+    x=active_binned.index.strftime("%Y-%m"),
+    y=active_binned.values,
+    marker=dict(color=colors),
+    customdata=commits_binned.values.reshape(-1, 1),
+    hovertemplate="Period: %{x}<br>Contributors: %{y}<br>Total Commits: %{customdata[0]}",
+    showlegend=False,
 )
 
 # Colorbar using a dummy scatter trace
-fig.add_trace(
-    go.Scatter(
-        x=[None],
-        y=[None],
-        mode="markers",
-        marker=dict(
-            colorscale="temps",
-            cmin=commits_binned.min(),
-            cmax=commits_binned.max(),
-            color=[commits_binned.max()],
-            showscale=True,
-            colorbar=dict(
-                title=dict(text="Total Commits", font=dict(size=20)),
-                tickfont=dict(size=13),
-                title_side="right",
-            ),
+fig.add_scatter(
+    x=[None],
+    y=[None],
+    mode="markers",
+    marker=dict(
+        colorscale="temps",
+        cmin=commits_binned.min(),
+        cmax=commits_binned.max(),
+        color=[commits_binned.max()],
+        showscale=True,
+        colorbar=dict(
+            title=dict(text="Total Commits", font=dict(size=20)),
+            tickfont=dict(size=13),
+            title_side="right",
         ),
-        hoverinfo="skip",
-        showlegend=False,
-    )
+    ),
+    hoverinfo="skip",
+    showlegend=False,
 )
 
-fig.update_layout(
-    title=dict(
-        text=f"Active Contributors per {BINNED_PERIOD_MONTH}-Month Period",
-        x=0.5,
-        font=dict(size=24),
-    ),
-    width=1100,
-    height=600,
-    template="plotly_white",
-    xaxis=dict(
-        title=dict(text="Year", font=dict(size=20)),
-        tickfont=dict(size=16),
-    ),
-    yaxis=dict(
-        title=dict(text="Number of Contributors", font=dict(size=20)),
-        tickfont=dict(size=20),
-        gridcolor="rgba(0,0,0,0.2)",
-        gridwidth=1.2,
-    ),
-    font=dict(size=14),
+title = f"Active Contributors per {BINNED_PERIOD_MONTH}-Month Period"
+fig.layout.title.update(text=title, x=0.5, font=dict(size=24))
+fig.layout.update(width=1100, height=600, template="plotly_white")
+fig.layout.xaxis.update(
+    title=dict(text="Year", font=dict(size=20)),
+    tickfont=dict(size=16),
 )
-
-# Show a frame around the plot
-fig.update_layout(
-    xaxis=dict(showline=True, linewidth=1, linecolor="black", mirror=True),
-    yaxis=dict(showline=True, linewidth=1, linecolor="black", mirror=True),
+fig.layout.yaxis.update(
+    title=dict(text="Number of Contributors", font=dict(size=20)),
+    tickfont=dict(size=20),
+    gridcolor="rgba(0,0,0,0.2)",
+    gridwidth=1.2,
 )
+fig.layout.font.update(size=14)
 
 fig.write_image("active_contributors_colored.svg")
 fig.show()

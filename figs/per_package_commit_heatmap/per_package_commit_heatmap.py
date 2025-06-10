@@ -9,12 +9,22 @@ Rows (packages) sorted by total number of commits (descending).
 """
 
 import os
+import sys
 import subprocess
 from typing import Literal
 
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+from style import (
+    COLORSCALE,
+    PLOT_TITLE_FONTSIZE,
+    XY_AXIS_CBAR_TITLE_FONTSIZE,
+    TICK_LABEL_FONTSIZE,
+)
 
 INPUT_CSV: str = "monthly_commits_per_package.csv"
 BIN_MONTHS: int = 6  # bin width in months
@@ -102,14 +112,18 @@ fig.add_heatmap(
     z=log_data.values,
     x=log_data.columns,
     y=log_data.index,
-    colorscale="viridis",
+    colorscale=COLORSCALE,
     colorbar=dict(
-        title=dict(text="Commits per Period", font=dict(size=18), side="right"),
+        title=dict(
+            text="Commits per Period",
+            font=dict(size=XY_AXIS_CBAR_TITLE_FONTSIZE),
+            side="right",
+        ),
         tickvals=tick_vals.tolist(),
         ticktext=tick_text,
-        tickfont=dict(size=16),
+        tickfont=dict(size=TICK_LABEL_FONTSIZE),
         thickness=20,
-        len=0.8,
+        # len=0.8,
         x=1.02,
         tickmode="array",
     ),
@@ -123,13 +137,15 @@ fig.add_heatmap(
 )
 
 title = f"Commits per Package (log scale, every {BIN_MONTHS} months)"
-fig.layout.title.update(text=title, x=0.5, font=dict(size=24))
+fig.layout.title.update(text=title, x=0.5, font=dict(size=PLOT_TITLE_FONTSIZE))
 fig.layout.xaxis.update(
-    title=dict(text="Year", font=dict(size=20)), tickfont=dict(size=18), showgrid=False
+    title=dict(text="Year", font=dict(size=XY_AXIS_CBAR_TITLE_FONTSIZE)),
+    tickfont=dict(size=TICK_LABEL_FONTSIZE),
+    showgrid=False,
 )
 fig.layout.yaxis.update(
-    title=dict(text="Package", font=dict(size=20)),
-    tickfont=dict(size=18),
+    title=dict(text="Package", font=dict(size=XY_AXIS_CBAR_TITLE_FONTSIZE)),
+    tickfont=dict(size=TICK_LABEL_FONTSIZE),
     autorange="reversed",
     showgrid=False,
     ticksuffix=" ",  # hack to add more spacing between tick labels and plot

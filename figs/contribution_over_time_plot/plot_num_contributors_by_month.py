@@ -8,11 +8,21 @@ with the color of bars showing total number of commits.
 """
 
 import os
+import sys
 import subprocess
 
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+from style import (
+    COLORSCALE,
+    PLOT_TITLE_FONTSIZE,
+    XY_AXIS_CBAR_TITLE_FONTSIZE,
+    TICK_LABEL_FONTSIZE,
+)
 
 BINNED_PERIOD_MONTH = 6
 CSV_PATH = "contributor_commits_by_month.csv.gz"
@@ -45,7 +55,7 @@ commits_binned = total_commits.resample(f"{BINNED_PERIOD_MONTH}ME").sum()
 normed = (commits_binned - commits_binned.min()) / (
     commits_binned.max() - commits_binned.min()
 )
-colors = [px.colors.sample_colorscale("RdYlGn_r", val)[0] for val in normed]
+colors = [px.colors.sample_colorscale(COLORSCALE, val)[0] for val in normed]
 
 # Build bar plot
 fig = go.Figure()
@@ -64,13 +74,15 @@ fig.add_scatter(
     y=[None],
     mode="markers",
     marker=dict(
-        colorscale="temps",
+        colorscale=COLORSCALE,
         cmin=commits_binned.min(),
         cmax=commits_binned.max(),
         color=[commits_binned.max()],
         showscale=True,
         colorbar=dict(
-            title=dict(text="Total Commits", font=dict(size=20)),
+            title=dict(
+                text="Total Commits", font=dict(size=XY_AXIS_CBAR_TITLE_FONTSIZE)
+            ),
             tickfont=dict(size=13),
             title_side="right",
         ),
@@ -80,15 +92,17 @@ fig.add_scatter(
 )
 
 title = f"Active Contributors per {BINNED_PERIOD_MONTH}-Month Period"
-fig.layout.title.update(text=title, x=0.5, font=dict(size=24))
+fig.layout.title.update(text=title, x=0.5, font=dict(size=PLOT_TITLE_FONTSIZE))
 fig.layout.update(width=1100, height=600, template="plotly_white")
 fig.layout.xaxis.update(
-    title=dict(text="Year", font=dict(size=20)),
-    tickfont=dict(size=16),
+    title=dict(text="Year", font=dict(size=XY_AXIS_CBAR_TITLE_FONTSIZE)),
+    tickfont=dict(size=TICK_LABEL_FONTSIZE),
 )
 fig.layout.yaxis.update(
-    title=dict(text="Number of Contributors", font=dict(size=20)),
-    tickfont=dict(size=20),
+    title=dict(
+        text="Number of Contributors", font=dict(size=XY_AXIS_CBAR_TITLE_FONTSIZE)
+    ),
+    tickfont=dict(size=TICK_LABEL_FONTSIZE),
     gridcolor="rgba(0,0,0,0.2)",
     gridwidth=1.2,
 )

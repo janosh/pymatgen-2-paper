@@ -134,7 +134,7 @@ fig.layout.yaxis.update(
     showgrid=False,
     ticks="outside",
     tickcolor="white",
-    ticksuffix=" ",
+    ticksuffix=" ",  # hack to add more spacing between tick labels and plot
 )
 fig.layout.update(height=500, width=1400, plot_bgcolor="lightgrey")
 

@@ -132,8 +132,6 @@ fig.layout.yaxis.update(
     tickfont=dict(size=18),
     autorange="reversed",
     showgrid=False,
-    ticks="outside",
-    tickcolor="white",
     ticksuffix=" ",  # hack to add more spacing between tick labels and plot
 )
 fig.layout.update(height=500, width=1400, plot_bgcolor="lightgrey")

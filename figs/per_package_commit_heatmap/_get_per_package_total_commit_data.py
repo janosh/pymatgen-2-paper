@@ -12,20 +12,8 @@ import sys
 
 import pandas as pd
 
-PACKAGES: list[str] = [
-    "command_line",
-    "symmetry",
-    "alchemy",
-    "core",
-    "io",
-    "transformations",
-    "analysis",
-    "optimization",
-    "electronic_structure",
-    "phonon",
-    "vis",
-    "entries",
-]
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+from generate_heatmap import PACKAGES
 
 # Start/end identifiers (can be dates or commit hashes)
 START_COMMIT: str = "fa7f41d8bd769a04cca1f78242ebf072664c871d"
@@ -98,4 +86,6 @@ if __name__ == "__main__":
     df.index = df.index.to_period("M").astype(str)
     df.index.name = "time"
 
-    df.to_csv("monthly_commits_per_package.csv")
+    fname: str = "monthly_commits_per_package.csv"
+    df.to_csv(fname)
+    print(f"Data saved to {fname}")

@@ -27,11 +27,12 @@ from style import (
 )
 
 PACKAGES: tuple[str, ...] = (
+    # NOTE: for a file the `.py` suffix is necessary (e.g. `core/structure.py`)
     "command_line",
     "symmetry",
     "alchemy",
-    "core/structure",  # TODO: not working
-    "core/periodic_table",  # TODO: not working
+    "core/structure.py",
+    "core/periodic_table.py",
     "io/vasp",
     "transformations",
     "analysis",
@@ -114,7 +115,9 @@ if __name__ == "__main__":
     fig.add_heatmap(
         z=log_data.values,
         x=log_data.columns,
-        y=[str(label).replace("/", ".") for label in log_data.index],
+        y=[
+            str(label).replace("/", ".").removesuffix(".py") for label in log_data.index
+        ],
         colorscale=COLORSCALE,
         colorbar=dict(
             title=dict(

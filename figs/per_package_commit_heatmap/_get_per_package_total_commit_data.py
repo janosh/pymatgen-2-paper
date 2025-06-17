@@ -63,11 +63,11 @@ def get_monthly_commits_per_package() -> pd.DataFrame:
         all_dates = []
 
         # Flat layout (before June 2024)
-        flat_path = f"pymatgen/{package}/"
+        flat_path = f"pymatgen/{package}"
         all_dates.extend(get_git_dates(flat_path, START_COMMIT, LAYOUT_SWITCH_DATE))
 
         # Src layout (from June 2024 onward)
-        src_path = f"src/pymatgen/{package}/"
+        src_path = f"src/pymatgen/{package}"
         all_dates.extend(get_git_dates(src_path, LAYOUT_SWITCH_DATE, END_COMMIT))
 
         # Count commits per month

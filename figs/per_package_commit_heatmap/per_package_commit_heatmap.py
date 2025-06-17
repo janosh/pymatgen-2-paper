@@ -29,17 +29,8 @@ from style import (
 INPUT_CSV: str = "monthly_commits_per_package.csv"
 BIN_MONTHS: int = 6  # bin width in months
 
-RowSorting = Literal["total_num_of_commits", "chronology", "alphabetical"]
-ROW_SORTING: RowSorting = "total_num_of_commits"
-
-EXCLUDE_PACKAGES: tuple[str, ...] = (
-    "ext",
-    "cli",
-    "vis",
-    "command_line",
-    "apps",
-    "alchemy",
-    "optimization",
+ROW_SORTING: Literal["total_num_of_commits", "chronology", "alphabetical"] = (
+    "total_num_of_commits"
 )
 
 # Load data
@@ -54,8 +45,6 @@ if not os.path.isfile(INPUT_CSV):
 
 df_git = pd.read_csv(INPUT_CSV, index_col="time")
 df_git.index = pd.to_datetime(df_git.index, format="%Y-%m")
-
-df_git = df_git.drop(columns=[*EXCLUDE_PACKAGES])
 
 # Resample into X-month bins
 df_binned = df_git.resample(f"{BIN_MONTHS}ME").sum().rename_axis("time_binned")
@@ -77,8 +66,6 @@ elif ROW_SORTING == "chronology":
     df_raw = pd.read_csv(INPUT_CSV, index_col="time")
     df_raw.index = pd.to_datetime(df_raw.index, format="%Y-%m")
 
-    df_raw = df_raw.drop(columns=EXCLUDE_PACKAGES)
-
     # Find the earliest month with a non-zero commit for each package
     first_commit_time = {
         package: df_raw[df_raw[package] > 0].index.min() for package in df_raw.columns
@@ -96,7 +83,7 @@ elif ROW_SORTING == "alphabetical":
 else:
     raise ValueError(f"{ROW_SORTING=} not supported")
 
-# Replace 0 with NaN (invisible) and apply log10
+# Replace 0 with NaN (grey color) and apply log10
 log_data = heatmap_data.replace(0, np.nan)
 log_data = np.log10(log_data)
 
@@ -111,7 +98,7 @@ fig = go.Figure()
 fig.add_heatmap(
     z=log_data.values,
     x=log_data.columns,
-    y=log_data.index,
+    y=[str(label).replace('/', '.') for label in log_data.index],
     colorscale=COLORSCALE,
     colorbar=dict(
         title=dict(

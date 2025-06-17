@@ -14,7 +14,6 @@ import pandas as pd
 
 PACKAGES: list[str] = [
     "command_line",
-    "ext",
     "symmetry",
     "alchemy",
     "core",
@@ -22,11 +21,9 @@ PACKAGES: list[str] = [
     "transformations",
     "analysis",
     "optimization",
-    "apps",
     "electronic_structure",
     "phonon",
     "vis",
-    "cli",
     "entries",
 ]
 

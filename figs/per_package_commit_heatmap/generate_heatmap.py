@@ -43,7 +43,6 @@ PACKAGES: tuple[str, ...] = (
     "entries",
 )
 
-INPUT_CSV: str = "monthly_commits_per_package.csv"
 BIN_MONTHS: int = 6  # bin width in months
 
 ROW_SORTING: Literal["total_num_of_commits", "chronology", "alphabetical"] = (
@@ -127,7 +126,7 @@ print(f"A copy of the data is saved to {filename}")
 df_git.index = pd.to_datetime(df_git.index, format="%Y-%m")
 
 # Resample into X-month bins
-df_binned = df_git.resample(f"{BIN_MONTHS}ME").sum().rename_axis("time_binned")
+df_binned = df_git.copy().resample(f"{BIN_MONTHS}ME").sum().rename_axis("time_binned")
 
 # Transpose to (package vs time)
 heatmap_data = df_binned.T
@@ -142,13 +141,9 @@ if ROW_SORTING == "total_num_of_commits":
 
 # Sort packages from oldest (top) to latest
 elif ROW_SORTING == "chronology":
-    # Reload the original (unbinned) data to extract true first commit time
-    df_raw = pd.read_csv(INPUT_CSV, index_col="time")
-    df_raw.index = pd.to_datetime(df_raw.index, format="%Y-%m")
-
     # Find the earliest month with a non-zero commit for each package
     first_commit_time = {
-        package: df_raw[df_raw[package] > 0].index.min() for package in df_raw.columns
+        package: df_git[df_git[package] > 0].index.min() for package in df_git.columns
     }
 
     # Use this order to reorder the heatmap_data rows

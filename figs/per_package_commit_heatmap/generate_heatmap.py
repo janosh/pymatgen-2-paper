@@ -54,13 +54,12 @@ ROW_SORTING: Literal["total_num_of_commits", "chronology", "alphabetical"] = (
 START_COMMIT: str = "fa7f41d8bd769a04cca1f78242ebf072664c871d"
 END_COMMIT: str = "2025-06-01"
 
-# Switch point when pymatgen changed from flat to src layout
+# When pymatgen changed from flat to src layout
 LAYOUT_SWITCH_DATE: str = "2024-06-01"
 
 # Get pymatgen repo path
 if not (PMG_REPO_PATH := os.environ.get("PMG_REPO_PATH")):
-    print("Error: PMG_REPO_PATH environment variable is not set.")
-    sys.exit(1)
+    raise RuntimeError("PMG_REPO_PATH environment variable is not set.")
 
 
 # Generate commit per package data
@@ -121,9 +120,9 @@ df_git = get_monthly_commits_per_package()
 df_git.index = df_git.index.to_period("M").astype(str)
 df_git.index.name = "time"
 
-fname: str = "_monthly_commits_per_package.csv"
-df_git.to_csv(fname)
-print(f"A copy of the data is saved to {fname}")
+filename: str = "_monthly_commits_per_package.csv"
+df_git.to_csv(filename)
+print(f"A copy of the data is saved to {filename}")
 
 df_git.index = pd.to_datetime(df_git.index, format="%Y-%m")
 

@@ -26,13 +26,13 @@ from style import (
     TICK_LABEL_FONTSIZE,
 )
 
-PACKAGES: tuple[str, ... ] = (
+PACKAGES: tuple[str, ...] = (
     "command_line",
     "symmetry",
     "alchemy",
-    "core.structure",
-    "core/periodic_table",
-    "io",
+    "core/structure",  # TODO: not working
+    "core/periodic_table",  # TODO: not working
+    "io/vasp",
     "transformations",
     "analysis",
     "optimization",
@@ -83,7 +83,8 @@ if __name__ == "__main__":
 
         # Find the earliest month with a non-zero commit for each package
         first_commit_time = {
-            package: df_raw[df_raw[package] > 0].index.min() for package in df_raw.columns
+            package: df_raw[df_raw[package] > 0].index.min()
+            for package in df_raw.columns
         }
 
         # Use this order to reorder the heatmap_data rows
@@ -113,7 +114,7 @@ if __name__ == "__main__":
     fig.add_heatmap(
         z=log_data.values,
         x=log_data.columns,
-        y=log_data.index,  # [str(label).replace("/", ".") for label in log_data.index]
+        y=[str(label).replace("/", ".") for label in log_data.index],
         colorscale=COLORSCALE,
         colorbar=dict(
             title=dict(

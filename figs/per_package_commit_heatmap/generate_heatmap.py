@@ -54,6 +54,7 @@ START_COMMIT: str = "fa7f41d8bd769a04cca1f78242ebf072664c871d"
 END_COMMIT: str = "2025-06-01"
 
 # When pymatgen changed from flat to src layout
+# commit: 9100860d7d938560610bcfadd04923b53756548e
 LAYOUT_SWITCH_DATE: str = "2024-06-01"
 
 # Get pymatgen repo path

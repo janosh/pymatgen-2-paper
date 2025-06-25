@@ -26,22 +26,22 @@ from style import (
     TICK_LABEL_FONTSIZE,
 )
 
-PACKAGES: tuple[str, ...] = (
+PACKAGES: dict[str, str] = {
     # NOTE: for a file the `.py` suffix is necessary (e.g. `core/structure.py`)
-    "command_line",
-    "symmetry",
-    "alchemy",
-    "core/structure.py",
-    "core/periodic_table.py",
-    "io/vasp",
-    "transformations",
-    "analysis",
-    "optimization",
-    "electronic_structure",
-    "phonon",
-    "vis",
-    "entries",
-)
+    "command_line": "command_line",
+    "symmetry": "symmetry",
+    "alchemy": "alchemy",
+    "core/structure.py": "core.structure",
+    "core/periodic_table.py": "core.periodic_table",
+    "io/vasp": "io.vasp",
+    "transformations": "transformations",
+    "analysis": "analysis",
+    "optimization": "optimization",
+    "electronic_structure": "electronic_structure",
+    "phonon": "phonon",
+    "vis": "vis",
+    "entries": "entries",
+}
 
 BIN_MONTHS: int = 6  # bin width in months
 
@@ -174,7 +174,7 @@ fig = go.Figure()
 fig.add_heatmap(
     z=log_data.values,
     x=log_data.columns,
-    y=[str(label).replace("/", ".").removesuffix(".py") for label in log_data.index],
+    y=[PACKAGES[label] for label in log_data.index],
     colorscale=COLORSCALE,
     colorbar=dict(
         title=dict(

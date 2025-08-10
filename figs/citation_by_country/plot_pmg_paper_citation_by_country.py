@@ -33,6 +33,7 @@ CACHE_FILE: str = "_citation_country_counts.json.gz"
 # cutoff date for collecting citation data from OpenAlex
 CUTOFF_DATE: str = "2025-06-01"
 
+SHOW_LABEL: bool = False
 LABEL_THRESHOLD: int = 100  # Only show labels for countries above this
 
 
@@ -152,14 +153,15 @@ df_labels = df[(df["citations"] >= LABEL_THRESHOLD) & df["area_km2"].notna()].co
 df_labels["font_size"] = np.clip(np.log10(df_labels["area_km2"]) * 2, 6, 14)
 
 # Plot one label per trace
-for _, row in df_labels.iterrows():
-    fig.add_scattergeo(
-        locations=[row["iso_alpha"]],
-        text=[row["citations"]],
-        mode="text",
-        textfont=dict(size=row["font_size"], color="black"),
-        showlegend=False,
-    )
+if SHOW_LABEL:
+    for _, row in df_labels.iterrows():
+        fig.add_scattergeo(
+            locations=[row["iso_alpha"]],
+            text=[row["citations"]],
+            mode="text",
+            textfont=dict(size=row["font_size"], color="black"),
+            showlegend=False,
+        )
 
 fig_title = "Citations by Country for 1ˢᵗ pymatgen Paper"
 fig.layout.title.update(text=fig_title, font=dict(size=28), x=0.5, xanchor="center")

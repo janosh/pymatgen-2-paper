@@ -11,6 +11,7 @@ import os
 import sys
 import subprocess
 
+import numpy as np
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -52,9 +53,8 @@ active_binned = active_contributors.resample(f"{BINNED_PERIOD_MONTH}ME").sum()
 commits_binned = total_commits.resample(f"{BINNED_PERIOD_MONTH}ME").sum()
 
 # Normalize for colormap
-normed = (commits_binned - commits_binned.min()) / (
-    commits_binned.max() - commits_binned.min()
-)
+log_commits = np.log10(commits_binned.clip(lower=1))  # avoid log(0)
+normed = (log_commits - log_commits.min()) / (log_commits.max() - log_commits.min())
 colors = [px.colors.sample_colorscale(COLORSCALE, val)[0] for val in normed]
 
 # Build bar plot
@@ -69,20 +69,26 @@ fig.add_bar(
 )
 
 # Colorbar using a dummy scatter trace
+tick_values_original = [20, 50, 100, 200, 500, 1000]
+tickvals = np.log10(tick_values_original)
+
 fig.add_scatter(
     x=[None],
     y=[None],
     mode="markers",
     marker=dict(
         colorscale=COLORSCALE,
-        cmin=commits_binned.min(),
-        cmax=commits_binned.max(),
-        color=[commits_binned.max()],
+        cmin=log_commits.min(),
+        cmax=log_commits.max(),
+        color=[log_commits.max()],
         showscale=True,
         colorbar=dict(
             title=dict(
-                text="Total Commits", font=dict(size=XY_AXIS_CBAR_TITLE_FONTSIZE)
+                text="Total Commits (log scale)",
+                font=dict(size=XY_AXIS_CBAR_TITLE_FONTSIZE),
             ),
+            tickvals=tickvals,
+            ticktext=[str(v) for v in tick_values_original],
             tickfont=dict(size=13),
             title_side="right",
         ),

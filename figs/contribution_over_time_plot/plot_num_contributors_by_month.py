@@ -81,7 +81,7 @@ fig.add_bar(
 )
 
 # Colorbar using a dummy scatter trace
-tick_values_original = [20, 50, 100, 200, 500, 1000]
+tick_values_original = [300, 500, 1000, 1500]
 tickvals = np.log10(tick_values_original)
 
 fig.add_scatter(

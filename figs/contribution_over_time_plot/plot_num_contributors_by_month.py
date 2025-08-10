@@ -52,6 +52,10 @@ total_commits = df_grouped.sum(axis=0)
 active_binned = active_contributors.resample(f"{BINNED_PERIOD_MONTH}ME").sum()
 commits_binned = total_commits.resample(f"{BINNED_PERIOD_MONTH}ME").sum()
 
+# Drop first and last bin
+active_binned = active_binned.iloc[1:-1]
+commits_binned = commits_binned.iloc[1:-1]
+
 # Normalize for colormap
 log_commits = np.log10(commits_binned.clip(lower=1))  # avoid log(0)
 normed = (log_commits - log_commits.min()) / (log_commits.max() - log_commits.min())

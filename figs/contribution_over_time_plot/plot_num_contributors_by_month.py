@@ -19,11 +19,12 @@ import plotly.graph_objects as go
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from style import (
-    COLORSCALE,
     PLOT_TITLE_FONTSIZE,
     XY_AXIS_CBAR_TITLE_FONTSIZE,
     TICK_LABEL_FONTSIZE,
 )
+
+COLORSCALE = "magma"
 
 BINNED_PERIOD_MONTH: int = 6
 CSV_PATH: str = "contributor_commits_by_month.csv.gz"

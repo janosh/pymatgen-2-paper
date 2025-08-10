@@ -11,10 +11,12 @@ import os
 import sys
 import subprocess
 
+import plotly
 import numpy as np
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
@@ -28,6 +30,11 @@ COLORSCALE = "magma"
 
 BINNED_PERIOD_MONTH: int = 6
 CSV_PATH: str = "contributor_commits_by_month.csv.gz"
+
+# TODO: `kaleido` doesn't seem to respect width/height
+# https://github.com/plotly/Kaleido/issues/378
+plotly.io.defaults.default_width = None
+plotly.io.defaults.default_height = None
 
 if not os.path.isfile(CSV_PATH):
     print("Data CSV not found. Running script to generate it...")

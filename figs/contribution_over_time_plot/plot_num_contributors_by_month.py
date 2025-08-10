@@ -25,8 +25,8 @@ from style import (
     TICK_LABEL_FONTSIZE,
 )
 
-BINNED_PERIOD_MONTH = 6
-CSV_PATH = "contributor_commits_by_month.csv.gz"
+BINNED_PERIOD_MONTH: int = 6
+CSV_PATH: str = "contributor_commits_by_month.csv.gz"
 
 if not os.path.isfile(CSV_PATH):
     print("Data CSV not found. Running script to generate it...")

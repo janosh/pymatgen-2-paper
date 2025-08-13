@@ -1,6 +1,6 @@
 title: pymatgen
 branches:
-- title: Machine Learning, Methods, and Computational Tools
+- title: Data, Modeling, and Characterization Methods
   color: '#fde725'
   start_angle_deg: 45
   children:
@@ -9,74 +9,74 @@ branches:
     color: '#fde725'
   - title: X-ray Diffraction in Crystallography
     value: 38
-    color: '#453781'
-  - title: High-pressure geophysics and materials
-    value: 21
-    color: '#450559'
-  - title: Advanced Condensed Matter Physics
-    value: 20
+    color: '#3e4a89'
+  - title: Scientific Computing and Data Management
+    value: 14
     color: '#440154'
-- title: Energy Storage and Conversion
-  color: '#b8de29'
+  - title: Computational Drug Discovery Methods
+    value: 14
+    color: '#440154'
+- title: Electrochemical and Energy Conversion Materials
+  color: '#c2df23'
   start_angle_deg: 10
   children:
   - title: Advancements in Battery Materials
     value: 325
-    color: '#3dbc74'
+    color: '#48c16e'
   - title: Advanced Battery Materials and Technologies
     value: 325
-    color: '#3dbc74'
+    color: '#48c16e'
+  - title: Electrocatalysts for Energy Conversion
+    value: 73
+    color: '#2c718e'
+  - title: Advanced Thermoelectric Materials and Devices
+    value: 55
+    color: '#33628d'
+- title: Nanomaterials, Alloys, Porous, and Structural Materials
+  color: '#2ab07f'
+  start_angle_deg: -60
+  children:
   - title: 'Metal-Organic Frameworks: Synthesis and Applications'
     value: 73
-    color: '#32648e'
-  - title: Advancements in Solid Oxide Fuel Cells
-    value: 32
-    color: '#482979'
-- title: Electronic, Magnetic, and Quantum Materials
-  color: '#32b67a'
-  start_angle_deg: -60
+    color: '#2c718e'
+  - title: 2D Materials and Applications
+    value: 68
+    color: '#2e6e8e'
+  - title: MXene and MAX Phase Materials
+    value: 49
+    color: '#375b8d'
+  - title: Synthesis and Properties of Inorganic Cluster Compounds
+    value: 41
+    color: '#3c508b'
+- title: Semiconductors and Functional Electronic Materials
+  color: '#2ab07f'
+  start_angle_deg: 200
   children:
   - title: Perovskite Materials and Applications
     value: 110
-    color: '#287d8e'
-  - title: 2D Materials and Applications
-    value: 68
-    color: '#355f8d'
+    color: '#23888e'
   - title: Electronic and Structural Properties of Oxides
     value: 66
-    color: '#355e8d'
-  - title: MXene and MAX Phase Materials
-    value: 49
-    color: '#3e4989'
-- title: Advanced Structural, Functional, and Composite Materials
-  color: '#1f948c'
-  start_angle_deg: 200
-  children:
-  - title: Advanced Thermoelectric Materials and Devices
-    value: 55
-    color: '#3b518b'
-  - title: Synthesis and Properties of Inorganic Cluster Compounds
-    value: 41
-    color: '#433d84'
+    color: '#2f6c8e'
   - title: Chalcogenide Semiconductor Thin Films
     value: 36
-    color: '#46327e'
-  - title: High Entropy Alloys Studies
-    value: 32
-    color: '#482979'
-- title: Catalysis and Electrochemical Processes
-  color: '#218f8d'
+    color: '#3f4788'
+  - title: Semiconductor materials and devices
+    value: 19
+    color: '#481a6c'
+- title: Quantum, Magnetic, and Correlated Materials
+  color: '#2b748e'
   start_angle_deg: 120
   children:
-  - title: Electrocatalysts for Energy Conversion
-    value: 73
-    color: '#32648e'
-  - title: Ammonia Synthesis and Nitrogen Reduction
-    value: 27
-    color: '#481b6d'
-  - title: Catalytic Processes in Materials Science
-    value: 26
-    color: '#48186a'
-  - title: Advanced Photocatalysis Techniques
+  - title: Magnetic and transport properties of perovskites and related materials
     value: 24
+    color: '#472c7a'
+  - title: Advanced Condensed Matter Physics
+    value: 20
+    color: '#481d6f'
+  - title: Topological Materials and Phenomena
+    value: 17
     color: '#471164'
+  - title: Iron-based superconductors research
+    value: 16
+    color: '#460b5e'

@@ -15,9 +15,9 @@
   let tsize = if size >= 1.5 { 14pt } else if size >= 1.2 { 10pt } else { 8.5pt }
 
   // set a box width based on text size
-  let w = tsize * 8.0  // TODO: need tweaking
+  let w = tsize * 8.0  // TODO: tweak
 
-  // center a constrained-width box at the same position; text will wrap
+  // centered, wrapped label
   content(
     pos,
     align(center, box(
@@ -36,11 +36,16 @@
 #let connect(a, b, stroke-color) = on-layer(-1, line(a, b, stroke: 3pt + stroke-color))
 
 // -------- layout params --------
-#let r1 = 3.8            // level-1 radius
-#let r2 = 3.0            // level-2 radius
-#let angle-step = 72deg  // 5 evenly spaced branches
-#let sub-step = 45deg    // children step
-#let start-angle = 0deg  // root "clockwise from=0"
+#let r1 = 3.8             // level-1 radius
+#let r2 = 3.0             // level-2 radius
+#let sub-step = 45deg     // children step
+#let start-angle = 0deg   // root "clockwise from=0"
+// auto angle step based on number of branches
+#let angle-step = if data.branches.len() == 0 {
+    360deg
+  } else {
+    360deg / data.branches.len()
+  }
 
 // -------- draw --------
 #canvas({
@@ -48,22 +53,24 @@
   let center = (0, 0)
   node(center, [*#data.title*], color: orange, text-color: white, size: 1.6)
 
-  // place branches clockwise from 0°, children start at each branch's start_angle_deg (clockwise)
+  // branches
   for (i, b) in data.branches.enumerate() {
     let ang = start-angle - i * angle-step
-    let col = rgb(b.color)                // hex like "#FFD700"
+    let parent-col = rgb(b.color)  // hex from YAML
     let sub-start = (if b.start_angle_deg == none { 45 } else { b.start_angle_deg }) * 1deg
 
     let pos = (calc.cos(ang) * r1, calc.sin(ang) * r1)
-    node(pos, b.title, color: col, text-color: black, size: 1.2)
-    connect(center, pos, col)
+    node(pos, b.title, color: parent-col, text-color: black, size: 1.2)
+    connect(center, pos, parent-col)
 
+    // children
     for (j, child) in b.children.enumerate() {
       let sub-ang = sub-start - j * sub-step
       let sub-pos = (pos.at(0) + calc.cos(sub-ang) * r2,
                      pos.at(1) + calc.sin(sub-ang) * r2)
-      node(sub-pos, child.title, color: col, text-color: black, size: 0.85)
-      connect(pos, sub-pos, col)
+      let child-col = rgb(child.color)
+      node(sub-pos, child.title, color: child-col, text-color: black, size: 0.85)
+      connect(pos, sub-pos, child-col)
     }
   }
 })

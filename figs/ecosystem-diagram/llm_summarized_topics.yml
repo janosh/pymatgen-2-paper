@@ -1,82 +1,107 @@
 title: pymatgen
 branches:
-- title: Data, Modeling, and Characterization Methods
+- title: Data-driven methods, computation, and characterization
   color: '#fde725'
+  text_color: '#000000'
   start_angle_deg: 45
   children:
   - title: Machine Learning in Materials Science
-    value: 1172
+    value: 1173
     color: '#fde725'
+    text_color: '#000000'
   - title: X-ray Diffraction in Crystallography
     value: 38
     color: '#3e4a89'
+    text_color: '#ffffff'
   - title: Scientific Computing and Data Management
     value: 14
     color: '#440154'
+    text_color: '#ffffff'
   - title: Computational Drug Discovery Methods
     value: 14
     color: '#440154'
-- title: Electrochemical and Energy Conversion Materials
-  color: '#c2df23'
+    text_color: '#ffffff'
+- title: Energy storage and conversion materials
+  color: '#bade28'
+  text_color: '#000000'
   start_angle_deg: 10
   children:
-  - title: Advancements in Battery Materials
-    value: 325
-    color: '#48c16e'
   - title: Advanced Battery Materials and Technologies
-    value: 325
+    value: 326
     color: '#48c16e'
-  - title: Electrocatalysts for Energy Conversion
-    value: 73
-    color: '#2c718e'
+    text_color: '#ffffff'
+  - title: Advancements in Battery Materials
+    value: 324
+    color: '#48c16e'
+    text_color: '#ffffff'
   - title: Advanced Thermoelectric Materials and Devices
     value: 55
     color: '#33628d'
-- title: Nanomaterials, Alloys, Porous, and Structural Materials
-  color: '#2ab07f'
+    text_color: '#ffffff'
+  - title: Advancements in Solid Oxide Fuel Cells
+    value: 32
+    color: '#423f85'
+    text_color: '#ffffff'
+- title: Electronic, magnetic, and quantum materials
+  color: '#2cb17e'
+  text_color: '#ffffff'
   start_angle_deg: -60
-  children:
-  - title: 'Metal-Organic Frameworks: Synthesis and Applications'
-    value: 73
-    color: '#2c718e'
-  - title: 2D Materials and Applications
-    value: 68
-    color: '#2e6e8e'
-  - title: MXene and MAX Phase Materials
-    value: 49
-    color: '#375b8d'
-  - title: Synthesis and Properties of Inorganic Cluster Compounds
-    value: 41
-    color: '#3c508b'
-- title: Semiconductors and Functional Electronic Materials
-  color: '#2ab07f'
-  start_angle_deg: 200
   children:
   - title: Perovskite Materials and Applications
     value: 110
     color: '#23888e'
+    text_color: '#ffffff'
   - title: Electronic and Structural Properties of Oxides
     value: 66
     color: '#2f6c8e'
+    text_color: '#ffffff'
   - title: Chalcogenide Semiconductor Thin Films
     value: 36
     color: '#3f4788'
-  - title: Semiconductor materials and devices
-    value: 19
-    color: '#481a6c'
-- title: Quantum, Magnetic, and Correlated Materials
-  color: '#2b748e'
-  start_angle_deg: 120
-  children:
+    text_color: '#ffffff'
   - title: Magnetic and transport properties of perovskites and related materials
     value: 24
     color: '#472c7a'
-  - title: Advanced Condensed Matter Physics
-    value: 20
-    color: '#481d6f'
-  - title: Topological Materials and Phenomena
-    value: 17
-    color: '#471164'
-  - title: Iron-based superconductors research
-    value: 16
-    color: '#460b5e'
+    text_color: '#ffffff'
+- title: Nanomaterials, 2D materials, and structural/alloy systems
+  color: '#21a585'
+  text_color: '#ffffff'
+  start_angle_deg: 200
+  children:
+  - title: 2D Materials and Applications
+    value: 68
+    color: '#2e6e8e'
+    text_color: '#ffffff'
+  - title: MXene and MAX Phase Materials
+    value: 49
+    color: '#375b8d'
+    text_color: '#ffffff'
+  - title: Synthesis and Properties of Inorganic Cluster Compounds
+    value: 41
+    color: '#3c508b'
+    text_color: '#ffffff'
+  - title: High Entropy Alloys Studies
+    value: 32
+    color: '#423f85'
+    text_color: '#ffffff'
+- title: Catalysis, porous materials, and chemical processes
+  color: '#22a884'
+  text_color: '#ffffff'
+  start_angle_deg: 120
+  children:
+  - title: Electrocatalysts for Energy Conversion
+    value: 73
+    color: '#2c718e'
+    text_color: '#ffffff'
+  - title: 'Metal-Organic Frameworks: Synthesis and Applications'
+    value: 73
+    color: '#2c718e'
+    text_color: '#ffffff'
+  - title: Ammonia Synthesis and Nitrogen Reduction
+    value: 27
+    color: '#46337f'
+    text_color: '#ffffff'
+  - title: Catalytic Processes in Materials Science
+    value: 26
+    color: '#46307e'
+    text_color: '#ffffff'

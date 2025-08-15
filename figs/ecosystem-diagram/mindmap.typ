@@ -14,8 +14,8 @@
 )
 
 // Layout params
-#let r1 = 4               // topic radius
-#let r2 = 3             // subtopic radius
+#let r1 = 4               // topic stroke length
+#let r2 = 3             // subtopic stroke length
 #let sub-step = 40deg     // children step
 #let start-angle = 0deg   // root "clockwise from=0"
 
@@ -67,11 +67,16 @@
     node(pos, b.title, color: parent-col, text-color: black, level: "1")
     connect(center, pos, parent-col)
 
-    // subtopics
+    // evenly distribute children around the branch angle
+    let n_children = b.children.len()
+    let spread = sub-step * (n_children - 1)
     for (j, child) in b.children.enumerate() {
-      let sub-ang = sub-start - j * sub-step
-      let sub-pos = (pos.at(0) + calc.cos(sub-ang) * r2,
-                     pos.at(1) + calc.sin(sub-ang) * r2)
+      let offset = -spread / 2 + j * sub-step
+      let sub-ang = ang + offset
+      let sub-pos = (
+        pos.at(0) + calc.cos(sub-ang) * r2,
+        pos.at(1) + calc.sin(sub-ang) * r2
+      )
       let child-col = rgb(child.color)
       node(sub-pos, child.title, color: child-col, text-color: black, level: "2")
       connect(pos, sub-pos, child-col)

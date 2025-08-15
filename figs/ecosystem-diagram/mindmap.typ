@@ -6,16 +6,31 @@
 #set page(width: auto, height: auto, margin: 8pt)
 #set text(weight: "bold")
 
-// -------- helpers --------
-#let node(pos, txt, color: orange, text-color: white, size: 1.0) = {
-  // draw the circle (radius is in canvas units)
-  circle(pos, radius: size, fill: color, stroke: 2pt + white)
+// Per-level style: 0 = root, 1 = topics, 2 = subtopics
+#let NODE_STYLE = (
+  "0": (radius: 1.6, tsize: 14pt, box_mult: 9.0),
+  "1": (radius: 1.2, tsize: 8pt, box_mult: 8.0),
+  "2": (radius: 0.85, tsize: 5pt, box_mult: 8.0),
+)
 
-  // text size
-  let tsize = if size >= 1.5 { 14pt } else if size >= 1.2 { 10pt } else { 8.5pt }
+// Layout params
+#let r1 = 4               // topic radius
+#let r2 = 3             // subtopic radius
+#let sub-step = 40deg     // children step
+#let start-angle = 0deg   // root "clockwise from=0"
 
-  // set a box width based on text size
-  let w = tsize * 8.0  // TODO: tweak
+// auto angle step based on number of branches
+#let angle-step = if data.branches.len() == 0 { 360deg } else { 360deg / data.branches.len() }
+
+// Draw a node at a given position.
+#let node(pos, txt, color: orange, text-color: white, level: 1, styles: NODE_STYLE) = {
+  let st = styles.at(level)
+  let radius = st.radius
+  let tsize  = st.tsize
+  let w      = tsize * st.box_mult
+
+  // draw the circle
+  circle(pos, radius: radius, fill: color, stroke: 2pt + white)
 
   // centered, wrapped label
   content(
@@ -35,41 +50,30 @@
 
 #let connect(a, b, stroke-color) = on-layer(-1, line(a, b, stroke: 3pt + stroke-color))
 
-// -------- layout params --------
-#let r1 = 3.8             // level-1 radius
-#let r2 = 3.0             // level-2 radius
-#let sub-step = 45deg     // children step
-#let start-angle = 0deg   // root "clockwise from=0"
-// auto angle step based on number of branches
-#let angle-step = if data.branches.len() == 0 {
-    360deg
-  } else {
-    360deg / data.branches.len()
-  }
-
-// -------- draw --------
+// Draw
 #canvas({
-  // root
   let center = (0, 0)
-  node(center, [*#data.title*], color: orange, text-color: white, size: 1.6)
 
-  // branches
+  // root
+  node(center, [*#data.title*], color: orange, text-color: white, level: "0")
+
+  // topics
   for (i, b) in data.branches.enumerate() {
     let ang = start-angle - i * angle-step
-    let parent-col = rgb(b.color)  // hex from YAML
+    let parent-col = rgb(b.color)
     let sub-start = (if b.start_angle_deg == none { 45 } else { b.start_angle_deg }) * 1deg
 
     let pos = (calc.cos(ang) * r1, calc.sin(ang) * r1)
-    node(pos, b.title, color: parent-col, text-color: black, size: 1.2)
+    node(pos, b.title, color: parent-col, text-color: black, level: "1")
     connect(center, pos, parent-col)
 
-    // children
+    // subtopics
     for (j, child) in b.children.enumerate() {
       let sub-ang = sub-start - j * sub-step
       let sub-pos = (pos.at(0) + calc.cos(sub-ang) * r2,
                      pos.at(1) + calc.sin(sub-ang) * r2)
       let child-col = rgb(child.color)
-      node(sub-pos, child.title, color: child-col, text-color: black, size: 0.85)
+      node(sub-pos, child.title, color: child-col, text-color: black, level: "2")
       connect(pos, sub-pos, child-col)
     }
   }

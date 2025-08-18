@@ -1,107 +1,107 @@
 title: pymatgen
 branches:
-- title: Data-driven methods, computation, and characterization
+- title: 'Topic_0: Methods, informatics, characterization'
   color: '#fde725'
   text_color: '#000000'
   start_angle_deg: 45
   children:
-  - title: Machine Learning in Materials Science
+  - title: Materials machine learning
     value: 1173
     color: '#fde725'
     text_color: '#000000'
-  - title: X-ray Diffraction in Crystallography
-    value: 38
-    color: '#3e4a89'
+  - title: X-ray diffraction methods
+    value: 39
+    color: '#3d4d8a'
     text_color: '#ffffff'
-  - title: Scientific Computing and Data Management
+  - title: Scientific computing/data management
     value: 14
     color: '#440154'
     text_color: '#ffffff'
-  - title: Computational Drug Discovery Methods
+  - title: Computational drug discovery
     value: 14
     color: '#440154'
     text_color: '#ffffff'
-- title: Energy storage and conversion materials
-  color: '#bade28'
+- title: 'Topic_1: Electrochemical energy storage/conversion'
+  color: '#b2dd2d'
   text_color: '#000000'
   start_angle_deg: 10
   children:
-  - title: Advanced Battery Materials and Technologies
+  - title: Battery materials and technologies
     value: 326
     color: '#48c16e'
     text_color: '#ffffff'
-  - title: Advancements in Battery Materials
-    value: 324
+  - title: Battery materials advances
+    value: 325
     color: '#48c16e'
     text_color: '#ffffff'
-  - title: Advanced Thermoelectric Materials and Devices
-    value: 55
-    color: '#33628d'
-    text_color: '#ffffff'
-  - title: Advancements in Solid Oxide Fuel Cells
+  - title: Solid oxide fuel cells
     value: 32
     color: '#423f85'
     text_color: '#ffffff'
-- title: Electronic, magnetic, and quantum materials
-  color: '#2cb17e'
+  - title: Hydrogen storage materials
+    value: 19
+    color: '#481a6c'
+    text_color: '#ffffff'
+- title: 'Topic_3: Electronic, magnetic, quantum materials'
+  color: '#3fbc73'
   text_color: '#ffffff'
   start_angle_deg: -60
   children:
-  - title: Perovskite Materials and Applications
+  - title: Perovskite materials and applications
     value: 110
     color: '#23888e'
     text_color: '#ffffff'
-  - title: Electronic and Structural Properties of Oxides
-    value: 66
-    color: '#2f6c8e'
-    text_color: '#ffffff'
-  - title: Chalcogenide Semiconductor Thin Films
-    value: 36
-    color: '#3f4788'
-    text_color: '#ffffff'
-  - title: Magnetic and transport properties of perovskites and related materials
-    value: 24
-    color: '#472c7a'
-    text_color: '#ffffff'
-- title: Nanomaterials, 2D materials, and structural/alloy systems
-  color: '#21a585'
-  text_color: '#ffffff'
-  start_angle_deg: 200
-  children:
-  - title: 2D Materials and Applications
+  - title: 2D materials and applications
     value: 68
     color: '#2e6e8e'
     text_color: '#ffffff'
-  - title: MXene and MAX Phase Materials
-    value: 49
-    color: '#375b8d'
+  - title: Oxide electronic/structural properties
+    value: 66
+    color: '#2f6c8e'
     text_color: '#ffffff'
-  - title: Synthesis and Properties of Inorganic Cluster Compounds
-    value: 41
-    color: '#3c508b'
+  - title: Thermoelectric materials and devices
+    value: 55
+    color: '#33628d'
     text_color: '#ffffff'
-  - title: High Entropy Alloys Studies
-    value: 32
-    color: '#423f85'
-    text_color: '#ffffff'
-- title: Catalysis, porous materials, and chemical processes
+- title: 'Topic_2: Catalysis and solar fuels'
   color: '#22a884'
   text_color: '#ffffff'
-  start_angle_deg: 120
+  start_angle_deg: 200
   children:
-  - title: Electrocatalysts for Energy Conversion
+  - title: Electrocatalysts for energy conversion
     value: 73
     color: '#2c718e'
     text_color: '#ffffff'
-  - title: 'Metal-Organic Frameworks: Synthesis and Applications'
+  - title: Metal-organic frameworks
     value: 73
     color: '#2c718e'
     text_color: '#ffffff'
-  - title: Ammonia Synthesis and Nitrogen Reduction
+  - title: Ammonia synthesis/N2 reduction
     value: 27
     color: '#46337f'
     text_color: '#ffffff'
-  - title: Catalytic Processes in Materials Science
+  - title: Catalytic processes in materials
+    value: 26
+    color: '#46307e'
+    text_color: '#ffffff'
+- title: 'Topic_4: Structural, nanomaterials, extreme environments'
+  color: '#1f988b'
+  text_color: '#ffffff'
+  start_angle_deg: 120
+  children:
+  - title: MXenes and MAX phases
+    value: 49
+    color: '#375b8d'
+    text_color: '#ffffff'
+  - title: Inorganic cluster compounds
+    value: 41
+    color: '#3c508b'
+    text_color: '#ffffff'
+  - title: High-entropy alloys
+    value: 32
+    color: '#423f85'
+    text_color: '#ffffff'
+  - title: Nuclear materials and properties
     value: 26
     color: '#46307e'
     text_color: '#ffffff'

@@ -10,7 +10,7 @@
 #let NODE_STYLE = (
   "0": (radius: 1.6, tsize: 14pt, box_mult: 9.0),
   "1": (radius: 1.2, tsize: 7pt, box_mult: 8.0),
-  "2": (radius: 0.85, tsize: 5pt, box_mult: 8.0),
+  "2": (radius: 1, tsize: 7pt, box_mult: 8.0),
 )
 
 // Layout params

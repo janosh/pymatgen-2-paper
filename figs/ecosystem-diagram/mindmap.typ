@@ -91,3 +91,7 @@
     }
   }
 })
+
+// Load colorbar
+#v(5pt)
+#align(center, image("colorbar.svg", width: 12cm))

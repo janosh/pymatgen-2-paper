@@ -29,12 +29,12 @@
   let tsize  = st.tsize
   let w      = tsize * st.box_mult
 
-  // draw the circle
-  circle(pos, radius: radius, fill: color, stroke: 2pt + white)
-
   // centered, wrapped label
   content(
     pos,
+    frame: "circle",
+    fill: color,
+    stroke: none,
     align(center, box(
       width: w,
       text(

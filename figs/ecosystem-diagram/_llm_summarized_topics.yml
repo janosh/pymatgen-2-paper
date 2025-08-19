@@ -1,6 +1,6 @@
 title: pymatgen
 branches:
-- title: Computation, Data & Characterization
+- title: Materials informatics & characterization
   color: '#fde725'
   text_color: '#000000'
   start_angle_deg: 45
@@ -9,99 +9,99 @@ branches:
     value: 1173
     color: '#fde725'
     text_color: '#000000'
-  - title: X-ray diffraction (crystallography)
-    value: 39
-    color: '#3c508b'
+  - title: Diffraction & solid-state spectroscopy
+    value: 52
+    color: '#31688e'
     text_color: '#ffffff'
-  - title: Scientific computing/data management
+  - title: Scientific computing & data management
     value: 14
-    color: '#46075a'
+    color: '#481467'
     text_color: '#ffffff'
   - title: Computational drug discovery
     value: 14
-    color: '#46075a'
+    color: '#481467'
     text_color: '#ffffff'
-- title: Energy Storage & Conversion
-  color: '#c2df23'
+- title: Energy storage & conversion
+  color: '#cde11d'
   text_color: '#000000'
   start_angle_deg: 10
   children:
-  - title: Battery materials and technologies
-    value: 326
-    color: '#4cc26c'
-    text_color: '#ffffff'
-  - title: Battery materials advances
-    value: 325
-    color: '#4cc26c'
-    text_color: '#ffffff'
+  - title: Battery materials & technologies
+    value: 669
+    color: '#b0dd2f'
+    text_color: '#000000'
   - title: Electrocatalysts for energy conversion
     value: 73
-    color: '#2b748e'
+    color: '#29798e'
     text_color: '#ffffff'
-  - title: Thermoelectric materials/devices
+  - title: Thermoelectric materials & devices
     value: 55
-    color: '#32658e'
+    color: '#2f6b8e'
     text_color: '#ffffff'
-- title: Low-Dimensional, Semiconductors & Porous Materials
-  color: '#2cb17e'
+  - title: Solid oxide fuel cells
+    value: 32
+    color: '#3e4c8a'
+    text_color: '#ffffff'
+- title: Materials classes, nanostructures & mechanics
+  color: '#44bf70'
   text_color: '#ffffff'
   start_angle_deg: -60
   children:
-  - title: 'MOFs: synthesis/applications'
+  - title: 2D materials incl. graphene, MXenes
+    value: 141
+    color: '#1e9b8a'
+    text_color: '#ffffff'
+  - title: Metal-organic frameworks
     value: 73
-    color: '#2b748e'
+    color: '#29798e'
     text_color: '#ffffff'
-  - title: 2D materials and applications
-    value: 68
-    color: '#2d718e'
-    text_color: '#ffffff'
-  - title: MXenes and MAX phases
-    value: 49
-    color: '#355e8d'
-    text_color: '#ffffff'
-  - title: 'Inorganic clusters: synthesis/properties'
+  - title: Inorganic cluster compounds
     value: 41
+    color: '#375b8d'
+    text_color: '#ffffff'
+  - title: Chalcogenide semiconductor thin films
+    value: 36
     color: '#3a538b'
     text_color: '#ffffff'
-- title: Functional Oxides & Quantum Materials
-  color: '#28ae80'
+- title: Electronic, magnetic & quantum materials
+  color: '#38b977'
   text_color: '#ffffff'
   start_angle_deg: 200
   children:
-  - title: 'Perovskites: materials/applications'
-    value: 110
-    color: '#238a8d'
+  - title: 'Perovskites: structure & transport'
+    value: 134
+    color: '#1f998a'
     text_color: '#ffffff'
-  - title: 'Oxides: electronic/structural properties'
+  - title: Oxide electronic & structural properties
     value: 66
-    color: '#2e6f8e'
+    color: '#2b748e'
     text_color: '#ffffff'
-  - title: 'Perovskites: magnetic/transport'
+  - title: 'Condensed matter: SC & magnetism'
+    value: 30
+    color: '#3f4889'
+    text_color: '#ffffff'
+  - title: Ferroelectrics, piezoelectrics & NC
     value: 24
-    color: '#472f7d'
+    color: '#443983'
     text_color: '#ffffff'
-  - title: Condensed matter physics
-    value: 20
-    color: '#482374'
-    text_color: '#ffffff'
-- title: Structural Materials, Alloys & Extreme Environments
-  color: '#26818e'
+- title: Catalysis & surface chemistry
+  color: '#29798e'
   text_color: '#ffffff'
   start_angle_deg: 120
   children:
-  - title: High-entropy alloys
-    value: 32
-    color: '#414487'
-    text_color: '#ffffff'
-  - title: Nuclear materials/properties
+  - title: Catalytic processes in materials
     value: 26
-    color: '#453581'
+    color: '#423f85'
     text_color: '#ffffff'
-  - title: High-pressure geophysics/materials
-    value: 22
-    color: '#482979'
+  - title: Photocatalysis techniques
+    value: 24
+    color: '#443983'
     text_color: '#ffffff'
-  - title: Metal/thin-film mechanics
-    value: 13
+  - title: Oxidation catalysis
+    value: 11
+    color: '#440154'
+    text_color: '#ffffff'
+  - title: Nanoparticle nucleation & surfaces
+    value: 11
     color: '#440154'
     text_color: '#ffffff'

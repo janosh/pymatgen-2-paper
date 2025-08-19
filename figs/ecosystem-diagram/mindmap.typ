@@ -1,7 +1,7 @@
 #import "@preview/cetz:0.4.1": canvas, draw
 #import draw: circle, content, line, on-layer
 
-#let data = yaml("llm_summarized_topics.yml")
+#let data = yaml("_llm_summarized_topics.yml")
 
 #set page(width: auto, height: auto, margin: 8pt)
 #set text(weight: "bold")
@@ -94,4 +94,4 @@
 
 // Load colorbar
 #v(5pt)
-#align(center, image("colorbar.svg", width: 12cm))
+#align(center, image("_colorbar.svg", width: 12cm))

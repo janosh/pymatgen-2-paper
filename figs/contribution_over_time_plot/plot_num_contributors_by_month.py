@@ -1,5 +1,5 @@
 # /// script
-# dependencies = ["pandas", "plotly", "kaleido", "numpy"]
+# dependencies = ["pandas", "plotly", "kaleido"]
 # ///
 
 """

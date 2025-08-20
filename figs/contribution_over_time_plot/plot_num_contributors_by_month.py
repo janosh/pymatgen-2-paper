@@ -12,7 +12,6 @@ import sys
 import subprocess
 
 import plotly
-import numpy as np
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -64,18 +63,16 @@ commits_binned = total_commits.resample(f"{BINNED_PERIOD_MONTH}ME").sum()
 active_binned = active_binned.iloc[1:-1]
 commits_binned = commits_binned.iloc[1:-1]
 
-# Normalize for colormap
-log_commits = np.log10(commits_binned.clip(lower=1))  # avoid log(0)
+# Normalize for colormap (linear scale, no log)
+COLORBAR_MIN: float = 100
+COLORBAR_MAX: float = 1000  # manual cap
 
-COLORBAR_MIN: float = np.log10(100)
-COLORBAR_MAX: float = np.log10(1000)
-
-normed = (log_commits - COLORBAR_MIN) / (COLORBAR_MAX - COLORBAR_MIN)
+normed = (commits_binned - COLORBAR_MIN) / (COLORBAR_MAX - COLORBAR_MIN)
 normed = normed.clip(0, 1)  # keep values within [0,1]
 
 colors = [px.colors.sample_colorscale(COLORSCALE, val)[0] for val in normed]
 
-# Build bar plot
+# Bar plot
 fig = go.Figure()
 fig.add_bar(
     x=active_binned.index.strftime("%Y-%m"),
@@ -84,15 +81,13 @@ fig.add_bar(
     customdata=commits_binned.values.reshape(-1, 1),
     hovertemplate="Period: %{x}<br>Contributors: %{y}<br>Total Commits: %{customdata[0]}",
     showlegend=False,
-    # Add values to the bar
     text=commits_binned.values,
     textposition="outside",
     textfont=dict(size=12),
 )
 
 # Colorbar using a dummy scatter trace
-tick_values_original = [300, 500, 1000, 1500]
-tickvals = np.log10(tick_values_original)
+tick_values_original = [100, 500, 1000]
 
 fig.add_scatter(
     x=[None],
@@ -102,15 +97,15 @@ fig.add_scatter(
         colorscale=COLORSCALE,
         cmin=COLORBAR_MIN,
         cmax=COLORBAR_MAX,
-        color=[COLORBAR_MAX],
+        color=[COLORBAR_MAX],  # dummy point just to show scale
         showscale=True,
         colorbar=dict(
             title=dict(
-                text="Total Commits (log scale)",
+                text="Total Commits",
                 font=dict(size=XY_AXIS_CBAR_TITLE_FONTSIZE),
             ),
-            tickvals=np.log10([100, 1000, 10000]),
-            ticktext=["100", "1k", "10k"],
+            tickvals=tick_values_original,
+            ticktext=[str(v) for v in tick_values_original],
         ),
     ),
     hoverinfo="skip",

@@ -66,7 +66,13 @@ commits_binned = commits_binned.iloc[1:-1]
 
 # Normalize for colormap
 log_commits = np.log10(commits_binned.clip(lower=1))  # avoid log(0)
-normed = (log_commits - log_commits.min()) / (log_commits.max() - log_commits.min())
+
+COLORBAR_MIN: float = np.log10(100)
+COLORBAR_MAX: float = np.log10(1000)
+
+normed = (log_commits - COLORBAR_MIN) / (COLORBAR_MAX - COLORBAR_MIN)
+normed = normed.clip(0, 1)  # keep values within [0,1]
+
 colors = [px.colors.sample_colorscale(COLORSCALE, val)[0] for val in normed]
 
 # Build bar plot
@@ -94,19 +100,17 @@ fig.add_scatter(
     mode="markers",
     marker=dict(
         colorscale=COLORSCALE,
-        cmin=log_commits.min(),
-        cmax=log_commits.max(),
-        color=[log_commits.max()],
+        cmin=COLORBAR_MIN,
+        cmax=COLORBAR_MAX,
+        color=[COLORBAR_MAX],
         showscale=True,
         colorbar=dict(
             title=dict(
                 text="Total Commits (log scale)",
                 font=dict(size=XY_AXIS_CBAR_TITLE_FONTSIZE),
             ),
-            tickvals=tickvals,
-            ticktext=[str(v) for v in tick_values_original],
-            tickfont=dict(size=13),
-            title_side="right",
+            tickvals=np.log10([100, 1000, 10000]),
+            ticktext=["100", "1k", "10k"],
         ),
     ),
     hoverinfo="skip",

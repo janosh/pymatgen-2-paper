@@ -1,0 +1,107 @@
+title: pymatgen
+branches:
+  - title: Informatics & characterization
+    color: '#fde725'
+    text_color: '#000000'
+    start_angle_deg: 45
+    children:
+      - title: Materials machine learning
+        value: 1173
+        color: '#fde725'
+        text_color: '#000000'
+      - title: Diffraction & spectroscopy
+        value: 52
+        color: '#31688e'
+        text_color: '#ffffff'
+      - title: Scientific computing & data
+        value: 14
+        color: '#481467'
+        text_color: '#ffffff'
+      - title: Drug discovery
+        value: 14
+        color: '#481467'
+        text_color: '#ffffff'
+  - title: Energy storage & conversion
+    color: '#cde11d'
+    text_color: '#000000'
+    start_angle_deg: 10
+    children:
+      - title: Battery materials & technologies
+        value: 669
+        color: '#b0dd2f'
+        text_color: '#000000'
+      - title: Electrocatalysts for energy conversion
+        value: 73
+        color: '#29798e'
+        text_color: '#ffffff'
+      - title: Thermoelectric materials & devices
+        value: 55
+        color: '#2f6b8e'
+        text_color: '#ffffff'
+      - title: Solid oxide fuel cells
+        value: 32
+        color: '#3e4c8a'
+        text_color: '#ffffff'
+  - title: Materials classes & mechanics
+    color: '#44bf70'
+    text_color: '#ffffff'
+    start_angle_deg: -60
+    children:
+      - title: 2D materials
+        value: 141
+        color: '#1e9b8a'
+        text_color: '#ffffff'
+      - title: MOFs
+        value: 73
+        color: '#29798e'
+        text_color: '#ffffff'
+      - title: Inorganic clusters
+        value: 41
+        color: '#375b8d'
+        text_color: '#ffffff'
+      - title: Chalcogenide thin films
+        value: 36
+        color: '#3a538b'
+        text_color: '#ffffff'
+  - title: Electronic, magnetic & quantum
+    color: '#38b977'
+    text_color: '#ffffff'
+    start_angle_deg: 200
+    children:
+      - title: Perovskites
+        value: 134
+        color: '#1f998a'
+        text_color: '#ffffff'
+      - title: Oxide properties
+        value: 66
+        color: '#2b748e'
+        text_color: '#ffffff'
+      - title: Condensed matter
+        value: 30
+        color: '#3f4889'
+        text_color: '#ffffff'
+      - title: Ferroelectrics & piezoelectrics
+        value: 24
+        color: '#443983'
+        text_color: '#ffffff'
+  - title: Catalysis & surface chemistry
+    color: '#29798e'
+    text_color: '#ffffff'
+    start_angle_deg: 120
+    children:
+      - title: Catalytic processes
+        value: 26
+        color: '#423f85'
+        text_color: '#ffffff'
+      - title: Photocatalysis
+        value: 24
+        color: '#443983'
+        text_color: '#ffffff'
+      - title: Oxidation catalysis
+        value: 11
+        color: '#440154'
+        text_color: '#ffffff'
+      - title: Nanoparticles & surfaces
+        value: 11
+        color: '#440154'
+        text_color: '#ffffff'

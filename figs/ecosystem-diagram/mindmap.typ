@@ -25,8 +25,8 @@
 // Draw a node at a given position.
 #let node(pos, txt, color: orange, text-color: white, level: "1", styles: NODE_STYLE) = {
   let st = styles.at(level)
-  let tsize  = st.tsize
-  let w      = tsize * st.radius_multi
+  let tsize = st.tsize
+  let w = tsize * st.radius_multi
 
   // centered, wrapped label
   content(
@@ -39,7 +39,7 @@
       text(
         fill: text-color,
         size: tsize,
-        hyphenate: true,
+        hyphenate: false,
         lang: "en",
         align(center, txt),
       ),
@@ -59,7 +59,7 @@
     [*#data.title*],
     color: orange,
     text-color: white, // root still fixed, or you can also add text_color in YAML
-    level: "0"
+    level: "0",
   )
 
   // topics
@@ -81,7 +81,7 @@
       let sub-ang = ang + offset
       let sub-pos = (
         pos.at(0) + calc.cos(sub-ang) * r2,
-        pos.at(1) + calc.sin(sub-ang) * r2
+        pos.at(1) + calc.sin(sub-ang) * r2,
       )
       let child-col = rgb(child.color)
       let child-text-col = rgb(child.text_color) // from YAML

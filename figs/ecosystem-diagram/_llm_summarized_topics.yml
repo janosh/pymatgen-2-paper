@@ -1,107 +1,107 @@
 title: pymatgen
 branches:
-- title: Materials informatics & characterization
-  color: '#fde725'
-  text_color: '#000000'
-  start_angle_deg: 45
-  children:
-  - title: Materials machine learning
-    value: 1173
+  - title: Materials informatics & characterization
     color: '#fde725'
     text_color: '#000000'
-  - title: Diffraction & solid-state spectroscopy
-    value: 52
-    color: '#31688e'
-    text_color: '#ffffff'
-  - title: Scientific computing & data management
-    value: 14
-    color: '#481467'
-    text_color: '#ffffff'
-  - title: Computational drug discovery
-    value: 14
-    color: '#481467'
-    text_color: '#ffffff'
-- title: Energy storage & conversion
-  color: '#cde11d'
-  text_color: '#000000'
-  start_angle_deg: 10
-  children:
-  - title: Battery materials & technologies
-    value: 669
-    color: '#b0dd2f'
+    start_angle_deg: 45
+    children:
+      - title: Materials machine learning
+        value: 1173
+        color: '#fde725'
+        text_color: '#000000'
+      - title: Diffraction & solid-state spectroscopy
+        value: 52
+        color: '#31688e'
+        text_color: '#ffffff'
+      - title: Scientific computing & data management
+        value: 14
+        color: '#481467'
+        text_color: '#ffffff'
+      - title: Computational drug discovery
+        value: 14
+        color: '#481467'
+        text_color: '#ffffff'
+  - title: Energy storage & conversion
+    color: '#cde11d'
     text_color: '#000000'
-  - title: Electrocatalysts for energy conversion
-    value: 73
+    start_angle_deg: 10
+    children:
+      - title: Battery materials & technologies
+        value: 669
+        color: '#b0dd2f'
+        text_color: '#000000'
+      - title: Electrocatalysts for energy conversion
+        value: 73
+        color: '#29798e'
+        text_color: '#ffffff'
+      - title: Thermoelectric materials & devices
+        value: 55
+        color: '#2f6b8e'
+        text_color: '#ffffff'
+      - title: Solid oxide fuel cells
+        value: 32
+        color: '#3e4c8a'
+        text_color: '#ffffff'
+  - title: Materials classes, nanostructures & mechanics
+    color: '#44bf70'
+    text_color: '#ffffff'
+    start_angle_deg: -60
+    children:
+      - title: 2D materials incl. graphene, MXenes
+        value: 141
+        color: '#1e9b8a'
+        text_color: '#ffffff'
+      - title: Metal-organic frameworks
+        value: 73
+        color: '#29798e'
+        text_color: '#ffffff'
+      - title: Inorganic cluster compounds
+        value: 41
+        color: '#375b8d'
+        text_color: '#ffffff'
+      - title: Chalcogenide semiconductor thin films
+        value: 36
+        color: '#3a538b'
+        text_color: '#ffffff'
+  - title: Electronic, magnetic & quantum materials
+    color: '#38b977'
+    text_color: '#ffffff'
+    start_angle_deg: 200
+    children:
+      - title: 'Perovskites: structure & transport'
+        value: 134
+        color: '#1f998a'
+        text_color: '#ffffff'
+      - title: Oxide electronic & structural properties
+        value: 66
+        color: '#2b748e'
+        text_color: '#ffffff'
+      - title: 'Condensed matter: SC & magnetism'
+        value: 30
+        color: '#3f4889'
+        text_color: '#ffffff'
+      - title: Ferroelectrics, piezoelectrics & NC
+        value: 24
+        color: '#443983'
+        text_color: '#ffffff'
+  - title: Catalysis & surface chemistry
     color: '#29798e'
     text_color: '#ffffff'
-  - title: Thermoelectric materials & devices
-    value: 55
-    color: '#2f6b8e'
-    text_color: '#ffffff'
-  - title: Solid oxide fuel cells
-    value: 32
-    color: '#3e4c8a'
-    text_color: '#ffffff'
-- title: Materials classes, nanostructures & mechanics
-  color: '#44bf70'
-  text_color: '#ffffff'
-  start_angle_deg: -60
-  children:
-  - title: 2D materials incl. graphene, MXenes
-    value: 141
-    color: '#1e9b8a'
-    text_color: '#ffffff'
-  - title: Metal-organic frameworks
-    value: 73
-    color: '#29798e'
-    text_color: '#ffffff'
-  - title: Inorganic cluster compounds
-    value: 41
-    color: '#375b8d'
-    text_color: '#ffffff'
-  - title: Chalcogenide semiconductor thin films
-    value: 36
-    color: '#3a538b'
-    text_color: '#ffffff'
-- title: Electronic, magnetic & quantum materials
-  color: '#38b977'
-  text_color: '#ffffff'
-  start_angle_deg: 200
-  children:
-  - title: 'Perovskites: structure & transport'
-    value: 134
-    color: '#1f998a'
-    text_color: '#ffffff'
-  - title: Oxide electronic & structural properties
-    value: 66
-    color: '#2b748e'
-    text_color: '#ffffff'
-  - title: 'Condensed matter: SC & magnetism'
-    value: 30
-    color: '#3f4889'
-    text_color: '#ffffff'
-  - title: Ferroelectrics, piezoelectrics & NC
-    value: 24
-    color: '#443983'
-    text_color: '#ffffff'
-- title: Catalysis & surface chemistry
-  color: '#29798e'
-  text_color: '#ffffff'
-  start_angle_deg: 120
-  children:
-  - title: Catalytic processes in materials
-    value: 26
-    color: '#423f85'
-    text_color: '#ffffff'
-  - title: Photocatalysis techniques
-    value: 24
-    color: '#443983'
-    text_color: '#ffffff'
-  - title: Oxidation catalysis
-    value: 11
-    color: '#440154'
-    text_color: '#ffffff'
-  - title: Nanoparticle nucleation & surfaces
-    value: 11
-    color: '#440154'
-    text_color: '#ffffff'
+    start_angle_deg: 120
+    children:
+      - title: Catalytic processes in materials
+        value: 26
+        color: '#423f85'
+        text_color: '#ffffff'
+      - title: Photocatalysis techniques
+        value: 24
+        color: '#443983'
+        text_color: '#ffffff'
+      - title: Oxidation catalysis
+        value: 11
+        color: '#440154'
+        text_color: '#ffffff'
+      - title: Nanoparticle nucleation & surfaces
+        value: 11
+        color: '#440154'
+        text_color: '#ffffff'

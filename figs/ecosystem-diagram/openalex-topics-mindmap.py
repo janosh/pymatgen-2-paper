@@ -7,7 +7,7 @@
 # - You would need to get `OPENAI_API_KEY` to use OpenAI API, see https://openai.com/api/.
 
 # /// script
-# dependencies = ["requests", "openai", "pyyaml", "matplotlib", "pymatviz"]
+# dependencies = ["requests", "openai", "pyyaml", "pymatviz", "plotly"]
 # ///
 
 
@@ -15,8 +15,7 @@ import re
 import subprocess
 from collections import Counter
 
-import matplotlib as mpl
-import matplotlib.pyplot as plt
+import plotly.colors
 import requests
 import yaml
 from openai import OpenAI
@@ -25,7 +24,6 @@ from pymatviz.utils.plotting import pick_max_contrast_color
 # %%
 NUM_OF_MAIN_TOPICS: int = 5
 NUM_OF_SUB_TOPICS: int = 4
-CMAP: str = "viridis"  # TODO: tweak
 
 # %%
 # Step 1: Get topics from OpenAlex for 1st pymatgen paper
@@ -134,8 +132,7 @@ for main_topic, subtopics in mindmap_dict.items():
     for name, count in subtopics:
         print(f"    - {name} ({count})")
 
-# %%
-# Step 3: Export LLM summarized topic data to YAML for Typst with matplotlib colormap
+# %% Step 3: Export LLM summarized topic data to YAML for Typst
 
 START_ANGLES = [45, 10, -60, 200, 120]
 assert len(START_ANGLES) == NUM_OF_MAIN_TOPICS
@@ -150,20 +147,25 @@ all_values = [count for _, subs in ordered_main for _, count in subs]
 vmin, vmax = min(all_values), max(all_values)
 
 # --- Choose colormap & normalizer ---
-cmap = mpl.colormaps[CMAP]
-norm = mpl.colors.LogNorm(vmin=max(vmin, 1e-6), vmax=vmax)  # log scale
+# Use viridis-like colors for consistency with Typst colorbar
+viridis_colors = ["#440154", "#31688e", "#1f9e89", "#35b779", "#b0dd2f", "#fde725"]
 
 
 def value_to_hex(val: float) -> str:
-    """Map a numeric value to a hex color."""
-    rgba = cmap(norm(val))
-    return mpl.colors.to_hex(rgba, keep_alpha=False)
+    """Map a numeric value to a hex color using Plotly's sample_colorscale."""
+    # Normalize value to [0, 1] range
+    normalized = (val - vmin) / (vmax - vmin)
+    # Sample the colorscale at the normalized position
+    color = plotly.colors.sample_colorscale(
+        viridis_colors, normalized, colortype="hex"
+    )[0]
+    return color
 
 
 def with_text_color(hex_color: str) -> tuple[str, str]:
     """Return (fill_color_hex, text_color_hex) with max contrast, both in hex."""
     text_col = pick_max_contrast_color(hex_color)
-    text_hex = mpl.colors.to_hex(text_col, keep_alpha=False)
+    text_hex = text_col.hex
     return hex_color, text_hex
 
 
@@ -199,29 +201,6 @@ data = {"title": "pymatgen", "branches": branches}
 
 with open("_llm_summarized_topics.yml", "w", encoding="utf-8") as f:
     yaml.safe_dump(data, f, sort_keys=False, allow_unicode=True)
-
-# %%
-
-fig = plt.figure(figsize=(6, 0.6))
-
-cax = fig.add_axes([0.05, 0.25, 0.90, 0.35])
-
-# Log ticks
-locator = mpl.ticker.LogLocator(base=10)
-formatter = mpl.ticker.LogFormatter(base=10)
-
-cb = mpl.colorbar.ColorbarBase(
-    cax,
-    cmap=cmap,
-    norm=norm,
-    orientation="horizontal",
-    ticks=locator,
-    format=formatter,
-)
-cb.set_label("Citation Counts (log)")
-
-plt.savefig("_colorbar.svg", bbox_inches="tight", transparent=True)
-plt.close(fig)
 
 # %%
 # Step 4: Compile Typst to SVG

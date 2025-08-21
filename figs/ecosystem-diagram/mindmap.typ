@@ -87,4 +87,30 @@
 
 // Load colorbar
 #v(5pt)
-#align(center, image("_colorbar.svg", width: 12cm))
+#align(center, box(
+  width: 12cm,
+  height: auto,
+  [#canvas({
+    let (cbar_width, cbar_height) = (12cm, 0.4cm)
+
+    // Color bar rectangle
+    content(
+      (0, 0),
+      frame: "rect",
+      fill: gradient.linear(..color.map.viridis),
+      stroke: 0.5pt + rgb("#222222"),
+      align(center, box(width: cbar_width, height: cbar_height)),
+    )
+
+    // Ticks and labels (log scale: 1, 10, 100, 1000)
+    let ticks = ("1", "10", "100", "1000")
+    let n = ticks.len() - 1
+    for (i, t) in ticks.enumerate() {
+      let x = -cbar_width / 2 + (cbar_width * i / n)
+      line((x, -0.15cm), (x, -0.25cm), stroke: 0.7pt)
+      content((x, -0.45cm), align(center, text(size: 7pt, t)))
+    }
+    // Axis label
+    content((0, -0.9cm), align(center, text(size: 8pt, [Citation Counts (log)])))
+  })],
+))

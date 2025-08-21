@@ -1,0 +1,117 @@
+{
+  "2013": [
+    "Abinitio and Abinit integration and improvements",
+    "Molecule and structure matching enhancements",
+    "Bug fixes and test reliability",
+    "Visualization and VTK compatibility updates",
+    "Unit handling and improvements",
+    "Interface expansions to external simulation tools"
+  ],
+  "2014": [
+    "Defects and dilute solution model improvements",
+    "Bug fixes and code refactoring",
+    "Py3K compatibility updates",
+    "Ab initio and electronic structure enhancements",
+    "Surface and transformation calculations",
+    "Serialization and input/output parsing improvements"
+  ],
+  "2015": [
+    "Defect and solute modeling enhancements",
+    "Parser and input/output format improvements",
+    "Bug fixes and stability updates",
+    "Support for Gaussian and NWChem outputs",
+    "zeo++ and structure analysis features",
+    "Python 3 compatibility work"
+  ],
+  "2016": [
+    "Structure analysis methods and improvements",
+    "Tensor and elasticity calculation enhancements",
+    "Chemical environment (ChemEnv) module integration",
+    "NMR and spectroscopy parsing and tools",
+    "New and improved file IO modules (Lammps, Abinit, FEFF)",
+    "Visualization and plotting tools enhancements",
+    "Bug fixes and code refactoring"
+  ],
+  "2017": [
+    "Bug fixes and stability improvements across modules",
+    "Enhancements to structure, diffusion, and surface analysis tools",
+    "Support for magnetic and electronic structure calculations",
+    "Expansion of file I/O formats and parsers",
+    "Order parameters and motif recognition improvements",
+    "Phonon and dielectric calculations features and fixes",
+    "Enhancements to LAMMPS data handling and analysis",
+    "Boltztrap, COHP, and bandstructure analysis updates"
+  ],
+  "2018": [
+    "New structure and neighbor analysis algorithms and bug fixes",
+    "Magnetic and electronic structure data parsing and plotting",
+    "Extended and improved file formats and parser support",
+    "Performance enhancements and refactoring for core modules",
+    "Improvements to defects, surface, and thermodynamic calculations",
+    "Enhancements to molecular graph, chemistry, and bonding tools",
+    "Interface and API changes, endpoints, and minor updates"
+  ],
+  "2019": [
+    "VASP and Lobster input/output enhancements and fixes",
+    "Neighbor finding and structural analysis speedups",
+    "New methods for defects, grain boundaries, and surfaces",
+    "Parsing and analysis tools for electronic structure data",
+    "Bug fixes and reliability improvements across modules",
+    "Additional file format and toolkit interoperability",
+    "Chemical environment, magnetism, and property calculators"
+  ],
+  "2020": [
+    "Compatibility and support for new code and input formats",
+    "Bug fixes and minor code improvements",
+    "Enhancements to plotting and data visualization",
+    "Refactoring and class overhauls to improve codebase",
+    "New features for structure and neighbor analysis",
+    "IO updates and support for external computational tools",
+    "Integration and speed optimization for simulation workflows",
+    "Band structure, DOS, and spectrum calculation improvements"
+  ],
+  "2021": [
+    "Improvements to chemical composition and phase diagram analysis",
+    "Enhancements and fixes for Q-Chem and VASP IO",
+    "Input/Output framework refactoring and new features",
+    "Performance optimizations and code modernization",
+    "Expanded support for OPTIMADE API standards",
+    "Bug fixes, tests, and documentation updates"
+  ],
+  "2022": [
+    "VASP and Quantum Espresso input/output enhancements",
+    "Lobster module and charge analysis improvements",
+    "Testing, CI, and type checking updates",
+    "Documentation and example updates",
+    "Structure and symmetry analysis enhancements",
+    "General bug fixes and code cleanup",
+    "Integration with external tools and formats"
+  ],
+  "2023": [
+    "New and improved file parsers and I/O support",
+    "Major bug fixes and test enhancements",
+    "Phonon, DOS, and band structure tools expanded",
+    "Structure and molecule property/functionality additions",
+    "VASP and POTCAR input set updates and validation",
+    "Performance improvements and code refactoring",
+    "Adoption of Ruff and linting-type enforcement"
+  ],
+  "2024": [
+    "Type annotations and code style improvements",
+    "Enhancements for VASP, FHI-aims, Lobster, and CP2K IO",
+    "Testing, CI, and Python version support updates",
+    "OPTIMADE and interoperability enhancements",
+    "Bug fixes for parsing, symmetry, and chemical formulas",
+    "Improved structure handling and property calculations",
+    "Deprecation and codebase cleanup"
+  ],
+  "2025": [
+    "Performance improvements for parsing and data processing",
+    "Bugfixes in structure, molecule, and symmetry handling",
+    "Enhancements and fixes to periodic table data and metadata",
+    "Additions and improvements in JDFTx IO and utilities",
+    "Dependency updates, CI enhancements, and Python 3.13 support",
+    "JSON serialization and deserialization methods standardization",
+    "Improved support for VASP, FHI-aims, CP2K, and LOBSTER formats"
+  ]
+}

@@ -8,9 +8,9 @@
 
 // Per-level style: 0 = root, 1 = topics, 2 = subtopics
 #let NODE_STYLE = (
-  "0": (radius: 1.6, tsize: 14pt, box_mult: 9.0),
-  "1": (radius: 1.2, tsize: 7pt, box_mult: 8.0),
-  "2": (radius: 1, tsize: 7pt, box_mult: 8.0),
+  "0": (tsize: 14pt, radius_multi: 9.0),
+  "1": (tsize: 7pt, radius_multi: 8.0),
+  "2": (tsize: 7pt, radius_multi: 7.0),
 )
 
 // Layout params
@@ -25,9 +25,8 @@
 // Draw a node at a given position.
 #let node(pos, txt, color: orange, text-color: white, level: "1", styles: NODE_STYLE) = {
   let st = styles.at(level)
-  let radius = st.radius
   let tsize  = st.tsize
-  let w      = tsize * st.box_mult
+  let w      = tsize * st.radius_multi
 
   // centered, wrapped label
   content(

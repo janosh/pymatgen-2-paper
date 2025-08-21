@@ -1,6 +1,6 @@
 title: pymatgen
 branches:
-  - title: Materials informatics & characterization
+  - title: Informatics & characterization
     color: '#fde725'
     text_color: '#000000'
     start_angle_deg: 45
@@ -9,15 +9,15 @@ branches:
         value: 1173
         color: '#fde725'
         text_color: '#000000'
-      - title: Diffraction & solid-state spectroscopy
+      - title: Diffraction & spectroscopy
         value: 52
         color: '#31688e'
         text_color: '#ffffff'
-      - title: Scientific computing & data management
+      - title: Scientific computing & data
         value: 14
         color: '#481467'
         text_color: '#ffffff'
-      - title: Computational drug discovery
+      - title: Drug discovery
         value: 14
         color: '#481467'
         text_color: '#ffffff'
@@ -42,45 +42,45 @@ branches:
         value: 32
         color: '#3e4c8a'
         text_color: '#ffffff'
-  - title: Materials classes, nanostructures & mechanics
+  - title: Materials classes & mechanics
     color: '#44bf70'
     text_color: '#ffffff'
     start_angle_deg: -60
     children:
-      - title: 2D materials incl. graphene, MXenes
+      - title: 2D materials
         value: 141
         color: '#1e9b8a'
         text_color: '#ffffff'
-      - title: Metal-organic frameworks
+      - title: MOFs
         value: 73
         color: '#29798e'
         text_color: '#ffffff'
-      - title: Inorganic cluster compounds
+      - title: Inorganic clusters
         value: 41
         color: '#375b8d'
         text_color: '#ffffff'
-      - title: Chalcogenide semiconductor thin films
+      - title: Chalcogenide thin films
         value: 36
         color: '#3a538b'
         text_color: '#ffffff'
-  - title: Electronic, magnetic & quantum materials
+  - title: Electronic, magnetic & quantum
     color: '#38b977'
     text_color: '#ffffff'
     start_angle_deg: 200
     children:
-      - title: 'Perovskites: structure & transport'
+      - title: Perovskites
         value: 134
         color: '#1f998a'
         text_color: '#ffffff'
-      - title: Oxide electronic & structural properties
+      - title: Oxide properties
         value: 66
         color: '#2b748e'
         text_color: '#ffffff'
-      - title: 'Condensed matter: SC & magnetism'
+      - title: Condensed matter
         value: 30
         color: '#3f4889'
         text_color: '#ffffff'
-      - title: Ferroelectrics, piezoelectrics & NC
+      - title: Ferroelectrics & piezoelectrics
         value: 24
         color: '#443983'
         text_color: '#ffffff'
@@ -89,11 +89,11 @@ branches:
     text_color: '#ffffff'
     start_angle_deg: 120
     children:
-      - title: Catalytic processes in materials
+      - title: Catalytic processes
         value: 26
         color: '#423f85'
         text_color: '#ffffff'
-      - title: Photocatalysis techniques
+      - title: Photocatalysis
         value: 24
         color: '#443983'
         text_color: '#ffffff'
@@ -101,7 +101,7 @@ branches:
         value: 11
         color: '#440154'
         text_color: '#ffffff'
-      - title: Nanoparticle nucleation & surfaces
+      - title: Nanoparticles & surfaces
         value: 11
         color: '#440154'
         text_color: '#ffffff'

@@ -1,124 +1,116 @@
 {
   "2013": [
-    "Abinit interface improvements",
-    "Support for GULP, Zeo++, OpenBabel",
-    "Bug fixes",
-    "Unit handling enhancements",
-    "Phase diagram updates",
-    "Molecule and symmetry matching improvements"
+    "Abinit code integration updates (11)",
+    "Unit tests and testing improvements (7)",
+    "Bug fixes and corrections (10)",
+    "Phase diagram and visualization enhancements (5)",
+    "Support for GULP, Zeopp, OpenBabel, and tools (4)",
+    "Molecule matching and structure analysis (3)"
   ],
   "2014": [
-    "Bug fixes",
-    "Serialization and parsing improvements",
-    "Python 3 compatibility",
-    "Workflow tools",
-    "Defects and surface modeling",
-    "Valence and site analysis"
+    "Defect and disorder modeling improvements (24)",
+    "Bug fixes and code quality enhancements (21)",
+    "Parsing and I/O updates (13)",
+    "Electronic structure and ab initio calculations (7)",
+    "Python 3 compatibility and dependency handling (6)",
+    "Surface and interface analysis features (5)"
   ],
   "2015": [
-    "Defect and solute modeling improvements",
-    "Parser and I/O enhancements",
-    "Gaussian, NWChem, Abinit integration",
-    "Unit handling improvements",
-    "Testing and CI updates",
-    "Python 3 compatibility",
-    "Code modernization",
-    "Bug fixes"
+    "Defects and solutes handling (8)",
+    "Bug fixes and minor corrections (10)",
+    "I/O parsing enhancements (9)",
+    "New modules and classes (7)",
+    "Abinit and queue adapters (4)",
+    "Unit tests and code compatibility (3)"
   ],
   "2016": [
-    "Structure analysis enhancements",
-    "Elasticity and tensor updates",
-    "Chemenv improvements",
-    "VASP I/O enhancements",
-    "Abinit and LAMMPS I/O support",
-    "NMR and Gaussian parsing improvements",
-    "Substrate analysis enhancements",
-    "Bug fixes and refactoring"
+    "Chemenv integration and improvements (10)",
+    "Tensor and elasticity features (10)",
+    "Substrate analyzer enhancements (7)",
+    "LAMMPS I/O and utilities (9)",
+    "Bug fixes and corrections (28)",
+    "NMR, Gaussian, and spectroscopy updates (6)",
+    "New structure and analysis methods (11)"
   ],
   "2017": [
-    "Structure conversion enhancements",
-    "Order parameter and motif analysis",
-    "Magnetic structure and SOC calculations",
-    "Elasticity, phonon, and thermodynamic tools",
-    "Surface and interface analysis",
-    "Charge and Bader analysis",
-    "File parsing and I/O improvements",
-    "Bug fixes and testing"
+    "Bug fixes and minor improvements (81)",
+    "New features and analysis modules (67)",
+    "Parser and I/O enhancements (40)",
+    "Order parameter and structure analysis tools (23)",
+    "LAMMPS data and simulation support (19)",
+    "Elasticity and mechanical properties (17)",
+    "Magnetism and magnetic structure support (13)"
   ],
   "2018": [
-    "Graph algorithms for structures",
-    "Coordination number determination",
-    "Crystallographic structure parsing",
-    "Electronic structure and band analysis",
-    "Defect and interface modeling",
-    "Magnetic structure analysis",
-    "Bug fixes and performance improvements"
+    "Bug fixes and minor improvements (94)",
+    "New analysis and structure methods (52)",
+    "Voronoi and neighbor-finding enhancements (23)",
+    "Parser and I/O module updates (19)",
+    "Graph and network analysis features (14)",
+    "Magnetic and electronic structure support (13)",
+    "Surface, interface, and defect tools (13)"
   ],
   "2019": [
-    "VASP and LOBSTER I/O enhancements",
-    "Bug fixes",
-    "Structural analysis improvements",
-    "Defect and grain boundary analysis",
-    "Graph and bonding utilities",
-    "Trajectory and NMR support",
-    "Molecular and interface support"
+    "Bug fixes and minor code improvements (62)",
+    "New methods for structural analysis (29)",
+    "VASP, LOBSTER, and related I/O enhancements (34)",
+    "Defect and grain boundary analysis tools (9)",
+    "Code optimization and performance improvements (7)",
+    "Documentation and publication updates (7)"
   ],
   "2020": [
-    "Bug fixes",
-    "Performance improvements",
-    "New data structures",
-    "Phonon and band structure features",
-    "Parser and I/O updates",
-    "Dependency compatibility updates",
-    "Plotting enhancements",
-    "Refactoring and code cleanup"
+    "Bug fixes and code cleanup (57)",
+    "New features and enhancements (43)",
+    "Compatibility updates for software and data formats (17)",
+    "Plotting and visualization improvements (10)",
+    "Neighbor finding and connectivity algorithms (14)",
+    "I/O and parser updates (21)",
+    "Performance optimizations and memory management (7)",
+    "Refactoring and code structure changes (13)"
   ],
   "2021": [
-    "VASP, QChem, QE, LOBSTER I/O enhancements",
-    "Chemical system and phase diagram updates",
-    "OPTIMADE and API compliance improvements",
-    "Bug fixes and error handling",
-    "Performance improvements",
-    "Documentation and code modernization"
+    "Bugfixes and code robustness improvements (52)",
+    "I/O format support and enhancements (29)",
+    "New features and modules (19)",
+    "Performance optimizations (6)",
+    "Documentation updates and improvements (17)",
+    "Phase diagram and materials analysis tools (11)"
   ],
   "2022": [
-    "Bug fixes",
-    "Code quality and refactoring",
-    "Performance improvements",
-    "Structure and symmetry analysis features",
-    "Quantum chemistry module updates",
-    "I/O improvements and new file format support",
-    "Documentation improvements",
-    "Testing, CI, and dependency updates"
+    "Documentation improvements and clarifications (31)",
+    "Bug fixes and minor corrections (75)",
+    "CI and testing updates (32)",
+    "Type hints, linting, and code cleanup (27)",
+    "Structure and chemistry analysis enhancements (43)",
+    "Third-party I/O support and integrations (18)",
+    "LOBSTER module and electronic structure improvements (12)"
   ],
   "2023": [
-    "I/O enhancements for VASP, LOBSTER, ASE, Q-Chem, FHI-aims",
-    "New methods and properties for core classes",
-    "Testing and CI improvements",
-    "Deprecations and breaking API changes",
-    "Type annotations and code formatting",
-    "Documentation improvements",
-    "Performance improvements",
-    "Bug fixes"
+    "Bug fixes and stability improvements (89)",
+    "VASP and POTCAR handling enhancements (40)",
+    "Phonon and vibrational property tools (15)",
+    "LOBSTER and electronic structure updates (13)",
+    "Parser and I/O improvements (34)",
+    "Code quality, linting, and type hints (31)",
+    "Testing framework and CI updates (21)",
+    "Plotting and visualization improvements (16)"
   ],
   "2024": [
-    "Bug fixes",
-    "I/O improvements for VASP, FHI-aims, LOBSTER, CP2K, JDFTx",
-    "Expanded structure and property parsing",
-    "Testing and CI enhancements",
-    "Code refactoring and quality improvements",
-    "New analysis methods and options",
-    "Deprecations and API migration",
-    "Improved type annotations and Python support"
+    "Type annotations and type hint improvements (29)",
+    "Testing infrastructure and CI enhancements (40)",
+    "Parsing, I/O modules, and file format support (39)",
+    "Bug fixes and minor code corrections (60)",
+    "Deprecations and API breaking changes (18)",
+    "VASP, FHI-aims, LOBSTER, and related code changes (32)",
+    "Documentation and docstring improvements (27)",
+    "Code cleanup, formatting, and refactoring (32)"
   ],
   "2025": [
-    "Symmetry and crystallographic utilities enhancements",
-    "Performance improvements in structure parsing",
-    "Periodic table data updates",
-    "JDFTx I/O and infrastructure upgrades",
-    "File format conversion and compatibility",
-    "Dependency and CI updates",
-    "Bug fixes for structure and molecule utilities",
-    "JSON handling modernization"
+    "Code performance improvements (15)",
+    "Data structure and serialization enhancements (18)",
+    "Parsing and I/O module updates (20)",
+    "Symmetry and structural analysis features (10)",
+    "Element and periodic table data corrections (9)",
+    "CI, build system, and Python version support (6)"
   ]
 }

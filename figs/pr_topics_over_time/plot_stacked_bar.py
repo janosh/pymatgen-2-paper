@@ -17,15 +17,18 @@ with open("_topics.json", encoding="utf-8") as f:
     topics_by_year = json.load(f)
 
 # 2) Theme mapping rules
-THEME_RULES = [
-    (r"bug fix|error|correction|refactor|cleanup|quality", "Bug fixes & refactoring"),
+THEME_RULES: list[tuple[str, str]] = [
+    (
+        r"bug fix|bugfix|error|correction|refactor|cleanup|quality",
+        "Bug fixes & refactoring",
+    ),
     (r"performance|speed|optimi", "Performance"),
     (
-        r"test|ci|continuous integration|type annotation|code modern|dependency",
+        r"test|ci|continuous integration|type annotation|code modern|dependency|compatibility",
         "Testing & code quality",
     ),
     (r"doc|readme|tutorial", "Documentation"),
-    (r"deprecat|breaking", "Deprecations / breaking"),
+    (r"deprecat|breaking", "Deprecations & breaking"),
     (
         r"json|serialize|parse|i/o|io|parser|vasp|fhi-aims|lobster|cp2k|q-?chem|qe|abinit|nwchem|gulp|zeopp|openbabel|jdf",
         "I/O & parsing",
@@ -35,7 +38,7 @@ THEME_RULES = [
         "Chem data & phase diagrams",
     ),
     (
-        r"structure|symmetry|elastic|phonon|nmr|band|magnetic|defect|surface|interface|graph|molecule",
+        r"structure|symmetry|elastic|phonon|nmr|band|magnetic|defect|surface|interface|graph|molecule|analyzer|analysis|connectivity|voronoi",
         "Structure & analysis",
     ),
 ]

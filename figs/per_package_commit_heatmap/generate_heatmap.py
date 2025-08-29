@@ -9,7 +9,6 @@ Rows (packages) sorted by total number of commits (descending).
 """
 
 import os
-import sys
 import subprocess
 from typing import Literal
 
@@ -17,14 +16,10 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-from style import (
-    COLORSCALE,
-    PLOT_TITLE_FONTSIZE,
-    XY_AXIS_CBAR_TITLE_FONTSIZE,
-    TICK_LABEL_FONTSIZE,
-)
+COLORSCALE: str = "viridis"
+TICK_LABEL_FONTSIZE: int = 18
+PLOT_TITLE_FONTSIZE: int = 24
+XY_AXIS_CBAR_TITLE_FONTSIZE: int = 20
 
 PACKAGES: dict[str, str] = {
     # NOTE: for a file the `.py` suffix is necessary (e.g. `core/structure.py`)

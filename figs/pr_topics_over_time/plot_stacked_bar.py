@@ -66,7 +66,7 @@ counts.plot(kind="bar", stacked=True, ax=ax, color=colors[: len(counts.columns)]
 ax.set_title("PR Topics by Theme", fontsize=16)
 ax.set_ylabel("Number of PRs", fontsize=16)
 ax.set_xlabel("Year", fontsize=16)
-ax.legend(bbox_to_anchor=(1.02, 1), loc="upper left", fontsize=14)
+ax.legend(bbox_to_anchor=(1.02, 1), loc="upper left", fontsize=14, reverse=True)
 ax.tick_params(axis="both", labelsize=12)
 plt.xticks(rotation=45, ha="right")
 plt.tight_layout()

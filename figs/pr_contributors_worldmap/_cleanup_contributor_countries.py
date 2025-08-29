@@ -20,7 +20,7 @@ OUTPUT_FILE: str = "contributor_locations_cleaned.csv"
 UNRESOLVED_FILE: str = "unresolved_locations.json"
 
 
-def geocode_country(location, geolocator, max_retries=3):
+def geocode_country(location, geolocator, max_retries=10):
     for attempt in range(max_retries):
         try:
             geo = geolocator.geocode(location, addressdetails=True, language="en")
@@ -46,12 +46,13 @@ def clean_and_resolve_locations(input_path, output_path, unresolved_path):
 
     geolocator = Nominatim(user_agent="location-cleaner")
     cache: dict[str, str | None] = {}
-    unresolved: dict[str, int] = {}
+    unresolved: dict[str, list[str]] = {}
 
     print(f"Resolving countries for {len(rows)} contributors...")
 
     for row in tqdm(rows, desc="Geocoding locations", unit="user"):
         loc = row["location"]
+        login = row["login"]
         if loc in cache:
             country = cache[loc]
         else:
@@ -63,7 +64,7 @@ def clean_and_resolve_locations(input_path, output_path, unresolved_path):
             row["country"] = country
         else:
             row["country"] = ""
-            unresolved[loc] = unresolved.get(loc, 0) + 1
+            unresolved.setdefault(loc, []).append(login)
 
     resolved_rows = [r for r in rows if r["country"]]
 

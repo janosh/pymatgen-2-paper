@@ -18,25 +18,26 @@ with open("_topics.json", encoding="utf-8") as f:
 
 # 2) Theme mapping rules
 THEME_RULES = [
-    (r"bug fix|error|correction|refactor|cleanup|quality", "Bug fixes / refactoring"),
+    (r"bug fix|error|correction|refactor|cleanup|quality", "Bug fixes & refactoring"),
     (r"performance|speed|optimi", "Performance"),
-    (r"test|ci|continuous integration", "Testing / CI"),
+    (
+        r"test|ci|continuous integration|type annotation|code modern|dependency",
+        "Testing & code quality",
+    ),
     (r"doc|readme|tutorial", "Documentation"),
     (r"deprecat|breaking", "Deprecations / breaking"),
-    (r"json|serialize|parse|i/o|io|parser", "I/O & parsing"),
     (
-        r"vasp|fhi-aims|lobster|cp2k|q-?chem|qe|abinit|nwchem|gulp|zeopp|openbabel|jdf",
-        "Code integrations",
+        r"json|serialize|parse|i/o|io|parser|vasp|fhi-aims|lobster|cp2k|q-?chem|qe|abinit|nwchem|gulp|zeopp|openbabel|jdf",
+        "I/O & parsing",
     ),
     (
         r"phase diagram|chemical system|periodic table|visualization",
-        "Chem data / phase diagrams",
+        "Chem data & phase diagrams",
     ),
     (
         r"structure|symmetry|elastic|phonon|nmr|band|magnetic|defect|surface|interface|graph|molecule",
         "Structure & analysis",
     ),
-    (r"python 3|type annotation|code modern|dependency", "Python & code quality"),
 ]
 
 
@@ -55,17 +56,16 @@ def extract_count(string: str) -> int:
 
 
 # 3) Build dataframe of counts
-rows = []
+rows: list[dict[str, str | int]] = []
 for year, topics in topics_by_year.items():
     for topic in topics:
         count = extract_count(topic)
         rows.append({"year": int(year), "theme": map_theme(topic), "count": count})
 
 df = pd.DataFrame(rows)
-
 counts = df.groupby(["year", "theme"])["count"].sum().unstack(fill_value=0).sort_index()
 
-# 4) Stacked bar plot with absolute counts
+# 4) Stacked bar plot with counts
 fig, ax = plt.subplots(figsize=(10, 6))
 colors = mpl.colormaps.get_cmap("tab20").colors
 counts.plot(kind="bar", stacked=True, ax=ax, color=colors[: len(counts.columns)])

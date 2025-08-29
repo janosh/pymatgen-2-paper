@@ -52,7 +52,7 @@ df.plot(kind="bar", stacked=True, colormap="tab20c", width=0.8)
 plt.title("Pull Requests by Year")
 plt.xlabel("Year")
 plt.ylabel("Total Number of Pull Requests")
-plt.legend(title="Year Since First PR")
+plt.legend(title="Year Since First PR", reverse=True)
 plt.tight_layout()
 plt.grid(axis="y", linestyle="--", alpha=0.4)
 

@@ -28,10 +28,12 @@ for pr in data.values():
         group = "New"
     elif ysf < 1:
         group = "<1 year"
-    elif ysf < 5:
-        group = "1-5 years"
+    elif ysf < 3:
+        group = "1-3 years"
+    elif ysf < 6:
+        group = "3-6 years"
     else:
-        group = ">5 years"
+        group = ">6 years"
 
     binned[year][group] += 1
 
@@ -40,14 +42,22 @@ df = pd.DataFrame(binned).T.fillna(0).astype(int)
 df = df.sort_index()  # sort by year
 
 # Ensure consistent column order
-columns = ["New", "<1 year", "1-5 years", ">5 years"]
+columns = ["New", "<1 year", "1-3 years", "3-6 years", ">6 years"]
 for col in columns:
     if col not in df:
         df[col] = 0
 df = df[columns]
 
 # Plot
-df.plot(kind="bar", stacked=True, colormap="tab20c", width=0.8)
+colors = [
+    "#1f77b4",  # blue
+    "#ff7f0e",  # orange
+    "#2ca02c",  # green
+    "#d62728",  # red
+    "#9467bd",  # purple
+]
+
+df.plot(kind="bar", stacked=True, color=colors, width=0.8)
 
 plt.title("Pull Requests by Year")
 plt.xlabel("Year")

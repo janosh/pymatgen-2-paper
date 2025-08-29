@@ -1,3 +1,10 @@
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [
+#     "matplotlib",
+#     "pandas",
+# ]
+# ///
 import json
 import re
 
@@ -34,25 +41,25 @@ THEME_RULES = [
 
 
 def map_theme(topic: str) -> str:
-    s = topic.lower()
     for pat, theme in THEME_RULES:
-        if re.search(pat, s):
+        if re.search(pat, topic.lower()):
             return theme
+
     return "Other"
 
 
-# helper to extract count in "(N)" at end
-def extract_count(s: str) -> int:
-    m = re.search(r"\((\d+)\)\s*$", s)
-    return int(m.group(1)) if m else 1
+def extract_count(string: str) -> int:
+    """Extract count from (N) at end."""
+    match = re.search(r"\((\d+)\)\s*$", string)
+    return int(match[1]) if match else 1
 
 
 # 3) Build dataframe of counts
 rows = []
-for y, topics in topics_by_year.items():
-    for t in topics:
-        cnt = extract_count(t)
-        rows.append({"year": int(y), "theme": map_theme(t), "count": cnt})
+for year, topics in topics_by_year.items():
+    for topic in topics:
+        count = extract_count(topic)
+        rows.append({"year": int(year), "theme": map_theme(topic), "count": count})
 
 df = pd.DataFrame(rows)
 
@@ -69,5 +76,6 @@ ax.set_xlabel("Year", fontsize=16)
 ax.legend(bbox_to_anchor=(1.02, 1), loc="upper left", fontsize=14, reverse=True)
 ax.tick_params(axis="both", labelsize=12)
 plt.xticks(rotation=45, ha="right")
+
 plt.tight_layout()
 plt.savefig("stacked_bar.svg", format="svg")

@@ -25,7 +25,7 @@ for pr in data.values():
     ysf: float = pr["years_since_first"]
 
     if math.isclose(ysf, 0, abs_tol=7 / 365):
-        group = "new"
+        group = "New"
     elif ysf < 1:
         group = "<1 year"
     elif ysf < 5:
@@ -40,7 +40,7 @@ df = pd.DataFrame(binned).T.fillna(0).astype(int)
 df = df.sort_index()  # sort by year
 
 # Ensure consistent column order
-columns = ["new", "<1 year", "1-5 years", ">5 years"]
+columns = ["New", "<1 year", "1-5 years", ">5 years"]
 for col in columns:
     if col not in df:
         df[col] = 0
@@ -49,9 +49,9 @@ df = df[columns]
 # Plot
 df.plot(kind="bar", stacked=True, colormap="tab20c", width=0.8)
 
-plt.title("PRs by Contributor Each Year")
+plt.title("Pull Requests by Year")
 plt.xlabel("Year")
-plt.ylabel("Number of PRs")
+plt.ylabel("Total Number of Pull Requests")
 plt.legend(title="Year Since First PR")
 plt.tight_layout()
 plt.grid(axis="y", linestyle="--", alpha=0.4)

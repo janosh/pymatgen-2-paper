@@ -68,7 +68,7 @@ fig, ax = plt.subplots(figsize=(10, 6))
 colors = mpl.colormaps.get_cmap("tab20").colors
 counts.plot(kind="bar", stacked=True, ax=ax, color=colors[: len(counts.columns)])
 
-ax.set_title("PR Topics by Theme", fontsize=16)
+ax.set_title("PR Topics by Theme", fontsize=20)
 ax.set_ylabel("Number of PRs", fontsize=16)
 ax.set_xlabel("Year", fontsize=16)
 ax.legend(bbox_to_anchor=(1.02, 1), loc="upper left", fontsize=14, reverse=True)

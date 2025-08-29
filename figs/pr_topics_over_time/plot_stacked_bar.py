@@ -22,7 +22,7 @@ THEME_RULES: list[tuple[str, str]] = [
         r"bug fix|bugfix|error|correction|refactor|cleanup|quality",
         "Bug fixes & refactoring",
     ),
-    (r"performance|speed|optimi", "Performance"),
+    (r"performance|speed|optimization", "Performance"),
     (
         r"test|ci|continuous integration|type annotation|code modern|dependency|compatibility",
         "Testing & code quality",
@@ -46,23 +46,18 @@ THEME_RULES: list[tuple[str, str]] = [
 
 def map_theme(topic: str) -> str:
     for pat, theme in THEME_RULES:
-        if re.search(pat, topic.lower()):
+        if re.search(pat.lower(), topic.lower()):
             return theme
 
+    print(f"Cannot find a theme for {topic=}")
     return "Other"
-
-
-def extract_count(string: str) -> int:
-    """Extract count from (N) at end."""
-    match = re.search(r"\((\d+)\)\s*$", string)
-    return int(match[1]) if match else 1
 
 
 # 3) Build dataframe of counts
 rows: list[dict[str, str | int]] = []
 for year, topics in topics_by_year.items():
     for topic in topics:
-        count = extract_count(topic)
+        count = int(re.search(r"\((\d+)\)\s*$", topic)[1])
         rows.append({"year": int(year), "theme": map_theme(topic), "count": count})
 
 df = pd.DataFrame(rows)

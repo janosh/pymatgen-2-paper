@@ -6,23 +6,55 @@
 #     "pandas",
 #     "plotly",
 #     "pycountry",
+#     "pyyaml",
 # ]
 # ///
+
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 import pycountry
+import yaml
 
 
-def country_to_iso3(name):
-    return pycountry.countries.lookup(name).alpha_3
+def country_to_iso3(name: str) -> str:
+    try:
+        return pycountry.countries.lookup(name).alpha_3
+    except LookupError:
+        # Manually correct some country names
+        MANUAL_COUNTRY_NAME: dict[str, str] = {"Russia": "Russian Federation"}
+        name = MANUAL_COUNTRY_NAME[name]
+        return pycountry.countries.lookup(name).alpha_3
 
 
-# Convert data to logscale
-df = pd.read_csv("contributor_locations_cleaned.csv")
+# Load PR info
+pr_info = pd.read_csv("pr_info.csv")
+
+# Load username to country mapping
+with open("user_to_country.yaml", encoding="utf-8") as f:
+    country_data = yaml.safe_load(f)
+
+username_to_country: dict[str, str] = {}
+for source in ("from_pmg_doc", "from_github"):
+    username_to_country.update(country_data[source])
+
+# Map usernames to countries
+pr_info["country"] = pr_info["username"].map(username_to_country)
+
+# Report unresolved users
+unresolved = pr_info[pr_info["country"].isna()]
+unresolved = unresolved.sort_values("username", key=lambda col: col.str.lower())
+if not unresolved.empty:
+    print(f"⚠️ Could not resolve country for the following {len(unresolved)} users:")
+    for _, row in unresolved.iterrows():
+        print(f"  - {row['username']} (PRs: {row['pr_count']})")
+
+# Filter valid entries and group by country
+df = pr_info.dropna(subset=["country"])
 country_counts = df.groupby("country", as_index=False)["pr_count"].sum()
 country_counts["iso3"] = country_counts["country"].apply(country_to_iso3)
 
+# Compute log-scaled values
 country_counts["prs"] = country_counts["pr_count"]
 country_counts["log_prs"] = country_counts["prs"].clip(lower=1).map(np.log10)
 

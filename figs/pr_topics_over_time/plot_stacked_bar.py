@@ -41,6 +41,10 @@ THEME_RULES: list[tuple[str, str]] = [
         r"structure|symmetry|elastic|phonon|nmr|band|magnetic|defect|surface|interface|graph|molecule|analyzer|analysis|connectivity|voronoi",
         "Structure & analysis",
     ),
+    (
+        r"new features|new modules",
+        "Other new features",
+    ),
 ]
 
 

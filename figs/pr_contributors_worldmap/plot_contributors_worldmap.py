@@ -43,7 +43,7 @@ pr_info["country"] = pr_info["username"].map(username_to_country)
 
 # Report unresolved users
 unresolved = pr_info[pr_info["country"].isna()]
-unresolved = unresolved.sort_values("username", key=lambda col: col.str.lower())
+unresolved = unresolved.sort_values("pr_count", ascending=False)
 if not unresolved.empty:
     print(f"⚠️ Could not resolve country for the following {len(unresolved)} users:")
     for _, row in unresolved.iterrows():

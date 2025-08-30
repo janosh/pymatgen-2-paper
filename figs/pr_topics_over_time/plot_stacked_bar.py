@@ -20,30 +20,25 @@ with open("_topics.json", encoding="utf-8") as f:
 THEME_RULES: list[tuple[str, str]] = [
     (
         r"bug fix|bugfix|error|correction|refactor|cleanup|quality",
-        "Bug fixes & refactoring",
+        "Bug Fixes & Refactoring",
     ),
     (r"performance|speed|optimization", "Performance"),
     (
-        r"test|ci|continuous integration|type annotation|code modern|dependency|compatibility",
-        "Testing & code quality",
+        r"test|ci|continuous integration|type annotation|code modern|dependency|compatibility|deprecat|breaking",
+        "Testing & Code Quality",
     ),
     (r"doc|readme|tutorial", "Documentation"),
-    (r"deprecat|breaking", "Deprecations & breaking"),
     (
         r"json|serialize|parse|i/o|io|parser|vasp|fhi-aims|lobster|cp2k|q-?chem|qe|abinit|nwchem|gulp|zeopp|openbabel|jdf",
-        "I/O & parsing",
+        "I/O & Parsing",
     ),
     (
-        r"phase diagram|chemical system|periodic table|visualization",
-        "Chem data & phase diagrams",
-    ),
-    (
-        r"structure|symmetry|elastic|phonon|nmr|band|magnetic|defect|surface|interface|graph|molecule|analyzer|analysis|connectivity|voronoi",
-        "Structure & analysis",
+        r"structure|symmetry|elastic|phonon|nmr|band|magnetic|defect|surface|interface|graph|molecule|analyzer|analysis|connectivity|voronoi|phase diagram|chemical system|periodic table|visualization",
+        "Structural & Analysis",
     ),
     (
         r"new features|new modules",
-        "Other new features",
+        "Misc. New Features",
     ),
 ]
 

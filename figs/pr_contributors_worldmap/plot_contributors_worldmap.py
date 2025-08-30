@@ -35,7 +35,7 @@ with open("user_to_country.yaml", encoding="utf-8") as f:
     country_data = yaml.safe_load(f)
 
 username_to_country: dict[str, str] = {}
-for source in ("from_pmg_doc", "from_github"):
+for source in ("manual", "from_pmg_doc", "from_github"):
     username_to_country.update(country_data[source])
 
 # Map usernames to countries

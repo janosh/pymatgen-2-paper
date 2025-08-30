@@ -170,18 +170,14 @@ unresolved:
   aykol: NA
   bayesfactor: NA
   benjaminchen22: NA
-  benrich37: NA
-  bernstei: NA
   boyoungzheng: NA
   cajfisher: NA
   chunweizhu: NA
   cnncnnzh: NA
   cote3804: NA
-  czhengsci: NA
   daniel-sintef: NA
   dongsenfo: NA
   eantono: NA
-  esoteric-ephemera: NA
   exenGT: NA
   fyalcin: NA
   gcheon: NA
@@ -192,7 +188,6 @@ unresolved:
   kbuma: NA
   leicheng: NA
   lllangWV: NA
-  matthewkuner: NA
   mbercx: NA
   minhsueh: NA
   nathan-diodan: NA
@@ -200,7 +195,6 @@ unresolved:
   ndardenne: NA
   nishiyamat: NA
   nkeilbart: NA
-  orionarcher: NA
   packer-jp: NA
   petousis: NA
   pmla: NA
@@ -212,18 +206,25 @@ unresolved:
   skasamatsu: NA
   slee-lab: NA
   tawe141: NA
-  tomdemeyere: NA
-  tsmathis: NA
   v1kko: NA
   w6ye: NA
   wladerer: NA
   wmdrichards: NA
   xivh: NA
   xjf729: NA
-  yang-ruoxi: NA
   yantar92: NA
   yiming-xu: NA
   zooks97: NA
+manual:
+  esoteric-ephemera: United States
+  benrich37: United States
+  orionarcher: United States
+  yang-ruoxi: United States
+  tsmathis: United States
+  tomdemeyere: Germany
+  bernstei: United States
+  matthewkuner: United States
+  czhengsci: United States
 from_pmg_doc:
   '755452800': China
   CifLord: United States

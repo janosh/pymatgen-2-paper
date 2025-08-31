@@ -88,5 +88,7 @@ fig.update_layout(
     bargap=0.2,
     title_x=0.5,
 )
+fig.layout.margin.update(t=50, l=0, b=0, r=0)
+fig.layout.legend.update(x=0, y=1)
 
 fig.write_image("pr_since_1st.svg")

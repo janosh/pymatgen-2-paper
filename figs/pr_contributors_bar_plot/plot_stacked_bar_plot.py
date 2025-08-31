@@ -1,8 +1,9 @@
 # /// script
 # requires-python = ">=3.12"
 # dependencies = [
-#     "matplotlib",
+#     "plotly",
 #     "pandas",
+#     "kaleido",
 # ]
 # ///
 import json
@@ -10,8 +11,8 @@ from collections import defaultdict
 from datetime import datetime
 import math
 
-import matplotlib.pyplot as plt
 import pandas as pd
+import plotly.express as px
 
 # Load PR data
 with open("_pr_contributors.json") as f:
@@ -57,13 +58,35 @@ colors = [
     "#9467bd",  # purple
 ]
 
-df.plot(kind="bar", stacked=True, color=colors, width=0.8)
+fig = px.bar(
+    df,
+    x=df.index.astype(str),
+    y=columns,
+    title="Pull Requests by Year",
+    labels={
+        "x": "Year",
+        "value": "Total Number of Pull Requests",
+        "variable": "Year Since First PR",
+    },
+    color_discrete_sequence=colors,
+)
 
-plt.title("Pull Requests by Year")
-plt.xlabel("Year")
-plt.ylabel("Total Number of Pull Requests")
-plt.legend(title="Year Since First PR", reverse=True)
-plt.tight_layout()
-plt.grid(axis="y", linestyle="--", alpha=0.4)
+fig.update_layout(
+    barmode="stack",
+    legend_title_text="Year Since First PR",
+    legend=dict(traceorder="reversed"),
+    xaxis_title="Year",
+    yaxis_title="Total Number of Pull Requests",
+    xaxis=dict(type="category"),  # ensure discrete years
+    yaxis=dict(
+        gridcolor="lightgray",
+        gridwidth=1,
+        griddash="dash",
+    ),
+    plot_bgcolor="white",
+    paper_bgcolor="white",
+    bargap=0.2,
+    title_x=0.5,
+)
 
-plt.savefig("pr_since_1st.svg", dpi=300, format="svg")
+fig.write_image("pr_since_1st.svg")

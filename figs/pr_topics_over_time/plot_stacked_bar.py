@@ -1,16 +1,17 @@
 # /// script
 # requires-python = ">=3.12"
 # dependencies = [
-#     "matplotlib",
+#     "kaleido",
 #     "pandas",
+#     "plotly",
 # ]
 # ///
 import json
 import re
 
-import matplotlib as mpl
-import matplotlib.pyplot as plt
 import pandas as pd
+import plotly.express as px
+
 
 # 1) Load data
 with open("_topics.json", encoding="utf-8") as f:
@@ -63,16 +64,44 @@ df = pd.DataFrame(rows)
 counts = df.groupby(["year", "theme"])["count"].sum().unstack(fill_value=0).sort_index()
 
 # 4) Stacked bar plot with counts
-fig, ax = plt.subplots(figsize=(10, 6))
-colors = mpl.colormaps.get_cmap("tab20").colors
-counts.plot(kind="bar", stacked=True, ax=ax, color=colors[: len(counts.columns)])
+colors = px.colors.qualitative.D3
 
-ax.set_title("PR Topics by Theme", fontsize=20)
-ax.set_ylabel("Number of PRs", fontsize=16)
-ax.set_xlabel("Year", fontsize=16)
-ax.legend(bbox_to_anchor=(1.02, 1), loc="upper left", fontsize=14, reverse=True)
-ax.tick_params(axis="both", labelsize=12)
-plt.xticks(rotation=45, ha="right")
+fig = px.bar(
+    counts,
+    x=counts.index.astype(str),
+    y=counts.columns,
+    title="PR Topics by Theme",
+    labels={"value": "Number of PRs", "x": "Year", "variable": "Theme"},
+    color_discrete_sequence=colors[: len(counts.columns)],
+)
 
-plt.tight_layout()
-plt.savefig("stacked_bar.svg", format="svg")
+fig.update_layout(
+    barmode="stack",
+    title_x=0.5,  # center title
+    title_font=dict(size=20),
+    xaxis_title="Year",
+    yaxis_title="Number of PRs",
+    xaxis=dict(
+        tickangle=45,
+        tickfont=dict(size=12),
+        type="category",  # ensures categorical x-axis
+    ),
+    yaxis=dict(
+        tickfont=dict(size=12),
+        gridcolor="lightgray",
+        griddash="dash",  # dashed horizontal gridlines
+    ),
+    legend=dict(
+        title="Theme",
+        traceorder="reversed",
+        x=1.02,
+        y=1,  # move outside plot, upper left like mpl
+        xanchor="left",
+        yanchor="top",
+        font=dict(size=14),
+    ),
+    plot_bgcolor="white",
+    paper_bgcolor="white",
+)
+
+fig.write_image("stacked_bar.svg")

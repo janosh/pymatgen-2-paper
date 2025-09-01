@@ -95,6 +95,7 @@ fig.layout.geo.update(
     showcoastlines=False,
     projection_type="natural earth",
 )
+fig.update_geos(fitbounds="locations", visible=True)
 
 fig.write_image("pr_contributors_worldmap.svg", width=1200, height=600, scale=3)
 fig.show()

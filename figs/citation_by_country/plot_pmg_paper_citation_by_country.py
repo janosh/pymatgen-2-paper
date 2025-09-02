@@ -168,6 +168,7 @@ fig.layout.title.update(text=fig_title, font=dict(size=28), x=0.5, xanchor="cent
 fig.layout.geo.update(
     showframe=True, showcoastlines=False, projection_type="natural earth"
 )
+fig.update_geos(fitbounds="locations", visible=True)
 
 fig.write_image("citations-by-country.svg", width=1200, height=600, scale=3)
 fig.show()

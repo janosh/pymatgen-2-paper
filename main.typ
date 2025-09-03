@@ -208,14 +208,6 @@ Case study: Battery materials research with #pmg
 
 = Community Impact
 
-#figure(
-  // pdf-img("figs/total-contributor-activity-over-time/contributors-over-time.pdf", width: 100%),
-  image("figs/total-contributor-activity-over-time/contributors-over-time.svg"),
-  caption: [
-    #pmg's growth over time, with contributors and commits.
-  ],
-)<fig:contributions-over-time>
-
 #pmg's impact on the materials science community includes:
 
 + Accelerated research across various domains //@jain2016computational

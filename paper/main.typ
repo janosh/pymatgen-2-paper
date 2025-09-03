@@ -1,6 +1,9 @@
-#import "./template.typ": template, float
+#import "./template.typ": float, template
+#import "@preview/muchpdf:0.1.0": muchpdf
 
 #let pmg = "pymatgen"
+#let pdf-img(path, ..args) = muchpdf(read(path, encoding: none), ..args)
+
 #let title = "pymatgen: A decade of community growth, new functionality, and future prospects"
 
 // commands for attributed notes in different colors and with initials prefix
@@ -53,7 +56,10 @@
   citation: [MP et al., _Digital Discovery_, 2025, *1*, 1---2],
 )
 
-#align(center, image("figs/pymatgen-2-logo.svg", width: 20%))
+#figure(
+  image("figs/pymatgen-2-logo.svg", width: 20%),
+  caption: [Logo for the pymatgen 2 release.],
+)
 
 
 
@@ -63,6 +69,14 @@
 = Abstract
 
 We present the second major release of the Python Materials Genomics (#pmg) library, reflecting on a decade of community growth and established best practices. This version builds on #pmg's robust, open-source foundation, emphasizing its collaborative nature. Over the past decade, #pmg has thrived as one of the largest open-source materials science codebases. We detail how #pmg aids modern computational materials science, its adaptation to changing demands, and lessons learned from its growing community.
+
+#figure(
+  image("figs/mindmap.svg"),
+  caption: [Topics and tools in the pymatgen ecosystem.],
+)
+
+
+
 
 = Introduction
 
@@ -102,6 +116,8 @@ Computational materials science requires powerful, flexible, and reliable softwa
 
 #pmg has been applied in diverse fields, including battery materials, catalysis, thermoelectrics, and materials discovery using machine learning // @jain2016computational.
 
+#image("figs/Screenshot 2025-09-03 at 18.44.12.png")
+
 == Downstream Packages
 
 #pmg has spawned several downstream packages, including:
@@ -111,22 +127,17 @@ Computational materials science requires powerful, flexible, and reliable softwa
 + `matminer`: Data mining in materials science //@ward2018matminer
 + `pymatgen-analysis-diffusion`: Diffusion analysis tools @deng_datadriven_2017
 + `pymatgen-analysis-alloys`: Alloy analysis tools
++ `doped`, `ShakeNBreak`: Defect modelling tools, building on `pymatgen-analysis-defects` & `PyCDT`.
 
 These packages demonstrate #pmg's extensibility and its role in the materials informatics ecosystem @butler_machine_2018.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+#SK[For instance, the utility of #pmg as a foundational tool in computational materials science workflows is well-illustrated by its usage in the modelling of crystal defects...
+  + Defect simulations require many steps, using a wide range of core tools (structure manipulations, symmetry analyses, efficient I/O w/electronic structure codes, lightweight metadata & serialization for reproducibility, interface with Materials Project...)
+  + *But*, with specific requirements for their special case (e.g. efficient & appropriate supercell generation, point symmetries of defect sites in symmetry-breaking supercells, efficient algorithms for large structure analyses, calculation parameter consistency checks, targeted distortions, site multiplicities & degeneracies, smart algorithms for sub-phase diagrams...).
+  + Defect modelling is a rapidly growing field, due to advances in computational power and methods making these calculations tractable, along with the importance of these species to diverse materials applications. These community tools, facilitated by the foundational toolkit of #pmg, have accelerated and expanded computational defect investigations, and have reducing the barrier to entry for new researchers in this field.
+  + (If we want a figure here, could make a diagram showing the workflow: Pull materials from MP -> Oxi-state Guess w/PMG -> Vacancy generation w/`doped` (via PMG etc) -> Electrostatic analysis with PMG (Ewald tools) -> VASP DFT I/O w/PMG -> Energetic & Structural (w/`doped` & PMG) analysis; from 10.1088/2515-7655/ade916, as example).
+]
 
 
 
@@ -156,6 +167,17 @@ These tools often complement each other in materials science workflows. #pmg's s
 Since then, #pmg has expanded significantly, incorporating new features and adapting to the evolving landscape of materials informatics @butler_machine_2018.
 
 = New Features and Case Study
+
+#figure(
+  image("figs/pr-topics-over-time-stacked-bar.svg"),
+  caption: [Pull request topics over time in the pymatgen repository.],
+)
+
+#figure(
+  image("figs/commits_per_package_heatmap.svg"),
+  caption: [Monthly commits per pymatgen subpackage (heatmap).],
+)
+
 
 Recent additions to #pmg include:
 
@@ -196,13 +218,7 @@ Case study: Battery materials research with #pmg
 
 = Community Impact
 
-#figure(
-  // pdf-img("figs/total-contributor-activity-over-time/contributors-over-time.pdf", width: 100%),
-  image("figs/total-contributor-activity-over-time/contributors-over-time.svg"),
-  caption: [
-    #pmg's growth over time, with contributors and commits.
-  ],
-)<fig:contributions-over-time>
+#SK[This is a nice figure, though I would say it shows community _involvement_ (which is kind of a step ahead of community _impact_). What about also showing something like downloads over time (which can be quantitatively inaccurate but should show the trend? 'without mirrors'), and packages requiring #pmg over time? (Edit: I see from the GitHub repo that this is in progress)]
 
 #pmg's impact on the materials science community includes:
 
@@ -216,9 +232,29 @@ The library's impact is evident in its usage in high-impact publications and int
 
 = Challenges and Solutions
 
+#figure(
+  image("figs/pr-since-1st.svg"),
+  caption: [Pull requests per contributor since their first contribution.],
+)
+
+
+
+
+#figure(
+  image("figs/active-contributors-colored.svg"),
+  caption: [Active contributors to #pmg over time.],
+)
+
+#figure(
+  image("figs/pr_contributors_worldmap.svg"),
+  caption: [Geographic distribution of #pmg pull request contributors.],
+)
+
+
 Key challenges in #pmg's development:
 
 + Code Maintenance: Implemented comprehensive unit testing and continuous integration @ong_python_2013
+#SK[Just noting, as an external user/contributor, something I would find insightful as a reader would be hearing about the need/workload for dedicated maintainers, and how this can be minimised (but I guess can never be avoided)]
 + Performance: Optimized critical paths and used compiled languages for key sections
 + Documentation: Adopted auto-documentation tools and prioritized documentation contributions
 + Compatibility: Implemented cross-platform testing and version management

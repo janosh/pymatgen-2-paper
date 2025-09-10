@@ -7,12 +7,16 @@
 # ]
 # ///
 import json
+import math
+import os
 from collections import defaultdict
 from datetime import datetime
-import math
 
 import pandas as pd
 import plotly.express as px
+
+ROOT = os.path.dirname(os.path.dirname(__file__))
+
 
 # Load PR data
 with open("_pr_contributors.json") as f:
@@ -91,4 +95,4 @@ fig.update_layout(
 fig.layout.margin.update(t=50, l=0, b=0, r=0)
 fig.layout.legend.update(x=0, y=1)
 
-fig.write_image("pr_since_1st.svg")
+fig.write_image(f"{ROOT}/paper/figs/pr_since_1st.svg")

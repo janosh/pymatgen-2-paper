@@ -10,10 +10,12 @@ with the color of bars showing total number of commits.
 import os
 import subprocess
 
-import plotly
 import pandas as pd
+import plotly
 import plotly.express as px
 import plotly.graph_objects as go
+
+ROOT = os.path.dirname(os.path.dirname(__file__))
 
 
 COLORSCALE = "magma"
@@ -123,5 +125,5 @@ fig.layout.yaxis.update(
 )
 fig.layout.font.update(size=14)
 
-fig.write_image("active_contributors_colored.svg")
+fig.write_image(f"{ROOT}/paper/figs/active_contributors_colored.svg")
 fig.show()

@@ -7,10 +7,13 @@
 # ]
 # ///
 import json
+import os
 import re
 
 import pandas as pd
 import plotly.express as px
+
+ROOT = os.path.dirname(os.path.dirname(__file__))
 
 
 # 1) Load data
@@ -104,4 +107,4 @@ fig.update_layout(
     paper_bgcolor="white",
 )
 
-fig.write_image("stacked_bar.svg")
+fig.write_image(f"{ROOT}/paper/figs/pr-topics-over-time-stacked-bar.svg")

@@ -13,8 +13,12 @@ Plot citations of 1st pymatgen paper over year bar plot.
 https://scholar.google.com/scholar?hl=en&as_sdt=2005&sciodt=0,5&cites=6511812476881528112&scipsc=&q=#d=gs_md_hist&t=1756930044910
 """
 
+from pathlib import Path
+
 import pandas as pd
 import plotly.express as px
+
+ROOT = Path(__file__).resolve().parents[2]
 
 
 df = pd.read_csv("citations.csv")
@@ -49,10 +53,7 @@ fig.update_layout(
         griddash="dot",
     ),
 )
-fig.update_traces(
-    textposition="outside",
-    textfont=dict(size=14, color="black")
-)
+fig.update_traces(textposition="outside", textfont=dict(size=14, color="black"))
 
 # fig.show()
-fig.write_image("citations.svg")
+fig.write_image(f"{ROOT}/paper/figs/citations.svg")

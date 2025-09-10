@@ -25,8 +25,7 @@ from pymatviz.utils.plotting import pick_max_contrast_color
 NUM_OF_MAIN_TOPICS: int = 5
 NUM_OF_SUB_TOPICS: int = 4
 
-# %%
-# Step 1: Get topics from OpenAlex for 1st pymatgen paper
+# %% Step 1: Get topics from OpenAlex for 1st pymatgen paper
 
 
 params = {"filter": "cites:w2015197254", "group_by": "primary_topic.id", "per_page": 50}
@@ -46,8 +45,7 @@ print("Topics from OpenAlex:")
 for topic, count in topic_counter.items():
     print(f"  {topic:<60}{count}")
 
-# %%
-# Step 2: Use LLM to group topics
+# %% Step 2: Use LLM to group topics
 
 
 client = OpenAI()  # https://platform.openai.com/docs/overview
@@ -202,6 +200,5 @@ data = {"title": "pymatgen", "branches": branches}
 with open("_llm_summarized_topics.yml", "w", encoding="utf-8") as f:
     yaml.safe_dump(data, f, sort_keys=False, allow_unicode=True)
 
-# %%
-# Step 4: Compile Typst to SVG
+# %% Step 4: Compile Typst to SVG
 subprocess.run(["typst", "compile", "mindmap.typ", "mindmap.svg"])

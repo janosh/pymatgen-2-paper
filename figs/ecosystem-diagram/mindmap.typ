@@ -57,21 +57,21 @@
   )
 
   // topics
-  for (i, b) in data.branches.enumerate() {
-    let ang = start-angle - i * angle-step
-    let parent-col = rgb(b.color)
-    let parent-text-col = rgb(b.text_color) // from YAML
-    let sub-start = (if b.start_angle_deg == none { 45 } else { b.start_angle_deg }) * 1deg
+  for (topic_idx, branch) in data.branches.enumerate() {
+    let ang = start-angle - topic_idx * angle-step
+    let parent-col = rgb(branch.color)
+    let parent-text-col = rgb(branch.text_color) // from YAML
+    let sub-start = (if branch.start_angle_deg == none { 45 } else { branch.start_angle_deg }) * 1deg
 
     let pos = (calc.cos(ang) * r1, calc.sin(ang) * r1)
-    node(pos, b.title, color: parent-col, text-color: parent-text-col, level: "1")
+    node(pos, branch.title, color: parent-col, text-color: parent-text-col, level: "1")
     connect(center, pos, parent-col)
 
     // evenly distribute children around the branch angle
-    let n_children = b.children.len()
-    let spread = sub-step * (n_children - 1)
-    for (j, child) in b.children.enumerate() {
-      let offset = -spread / 2 + j * sub-step
+    let num_children = branch.children.len()
+    let spread = sub-step * (num_children - 1)
+    for (child_idx, child) in branch.children.enumerate() {
+      let offset = -spread / 2 + child_idx * sub-step
       let sub-ang = ang + offset
       let sub-pos = (
         pos.at(0) + calc.cos(sub-ang) * r2,
@@ -85,7 +85,6 @@
   }
 })
 
-// Load colorbar
 #v(5pt)
 #align(center, box(
   width: 12cm,
@@ -103,12 +102,12 @@
     )
 
     // Ticks and labels (log scale: 1, 10, 100, 1000)
-    let ticks = ("1", "10", "100", "1000")
-    let n = ticks.len() - 1
-    for (i, t) in ticks.enumerate() {
-      let x = -cbar_width / 2 + (cbar_width * i / n)
-      line((x, -0.15cm), (x, -0.25cm), stroke: 0.7pt)
-      content((x, -0.45cm), align(center, text(size: 7pt, t)))
+    let tick_labels = ("1", "10", "100", "1000")
+    let num_ticks = tick_labels.len() - 1
+    for (tick_idx, tick_label) in tick_labels.enumerate() {
+      let tick_x = -cbar_width / 2 + (cbar_width * tick_idx / num_ticks)
+      line((tick_x, -0.15cm), (tick_x, -0.25cm), stroke: 0.7pt)
+      content((tick_x, -0.45cm), align(center, text(size: 7pt, tick_label)))
     }
     // Axis label
     content((0, -0.9cm), align(center, text(size: 8pt, [Citation Counts (log)])))

@@ -10,11 +10,15 @@
 # ]
 # ///
 
+import os
+
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 import pycountry
 import yaml
+
+ROOT = os.path.dirname(os.path.dirname(__file__))
 
 
 def country_to_iso3(name: str) -> str:
@@ -97,5 +101,7 @@ fig.layout.geo.update(
 )
 fig.update_geos(fitbounds="locations", visible=True)
 
-fig.write_image("pr_contributors_worldmap.svg", width=1200, height=600, scale=3)
+fig.write_image(
+    f"{ROOT}/figs/pr_contributors_worldmap.svg", width=1200, height=600, scale=3
+)
 fig.show()

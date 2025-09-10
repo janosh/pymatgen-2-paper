@@ -24,6 +24,7 @@ fig = px.bar(
     x="Year",
     y="Citations",
     labels={"Year": "Year", "Citations": "Number of Citations"},
+    text="Citations",
 )
 
 fig.update_layout(
@@ -47,6 +48,10 @@ fig.update_layout(
         gridwidth=2,
         griddash="dot",
     ),
+)
+fig.update_traces(
+    textposition="outside",
+    textfont=dict(size=14, color="black")
 )
 
 # fig.show()

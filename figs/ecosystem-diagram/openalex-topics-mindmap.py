@@ -201,4 +201,4 @@ with open("_llm_summarized_topics.yml", "w", encoding="utf-8") as f:
     yaml.safe_dump(data, f, sort_keys=False, allow_unicode=True)
 
 # %% Step 4: Compile Typst to SVG
-subprocess.run(["typst", "compile", "mindmap.typ", "mindmap.svg"])
+subprocess.run(["typst", "compile", "mindmap.typ", "../../paper/figs/mindmap.svg"])

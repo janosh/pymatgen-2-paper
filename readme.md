@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img alt="Pymatgen Logo Idea" src="figs/pymatgen-2-logo.svg" height="90" />
+  <img alt="Pymatgen Logo Idea" src="paper/figs/pymatgen-2-logo.svg" height="90" />
   <br>
   Pymatgen 2nd Paper
 </h1>

@@ -7,13 +7,13 @@
 # ]
 # ///
 import json
-import os
 import re
+from pathlib import Path
 
 import pandas as pd
 import plotly.express as px
 
-ROOT = os.path.dirname(os.path.dirname(__file__))
+ROOT = Path(__file__).resolve().parents[2]
 
 
 # 1) Load data

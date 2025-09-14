@@ -9,13 +9,14 @@ with the color of bars showing total number of commits.
 
 import os
 import subprocess
+from pathlib import Path
 
 import pandas as pd
 import plotly
 import plotly.express as px
 import plotly.graph_objects as go
 
-ROOT = os.path.dirname(os.path.dirname(__file__))
+ROOT = Path(__file__).resolve().parents[2]
 
 
 COLORSCALE = "magma"

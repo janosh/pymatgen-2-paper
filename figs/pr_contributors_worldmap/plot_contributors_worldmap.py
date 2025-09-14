@@ -10,7 +10,7 @@
 # ]
 # ///
 
-import os
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -18,7 +18,7 @@ import plotly.graph_objects as go
 import pycountry
 import yaml
 
-ROOT = os.path.dirname(os.path.dirname(__file__))
+ROOT = Path(__file__).resolve().parents[2]
 
 
 def country_to_iso3(name: str) -> str:

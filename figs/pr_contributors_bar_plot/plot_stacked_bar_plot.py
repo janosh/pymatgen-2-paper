@@ -8,14 +8,14 @@
 # ///
 import json
 import math
-import os
+from pathlib import Path
 from collections import defaultdict
 from datetime import datetime
 
 import pandas as pd
 import plotly.express as px
 
-ROOT = os.path.dirname(os.path.dirname(__file__))
+ROOT = Path(__file__).resolve().parents[2]
 
 
 # Load PR data

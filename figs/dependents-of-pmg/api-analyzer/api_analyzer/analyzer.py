@@ -57,6 +57,10 @@ class ApiAnalyzerPy(ast.NodeVisitor):
             if isinstance(base, ast.Name) and base.id in self.aliases:
                 full = f"{self.aliases[base.id]}.{node.func.attr}"
                 self.usage[full] += 1
+        elif isinstance(node.func, ast.Name):
+            if node.func.id in self.aliases:
+                full = self.aliases[node.func.id]
+                self.usage[full] += 1
         self.generic_visit(node)
 
 

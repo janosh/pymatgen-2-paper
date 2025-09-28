@@ -3,14 +3,14 @@ ci:
 
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.10
+    rev: v0.13.2
     hooks:
       - id: ruff
         args: ["--fix", "--per-file-ignores", "*.ipynb:E402"]
       - id: ruff-format
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: check-yaml
       - id: end-of-file-fixer
@@ -25,7 +25,7 @@ repos:
         args: [--check-filenames, --ignore-words-list, atomate]
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.44.0
+    rev: v0.45.0
     hooks:
       - id: markdownlint
         # MD013: line too long

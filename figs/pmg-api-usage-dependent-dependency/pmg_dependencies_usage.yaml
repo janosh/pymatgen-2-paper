@@ -1,0 +1,848 @@
+bibtexparser:
+  alchemy:
+    aliases: {}
+    usage: {}
+  core:
+    aliases: {}
+    usage: {}
+  electronic_structure:
+    aliases: {}
+    usage: {}
+  entries:
+    aliases: {}
+    usage: {}
+  phonon:
+    aliases: {}
+    usage: {}
+  symmetry:
+    aliases: {}
+    usage: {}
+  transformations:
+    aliases: {}
+    usage: {}
+joblib:
+  alchemy:
+    aliases: {}
+    usage: {}
+  core:
+    aliases: {}
+    usage: {}
+  electronic_structure:
+    aliases: {}
+    usage: {}
+  entries:
+    aliases:
+      Parallel: joblib.Parallel
+      delayed: joblib.delayed
+    usage:
+      joblib.Parallel: 1
+      joblib.delayed: 1
+  phonon:
+    aliases: {}
+    usage: {}
+  symmetry:
+    aliases: {}
+    usage: {}
+  transformations:
+    aliases:
+      Parallel: joblib.Parallel
+      delayed: joblib.delayed
+    usage:
+      joblib.Parallel: 1
+      joblib.delayed: 1
+matplotlib:
+  alchemy:
+    aliases: {}
+    usage: {}
+  core:
+    aliases: {}
+    usage: {}
+  electronic_structure:
+    aliases:
+      mlines: matplotlib.lines
+      plt: matplotlib.pyplot
+      LineCollection: matplotlib.collections.LineCollection
+      GridSpec: matplotlib.gridspec.GridSpec
+    usage:
+      matplotlib.pyplot.setp: 2
+      matplotlib.pyplot.tight_layout: 23
+      matplotlib.pyplot.savefig: 3
+      matplotlib.pyplot.show: 3
+      matplotlib.lines.Line2D: 8
+      matplotlib.pyplot.gcf: 1
+      matplotlib.pyplot.close: 1
+      matplotlib.pyplot.subplots: 2
+      matplotlib.pyplot.subplot: 17
+      matplotlib.pyplot.figure: 3
+      matplotlib.gridspec.GridSpec: 2
+      matplotlib.pyplot.subplots_adjust: 1
+      matplotlib.collections.LineCollection: 1
+      matplotlib.pyplot.axvline: 6
+      matplotlib.pyplot.text: 4
+      matplotlib.pyplot.semilogy: 1
+      matplotlib.pyplot.xlabel: 4
+      matplotlib.pyplot.xlim: 2
+      matplotlib.pyplot.plot: 5
+      matplotlib.pyplot.semilogx: 1
+      matplotlib.pyplot.ylabel: 1
+      matplotlib.pyplot.xticks: 1
+      matplotlib.pyplot.yticks: 1
+      matplotlib.pyplot.legend: 1
+      matplotlib.pyplot.grid: 1
+  entries:
+    aliases: {}
+    usage: {}
+  phonon:
+    aliases:
+      plt: matplotlib.pyplot
+      colors: matplotlib.colors
+      LineCollection: matplotlib.collections.LineCollection
+      LinearSegmentedColormap: matplotlib.colors.LinearSegmentedColormap
+    usage:
+      matplotlib.pyplot.savefig: 4
+      matplotlib.pyplot.close: 4
+      matplotlib.pyplot.show: 5
+      matplotlib.pyplot.subplots: 1
+      matplotlib.colors.append: 1
+      matplotlib.collections.LineCollection: 1
+      matplotlib.pyplot.ylim: 1
+      matplotlib.pyplot.plot: 1
+      matplotlib.pyplot.xlim: 1
+      matplotlib.pyplot.tight_layout: 2
+      matplotlib.colors.LinearSegmentedColormap.from_list: 1
+      matplotlib.colors.SymLogNorm: 1
+      matplotlib.pyplot.colorbar: 1
+  symmetry:
+    aliases: {}
+    usage: {}
+  transformations:
+    aliases: {}
+    usage: {}
+monty:
+  alchemy:
+    aliases:
+      MSONable: monty.json.MSONable
+      jsanitize: monty.json.jsanitize
+    usage:
+      monty.json.jsanitize: 2
+  core:
+    aliases:
+      lazy_property: monty.functools.lazy_property
+      MSONable: monty.json.MSONable
+      deprecated: monty.dev.deprecated
+      MontyEncoder: monty.json.MontyEncoder
+      loadfn: monty.serialization.loadfn
+      lcm: monty.fractions.lcm
+      zopen: monty.io.zopen
+      MontyDecoder: monty.json.MontyDecoder
+      gcd: monty.fractions.gcd
+      gcd_float: monty.fractions.gcd_float
+    usage:
+      monty.dev.deprecated: 8
+      monty.serialization.loadfn: 3
+      monty.fractions.lcm: 4
+      monty.io.zopen: 11
+      monty.fractions.gcd_float: 1
+      monty.fractions.gcd: 2
+  electronic_structure:
+    aliases:
+      MSONable: monty.json.MSONable
+      requires: monty.dev.requires
+      jsanitize: monty.json.jsanitize
+      cd: monty.os.cd
+      deprecated: monty.dev.deprecated
+      dumpfn: monty.serialization.dumpfn
+      loadfn: monty.serialization.loadfn
+    usage:
+      monty.dev.requires: 2
+      monty.os.cd: 1
+      monty.json.jsanitize: 4
+      monty.dev.deprecated: 2
+      monty.serialization.loadfn: 3
+      monty.serialization.dumpfn: 3
+  entries:
+    aliases:
+      cached_class: monty.design_patterns.cached_class
+      deprecated: monty.dev.deprecated
+      MSONable: monty.json.MSONable
+      loadfn: monty.serialization.loadfn
+      MontyDecoder: monty.json.MontyDecoder
+      MontyEncoder: monty.json.MontyEncoder
+    usage:
+      monty.serialization.loadfn: 11
+      monty.dev.deprecated: 1
+      monty.json.MontyDecoder: 12
+  phonon:
+    aliases:
+      lazy_property: monty.functools.lazy_property
+      MSONable: monty.json.MSONable
+      requires: monty.dev.requires
+      jsanitize: monty.json.jsanitize
+    usage:
+      monty.dev.requires: 1
+      monty.json.jsanitize: 1
+  symmetry:
+    aliases:
+      requires: monty.dev.requires
+      cached_class: monty.design_patterns.cached_class
+      loadfn: monty.serialization.loadfn
+      MontyEncoder: monty.json.MontyEncoder
+    usage:
+      monty.dev.requires: 1
+      monty.serialization.loadfn: 3
+  transformations:
+    aliases:
+      MSONable: monty.json.MSONable
+      requires: monty.dev.requires
+      lcm: monty.fractions.lcm
+    usage:
+      monty.fractions.lcm: 4
+      monty.dev.requires: 1
+      monty.json.MSONable.as_dict: 1
+networkx:
+  alchemy:
+    aliases: {}
+    usage: {}
+  core:
+    aliases: {}
+    usage: {}
+  electronic_structure:
+    aliases: {}
+    usage: {}
+  entries:
+    aliases: {}
+    usage: {}
+  phonon:
+    aliases: {}
+    usage: {}
+  symmetry:
+    aliases:
+      nx: networkx
+    usage:
+      networkx.Graph: 2
+      networkx.edge_dfs: 1
+  transformations:
+    aliases: {}
+    usage: {}
+numpy:
+  alchemy:
+    aliases: {}
+    usage: {}
+  core:
+    aliases:
+      np: numpy
+      norm: numpy.linalg.norm
+    usage:
+      numpy.arange: 18
+      numpy.asarray: 26
+      numpy.array: 161
+      numpy.ones: 2
+      numpy.einsum: 2
+      numpy.where: 8
+      numpy.isclose: 6
+      numpy.round: 16
+      numpy.transpose: 16
+      numpy.allclose: 24
+      numpy.zeros: 22
+      numpy.dot: 105
+      numpy.cross: 26
+      numpy.roll: 2
+      numpy.argmin: 3
+      numpy.logical_not: 3
+      numpy.argmax: 2
+      numpy.ceil: 6
+      numpy.max: 13
+      numpy.abs: 25
+      numpy.poly: 1
+      numpy.all: 12
+      numpy.eye: 14
+      numpy.matmul: 19
+      numpy.sqrt: 50
+      numpy.min: 11
+      numpy.nonzero: 14
+      numpy.tan: 3
+      numpy.rint: 4
+      numpy.arctan: 10
+      numpy.argsort: 3
+      numpy.sum: 16
+      numpy.ravel: 1
+      numpy.atleast_2d: 1
+      numpy.unique: 4
+      numpy.mod: 10
+      numpy.add: 3
+      numpy.multiply: 1
+      numpy.subtract: 4
+      numpy.concatenate: 9
+      numpy.mean: 5
+      numpy.tile: 4
+      numpy.cumsum: 1
+      numpy.shape: 2
+      numpy.around: 1
+      numpy.append: 1
+      numpy.inner: 2
+      numpy.floor: 6
+      numpy.equal: 2
+      numpy.linspace: 1
+      numpy.clip: 2
+      numpy.arccos: 3
+      numpy.radians: 1
+      numpy.cos: 2
+      numpy.sin: 2
+      numpy.greater: 1
+      numpy.logical_and: 4
+      numpy.argwhere: 1
+      numpy.identity: 3
+      numpy.diag: 3
+      numpy.prod: 1
+      numpy.reshape: 4
+      numpy.iscomplexobj: 1
+      numpy.ascontiguousarray: 9
+      numpy.any: 6
+      numpy.zeros_like: 2
+      numpy.ones_like: 1
+      numpy.bitwise_and: 2
+      numpy.triu_indices: 1
+      numpy.isin: 1
+      numpy.empty: 2
+      numpy.isnan: 2
+      numpy.divide: 2
+      numpy.fill_diagonal: 2
+      numpy.amin: 1
+      numpy.linalg.norm: 2
+      numpy.array_equal: 1
+      numpy.average: 2
+  electronic_structure:
+    aliases:
+      np: numpy
+    usage:
+      numpy.array: 78
+      numpy.sum: 30
+      numpy.divide: 8
+      numpy.mean: 4
+      numpy.asarray: 4
+      numpy.equal: 1
+      numpy.hstack: 3
+      numpy.argmin: 6
+      numpy.arange: 5
+      numpy.abs: 12
+      numpy.log: 5
+      numpy.sign: 5
+      numpy.trapezoid: 4
+      numpy.sqrt: 6
+      numpy.imag: 2
+      numpy.argmax: 2
+      numpy.max: 7
+      numpy.min: 7
+      numpy.where: 5
+      numpy.diff: 3
+      numpy.linspace: 5
+      numpy.append: 2
+      numpy.zeros: 12
+      numpy.dot: 24
+      numpy.cumsum: 2
+      numpy.eye: 3
+      numpy.all: 11
+      numpy.trim_zeros: 2
+      numpy.vstack: 5
+      numpy.reshape: 12
+      numpy.loadtxt: 3
+      numpy.genfromtxt: 2
+      numpy.sort: 1
+      numpy.allclose: 5
+      numpy.arctan2: 4
+      numpy.cos: 6
+      numpy.sin: 7
+      numpy.matmul: 4
+      numpy.any: 4
+      numpy.count_nonzero: 3
+      numpy.cross: 1
+      numpy.split: 2
+      numpy.hsplit: 2
+      numpy.isnan: 1
+      numpy.concatenate: 8
+      numpy.ones: 3
+      numpy.mod: 1
+      numpy.outer: 3
+      numpy.ones_like: 1
+      numpy.logical_and: 3
+      numpy.nonzero: 2
+      numpy.array_split: 5
+      numpy.copy: 3
+      numpy.prod: 1
+      numpy.delete: 1
+  entries:
+    aliases:
+      np: numpy
+    usage:
+      numpy.isnan: 4
+      numpy.log: 2
+      numpy.allclose: 1
+      numpy.array: 7
+      numpy.nanmean: 1
+      numpy.where: 1
+      numpy.dot: 4
+      numpy.ones: 2
+      numpy.sqrt: 1
+      numpy.diag: 1
+      numpy.linspace: 2
+      numpy.median: 4
+      numpy.mean: 4
+      numpy.std: 4
+  phonon:
+    aliases:
+      np: numpy
+    usage:
+      numpy.array: 49
+      numpy.equal: 1
+      numpy.allclose: 9
+      numpy.searchsorted: 1
+      numpy.sinh: 3
+      numpy.trapezoid: 5
+      numpy.tanh: 2
+      numpy.log: 2
+      numpy.interp: 2
+      numpy.abs: 5
+      numpy.gradient: 2
+      numpy.max: 5
+      numpy.min: 5
+      numpy.where: 5
+      numpy.diff: 3
+      numpy.linspace: 7
+      numpy.append: 1
+      numpy.zeros: 9
+      numpy.sum: 2
+      numpy.dot: 17
+      numpy.cumsum: 2
+      numpy.exp: 1
+      numpy.choose: 1
+      numpy.multiply: 1
+      numpy.sqrt: 2
+      numpy.mean: 1
+      numpy.transpose: 1
+      numpy.real: 3
+      numpy.imag: 3
+      numpy.zeros_like: 1
+      numpy.asarray: 7
+      numpy.einsum: 1
+      numpy.unravel_index: 2
+      numpy.argmin: 3
+      numpy.argmax: 1
+      numpy.rollaxis: 1
+      numpy.diag: 2
+      numpy.arccos: 1
+      numpy.round: 1
+      numpy.degrees: 1
+  symmetry:
+    aliases:
+      np: numpy
+    usage:
+      numpy.array: 292
+      numpy.abs: 9
+      numpy.dot: 74
+      numpy.unique: 4
+      numpy.eye: 16
+      numpy.zeros: 13
+      numpy.all: 7
+      numpy.transpose: 2
+      numpy.round: 6
+      numpy.allclose: 25
+      numpy.cross: 5
+      numpy.mean: 2
+      numpy.any: 4
+      numpy.diag: 2
+      numpy.absolute: 8
+      numpy.log10: 1
+      numpy.around: 4
+      numpy.sort: 1
+      numpy.ones: 2
+      numpy.isclose: 24
+      numpy.trace: 1
+      numpy.isreal: 6
+      numpy.mod: 6
+      numpy.einsum: 1
+      numpy.where: 1
+      numpy.append: 1
+      numpy.sum: 1
+      numpy.atleast_1d: 1
+      numpy.identity: 2
+      numpy.matmul: 7
+      numpy.array_equal: 3
+      numpy.argmax: 1
+      numpy.concatenate: 1
+  transformations:
+    aliases:
+      np: numpy
+    usage:
+      numpy.int8: 2
+      numpy.array: 7
+      numpy.eye: 4
+      numpy.diag: 2
+      numpy.around: 2
+      numpy.dot: 6
+      numpy.ceil: 1
+      numpy.arange: 3
+      numpy.max: 2
+      numpy.min: 1
+      numpy.all: 1
+      numpy.absolute: 5
+      numpy.where: 4
+      numpy.amax: 2
+      numpy.asarray: 2
+      numpy.cross: 6
+      numpy.floor: 1
+orjson:
+  alchemy:
+    aliases:
+      orjson: orjson
+    usage:
+      orjson.dumps: 1
+  core:
+    aliases:
+      orjson: orjson
+    usage:
+      orjson.loads: 7
+      orjson.dumps: 2
+  electronic_structure:
+    aliases: {}
+    usage: {}
+  entries:
+    aliases:
+      orjson: orjson
+    usage:
+      orjson.loads: 2
+  phonon:
+    aliases:
+      orjson: orjson
+    usage:
+      orjson.dumps: 1
+  symmetry:
+    aliases: {}
+    usage: {}
+  transformations:
+    aliases: {}
+    usage: {}
+palettable:
+  alchemy:
+    aliases: {}
+    usage: {}
+  core:
+    aliases: {}
+    usage: {}
+  electronic_structure:
+    aliases:
+      palettable: palettable
+    usage: {}
+  entries:
+    aliases: {}
+    usage: {}
+  phonon:
+    aliases: {}
+    usage: {}
+  symmetry:
+    aliases: {}
+    usage: {}
+  transformations:
+    aliases: {}
+    usage: {}
+pandas:
+  alchemy:
+    aliases: {}
+    usage: {}
+  core:
+    aliases:
+      pd: pandas
+    usage:
+      pandas.DataFrame: 1
+  electronic_structure:
+    aliases: {}
+    usage: {}
+  entries:
+    aliases:
+      pd: pandas
+    usage:
+      pandas.DataFrame: 1
+      pandas.get_e_above_hull: 1
+  phonon:
+    aliases: {}
+    usage: {}
+  symmetry:
+    aliases: {}
+    usage: {}
+  transformations:
+    aliases: {}
+    usage: {}
+plotly:
+  alchemy:
+    aliases: {}
+    usage: {}
+  core:
+    aliases: {}
+    usage: {}
+  electronic_structure:
+    aliases: {}
+    usage: {}
+  entries:
+    aliases:
+      go: plotly.graph_objects
+    usage:
+      plotly.graph_objects.Figure: 2
+      plotly.graph_objects.Scatter: 2
+  phonon:
+    aliases: {}
+    usage: {}
+  symmetry:
+    aliases: {}
+    usage: {}
+  transformations:
+    aliases: {}
+    usage: {}
+requests:
+  alchemy:
+    aliases: {}
+    usage: {}
+  core:
+    aliases: {}
+    usage: {}
+  electronic_structure:
+    aliases: {}
+    usage: {}
+  entries:
+    aliases: {}
+    usage: {}
+  phonon:
+    aliases: {}
+    usage: {}
+  symmetry:
+    aliases: {}
+    usage: {}
+  transformations:
+    aliases: {}
+    usage: {}
+ruamel.yaml:
+  alchemy:
+    aliases: {}
+    usage: {}
+  core:
+    aliases:
+      YAML: ruamel.yaml.YAML
+    usage:
+      ruamel.yaml.YAML: 5
+  electronic_structure:
+    aliases: {}
+    usage: {}
+  entries:
+    aliases: {}
+    usage: {}
+  phonon:
+    aliases: {}
+    usage: {}
+  symmetry:
+    aliases: {}
+    usage: {}
+  transformations:
+    aliases: {}
+    usage: {}
+scipy:
+  alchemy:
+    aliases: {}
+    usage: {}
+  core:
+    aliases:
+      const: scipy.constants
+      polar: scipy.linalg.polar
+      fcluster: scipy.cluster.hierarchy.fcluster
+      linkage: scipy.cluster.hierarchy.linkage
+      squareform: scipy.spatial.distance.squareform
+      stats: scipy.stats
+      convolve1d: scipy.ndimage.convolve1d
+      Voronoi: scipy.spatial.Voronoi
+      expm: scipy.linalg.expm
+    usage:
+      scipy.linalg.polar: 2
+      scipy.spatial.distance.squareform: 4
+      scipy.cluster.hierarchy.linkage: 4
+      scipy.cluster.hierarchy.fcluster: 4
+      scipy.ndimage.convolve1d: 2
+      scipy.spatial.Voronoi: 1
+      scipy.linalg.expm: 2
+  electronic_structure:
+    aliases:
+      InterpolatedUnivariateSpline: scipy.interpolate.InterpolatedUnivariateSpline
+      _constant: scipy.constants.value
+      gaussian_filter1d: scipy.ndimage.gaussian_filter1d
+      hilbert: scipy.signal.hilbert
+      expit: scipy.special.expit
+      wasserstein_distance: scipy.stats.wasserstein_distance
+      constants: scipy.constants
+      fsolve: scipy.optimize.fsolve
+      distance: scipy.spatial.distance
+      scint: scipy.interpolate
+    usage:
+      scipy.interpolate.InterpolatedUnivariateSpline: 8
+      scipy.ndimage.gaussian_filter1d: 1
+      scipy.signal.hilbert: 2
+      scipy.stats.wasserstein_distance: 1
+      scipy.constants.value: 1
+      scipy.special.expit: 1
+      scipy.spatial.distance.correlation: 1
+      scipy.optimize.fsolve: 1
+      scipy.interpolate.splrep: 1
+      scipy.interpolate.splev: 1
+  entries:
+    aliases:
+      interp1d: scipy.interpolate.interp1d
+      curve_fit: scipy.optimize.curve_fit
+    usage:
+      scipy.interpolate.interp1d: 2
+      scipy.optimize.curve_fit: 2
+  phonon:
+    aliases:
+      const: scipy.constants
+      gaussian_filter1d: scipy.ndimage.gaussian_filter1d
+      wasserstein_distance: scipy.stats.wasserstein_distance
+      UnivariateSpline: scipy.interpolate.UnivariateSpline
+    usage:
+      scipy.constants.value: 13
+      scipy.ndimage.gaussian_filter1d: 1
+      scipy.stats.wasserstein_distance: 1
+      scipy.interpolate.UnivariateSpline: 2
+  symmetry:
+    aliases:
+      cluster: scipy.cluster
+    usage: {}
+  transformations:
+    aliases: {}
+    usage: {}
+spglib:
+  alchemy:
+    aliases: {}
+    usage: {}
+  core:
+    aliases: {}
+    usage: {}
+  electronic_structure:
+    aliases: {}
+    usage: {}
+  entries:
+    aliases: {}
+    usage: {}
+  phonon:
+    aliases: {}
+    usage: {}
+  symmetry:
+    aliases:
+      spglib: spglib
+    usage:
+      spglib.get_symmetry_dataset: 1
+      spglib.get_error_message: 1
+      spglib.get_pointgroup: 1
+      spglib.get_symmetry: 1
+      spglib.refine_cell: 1
+      spglib.find_primitive: 1
+      spglib.get_ir_reciprocal_mesh: 3
+      spglib.standardize_cell: 1
+  transformations:
+    aliases: {}
+    usage: {}
+sympy:
+  alchemy:
+    aliases: {}
+    usage: {}
+  core:
+    aliases: {}
+    usage: {}
+  electronic_structure:
+    aliases: {}
+    usage: {}
+  entries:
+    aliases: {}
+    usage: {}
+  phonon:
+    aliases: {}
+    usage: {}
+  symmetry:
+    aliases:
+      Matrix: sympy.Matrix
+      parse_expr: sympy.parsing.sympy_parser.parse_expr
+    usage:
+      sympy.parsing.sympy_parser.parse_expr: 1
+      sympy.Matrix: 3
+  transformations:
+    aliases: {}
+    usage: {}
+tabulate:
+  alchemy:
+    aliases: {}
+    usage: {}
+  core:
+    aliases:
+      tabulate: tabulate.tabulate
+    usage:
+      tabulate.tabulate: 1
+  electronic_structure:
+    aliases: {}
+    usage: {}
+  entries:
+    aliases: {}
+    usage: {}
+  phonon:
+    aliases: {}
+    usage: {}
+  symmetry:
+    aliases:
+      tabulate: tabulate.tabulate
+    usage:
+      tabulate.tabulate: 1
+  transformations:
+    aliases: {}
+    usage: {}
+tqdm:
+  alchemy:
+    aliases: {}
+    usage: {}
+  core:
+    aliases: {}
+    usage: {}
+  electronic_structure:
+    aliases:
+      tqdm: tqdm.tqdm
+    usage:
+      tqdm.tqdm: 1
+  entries:
+    aliases:
+      tqdm: tqdm.tqdm
+    usage:
+      tqdm.tqdm: 2
+  phonon:
+    aliases: {}
+    usage: {}
+  symmetry:
+    aliases: {}
+    usage: {}
+  transformations:
+    aliases: {}
+    usage: {}
+uncertainties:
+  alchemy:
+    aliases: {}
+    usage: {}
+  core:
+    aliases: {}
+    usage: {}
+  electronic_structure:
+    aliases: {}
+    usage: {}
+  entries:
+    aliases:
+      ufloat: uncertainties.ufloat
+    usage:
+      uncertainties.ufloat: 22
+  phonon:
+    aliases: {}
+    usage: {}
+  symmetry:
+    aliases: {}
+    usage: {}
+  transformations:
+    aliases: {}
+    usage: {}

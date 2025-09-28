@@ -1,42 +1,9 @@
 import os
-import subprocess
 
 from api_analyzer import analyze_py, analyze_notebook, analyze_paths
 
-import pytest
-
 
 PMV_REPO_PATH: str = os.getenv("PMV_REPO_PATH")
-PMV_COMMIT: str = "11f61e431e0ea6dd2f45797edf9e58479f36255c"
-
-
-if PMV_REPO_PATH is None or not os.path.isdir(PMV_REPO_PATH):
-    raise RuntimeError("You have to set `PMV_REPO_PATH` to the pymatviz repo path")
-
-
-@pytest.fixture(scope="session", autouse=True)
-def checkout_pmv_commit():
-    """Ensure pymatviz is at a fixed commit for reproducible tests."""
-    orig = subprocess.check_output(
-        ["git", "-C", PMV_REPO_PATH, "rev-parse", "--abbrev-ref", "HEAD"], text=True
-    ).strip()
-
-    subprocess.run(["git", "-C", PMV_REPO_PATH, "fetch"], check=True)
-    subprocess.run(
-        ["git", "-C", PMV_REPO_PATH, "checkout", PMV_COMMIT],
-        check=True,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-    )
-
-    yield
-
-    subprocess.run(
-        ["git", "-C", PMV_REPO_PATH, "checkout", orig],
-        check=True,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-    )
 
 
 def test_pmv_py():

@@ -33,7 +33,7 @@ def test_analyze_notebook(tmp_path: Path):
 
 
 def test_analyze_paths(tmp_path: Path):
-    # make dir with both py and ipynb
+    # Test dir with both py and ipynb
     (tmp_path / "pkg").mkdir()
     (tmp_path / "pkg" / "mod.py").write_text("import mypkg.core as c\nc.do()\n")
     (tmp_path / "demo.ipynb").write_text(

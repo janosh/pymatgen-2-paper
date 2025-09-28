@@ -1,6 +1,8 @@
 from pathlib import Path
 from api_analyzer import analyze_py, analyze_notebook, analyze_paths
 
+import pytest
+
 
 def test_analyze_py(tmp_path: Path):
     code = """
@@ -52,3 +54,8 @@ def test_analyze_paths(tmp_path: Path):
     aliases, usage = analyze_paths(tmp_path, "mypkg", exclude=[".venv"])
     assert "c" in aliases or "x" in aliases
     assert any("mypkg" in k for k in usage)
+
+
+def test_analyze_paths_not_dir():
+    with pytest.raises(NotADirectoryError, match="is not a directory"):
+        analyze_paths("/abc", "mypkg", exclude=[".venv"])

@@ -8,5 +8,8 @@ requires-python = ">=3.10"
 requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools]
+packages = ["api_analyzer"]
+
 [dependency-groups]
 dev = ["pytest>=8.0"]

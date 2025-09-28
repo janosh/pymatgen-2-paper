@@ -172,6 +172,9 @@ def analyze_paths(
         return False
 
     for path in paths:
+        if not path.is_dir():
+            raise NotADirectoryError(f"{path} is not a directory")
+
         if should_skip(path):
             continue
 

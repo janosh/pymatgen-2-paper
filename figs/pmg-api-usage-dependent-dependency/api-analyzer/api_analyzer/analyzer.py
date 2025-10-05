@@ -79,7 +79,11 @@ def analyze_py(path: str | Path, package: str) -> tuple[dict[str, str], dict[str
 
     text = path.read_text(encoding="utf-8")
 
-    tree = ast.parse(text)
+    try:
+        tree = ast.parse(text)
+    except Exception as e:
+        print(f"⚠️  Skipping {path} (AST parse error: {e})")
+        return {}, {}
 
     _annotate_parents(tree)
 

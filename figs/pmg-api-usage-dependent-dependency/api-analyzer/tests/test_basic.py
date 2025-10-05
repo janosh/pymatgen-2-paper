@@ -15,6 +15,18 @@ def test_analyze_py():
     assert usage["mypkg.core.run"] == 1
 
 
+def test_analyze_py_ignore_exception(tmp_path, capsys):
+    bad_file = tmp_path / "syntax_err.py"
+    bad_file.write_text('print(f"{hello]")', encoding="utf-8")
+
+    aliases, usage = analyze_py(bad_file, "mypkg")
+    stdout, _ = capsys.readouterr()
+
+    assert "AST parse error" in stdout
+    assert aliases == {}
+    assert usage == {}
+
+
 def test_analyze_notebook():
     """Test analyzing a Jupyter notebook with multiple cells."""
     demo_nb = TEST_DIR / "demo.ipynb"

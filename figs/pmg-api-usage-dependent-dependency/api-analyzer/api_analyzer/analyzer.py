@@ -65,13 +65,18 @@ class ApiAnalyzerPy(ast.NodeVisitor):
         self.generic_visit(node)
 
 
-def analyze_py(path: str | Path, package: str) -> tuple[dict[str, str], dict[str, int]]:
+def analyze_py(
+    path: str | Path,
+    package: str,
+    ipynb_name: str | None = None,
+) -> tuple[dict[str, str], dict[str, int]]:
     """
     Analyze a Python file for package API usage.
 
     Returns:
         aliases (dict): Mapping of local names → full package paths.
         usage (dict): Mapping of package API calls → count.
+        ipynb_name (str): Used for tracking original name for ipynb file.
     """
     path = Path(path)
 
@@ -89,6 +94,7 @@ def analyze_py(path: str | Path, package: str) -> tuple[dict[str, str], dict[str
         try:
             tree = ast.parse(text)
         except SyntaxError as e:
+            path = ipynb_name or path  # overwrite with original ipynb name
             print(f"⚠️  Skipping {path} (AST parse error: {e})")
             return {}, {}
 
@@ -149,7 +155,7 @@ def analyze_notebook(
         tmp_path = Path(tmp.name)
 
     # Analyze once, with full context
-    aliases, usage = analyze_py(tmp_path, package)
+    aliases, usage = analyze_py(tmp_path, package, str(path))
 
     # Clean up
     tmp_path.unlink(missing_ok=True)

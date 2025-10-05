@@ -1,5 +1,6 @@
 import ast
 import json
+import warnings
 from collections import defaultdict
 from pathlib import Path
 from tempfile import NamedTemporaryFile
@@ -79,11 +80,17 @@ def analyze_py(path: str | Path, package: str) -> tuple[dict[str, str], dict[str
 
     text = path.read_text(encoding="utf-8")
 
-    try:
-        tree = ast.parse(text)
-    except Exception as e:
-        print(f"⚠️  Skipping {path} (AST parse error: {e})")
-        return {}, {}
+    with warnings.catch_warnings():
+        warnings.filterwarnings(
+            "ignore",
+            message="invalid escape sequence",  # from ipynb
+            category=SyntaxWarning,
+        )
+        try:
+            tree = ast.parse(text)
+        except SyntaxError as e:
+            print(f"⚠️  Skipping {path} (AST parse error: {e})")
+            return {}, {}
 
     _annotate_parents(tree)
 

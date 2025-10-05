@@ -91,7 +91,20 @@ def analyze_py(path: str | Path, package: str) -> tuple[dict[str, str], dict[str
 def analyze_notebook(
     path: str | Path, package: str
 ) -> tuple[dict[str, str], dict[str, int]]:
+    """
+    Analyze API usage of a Jupyter notebook (.ipynb).
+
+    Args:
+        path: Path to the .ipynb file.
+        package: Package name to track (e.g., "numpy").
+
+    Returns:
+        aliases: Mapping of local alias -> fully qualified name
+        usage: Mapping of API call -> usage count
+    """
+
     def clean_notebook_code(code: str) -> str:
+        """Remove Jupyter magics and shell commands."""
         cleaned: list[str] = []
         for line in code.splitlines():
             if not line or line.startswith(("!", "%", "?")):
@@ -104,29 +117,31 @@ def analyze_notebook(
         raise ValueError(f"cannot analyze non-ipynb file: {path}")
 
     nb = json.loads(path.read_text(encoding="utf-8"))
-    aliases, usage = {}, {}
 
+    # Collect all code cells together into one big script
+    combined_code_lines: list[str] = []
     for cell in nb.get("cells", []):
         if cell.get("cell_type") != "code":
             continue
         code = "".join(cell.get("source", []))
         code = clean_notebook_code(code)
-        if not code.strip():
-            continue
+        if code.strip():
+            combined_code_lines.append(code)
+    combined_code = "\n\n".join(combined_code_lines)
 
-        # Write code to a temporary .py file
-        with NamedTemporaryFile("w", suffix=".py", delete=False) as tmp:
-            tmp.write(code)
-            tmp_path = Path(tmp.name)
+    if not combined_code.strip():
+        return {}, {}
 
-        _alias, _usage = analyze_py(tmp_path, package)
+    # Write full notebook code into one temp .py file
+    with NamedTemporaryFile("w", suffix=".py", delete=False) as tmp:
+        tmp.write(combined_code)
+        tmp_path = Path(tmp.name)
 
-        # Merge results
-        aliases.update(_alias)
-        for key, val in _usage.items():
-            usage[key] = usage.get(key, 0) + val
+    # Analyze once, with full context
+    aliases, usage = analyze_py(tmp_path, package)
 
-        tmp_path.unlink(missing_ok=False)
+    # Clean up
+    tmp_path.unlink(missing_ok=True)
 
     return aliases, usage
 

@@ -30,7 +30,7 @@ def test_pmv_ipynb():
         "pymatgen.core.Lattice",
         "pymatgen.core.Structure",
     }
-    assert usage["pymatgen.core.Lattice.cubic"] == 1
+    assert usage["pymatgen.core.Lattice.cubic"] == 2
 
 
 def test_pmv_src():

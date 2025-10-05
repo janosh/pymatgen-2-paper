@@ -3,59 +3,42 @@ from api_analyzer import analyze_py, analyze_notebook, analyze_paths
 
 import pytest
 
+TEST_DIR = Path(__file__).parent / "data"
 
-def test_analyze_py(tmp_path: Path):
-    code = """
-import mypkg.core as core
-core.run()
-"""
-    f = tmp_path / "demo.py"
-    f.write_text(code)
 
-    aliases, usage = analyze_py(f, "mypkg")
+def test_analyze_py():
+    """Test analyzing a regular Python file."""
+    demo_py = TEST_DIR / "demo.py"
+    aliases, usage = analyze_py(demo_py, "mypkg")
     assert "core" in aliases
     assert "mypkg.core.run" in usage
+    assert usage["mypkg.core.run"] == 1
 
 
-def test_analyze_notebook(tmp_path: Path):
-    nb = {
-        "cells": [
-            {
-                "cell_type": "code",
-                "source": ["import mypkg.utils as u\n", "u.foo()\n"],
-            }
-        ]
-    }
-    f = tmp_path / "demo.ipynb"
-    f.write_text(str(nb).replace("'", '"'))
+def test_analyze_notebook():
+    """Test analyzing a Jupyter notebook with multiple cells."""
+    demo_nb = TEST_DIR / "demo.ipynb"
+    aliases, usage = analyze_notebook(demo_nb, "mypkg")
 
-    aliases, usage = analyze_notebook(f, "mypkg")
-    assert "u" in aliases
-    assert "mypkg.utils.foo" in usage
+    assert aliases == {"core": "mypkg.core"}
+
+    # should count both runs (one in each cell)
+    assert usage == {"mypkg.core.run": 2}
 
 
-def test_analyze_paths(tmp_path: Path):
-    # Test dir with both py and ipynb
-    (tmp_path / "pkg").mkdir()
-    (tmp_path / "pkg" / "mod.py").write_text("import mypkg.core as c\nc.do()\n")
-    (tmp_path / "demo.ipynb").write_text(
-        str(
-            {
-                "cells": [
-                    {
-                        "cell_type": "code",
-                        "source": ["import mypkg.x as x\n", "x.go()\n"],
-                    }
-                ]
-            }
-        ).replace("'", '"')
-    )
+def test_analyze_paths():
+    """Test directory-level analysis combining .py and .ipynb results."""
+    aliases, usage = analyze_paths(TEST_DIR, "mypkg", exclude=[".venv"])
 
-    aliases, usage = analyze_paths(tmp_path, "mypkg", exclude=[".venv"])
-    assert "c" in aliases or "x" in aliases
-    assert any("mypkg" in k for k in usage)
+    # Expect combined aliases from both demo.py and demo.ipynb
+    expected_aliases = {"core": "mypkg.core"}
+    assert aliases == expected_aliases
+
+    # Expect one call from demo.py and two from demo.ipynb
+    expected_usage = {"mypkg.core.run": 3}
+    assert usage == expected_usage
 
 
 def test_analyze_paths_not_dir():
     with pytest.raises(NotADirectoryError, match="is not a directory"):
-        analyze_paths("/abc", "mypkg", exclude=[".venv"])
+        analyze_paths("/not_dir", "mypkg")

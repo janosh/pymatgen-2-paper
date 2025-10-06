@@ -20,6 +20,11 @@ def _in_type_checking_block(node: ast.AST) -> bool:
         if isinstance(parent, ast.If):
             if isinstance(parent.test, ast.Name) and parent.test.id == "TYPE_CHECKING":
                 return True
+            if (
+                isinstance(parent.test, ast.Attribute)
+                and parent.test.attr == "TYPE_CHECKING"
+            ):
+                return True
         node = parent
     return False
 
@@ -53,10 +58,21 @@ class ApiAnalyzerPy(ast.NodeVisitor):
 
     def visit_Call(self, node) -> None:
         """Track function/method calls."""
+
+        def resolve_base(n):
+            """Recursively resolve base name from attribute chain."""
+            if isinstance(n, ast.Name):
+                return n.id, []
+            elif isinstance(n, ast.Attribute):
+                base_id, attrs = resolve_base(n.value)
+                return base_id, attrs + [n.attr]
+            return None, []
+
         if isinstance(node.func, ast.Attribute):
-            base = node.func.value
-            if isinstance(base, ast.Name) and base.id in self.aliases:
-                full = f"{self.aliases[base.id]}.{node.func.attr}"
+            base_id, attrs = resolve_base(node.func.value)
+            if base_id and base_id in self.aliases:
+                chain = ".".join(attrs + [node.func.attr])
+                full = f"{self.aliases[base_id]}.{chain}"
                 self.usage[full] += 1
         elif isinstance(node.func, ast.Name):
             if node.func.id in self.aliases:
@@ -124,7 +140,8 @@ def analyze_notebook(
         """Remove Jupyter magics and shell commands."""
         cleaned: list[str] = []
         for line in code.splitlines():
-            if not line or line.startswith(("!", "%", "?")):
+            stripped = line.lstrip()
+            if not stripped or stripped.startswith(("!", "%", "?")):
                 continue  # skip shell/magic/help commands
             cleaned.append(line)
         return "\n".join(cleaned)
@@ -199,8 +216,13 @@ def analyze_paths(
         if p.name.startswith("."):
             return True
         # skip if any parent directory matches an excluded subdir
-        if any(parent.name in exclude for parent in p.parents):
-            return True
+
+    for path in paths:
+        if not path.exists():
+            raise FileNotFoundError(f"{path} does not exist")
+
+        if should_skip(path):
+            continue
         return False
 
     for path in paths:

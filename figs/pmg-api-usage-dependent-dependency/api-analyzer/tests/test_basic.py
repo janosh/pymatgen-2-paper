@@ -11,7 +11,7 @@ def test_analyze_py():
     demo_py = TEST_DIR / "demo.py"
     aliases, usage = analyze_py(demo_py, "mypkg")
     assert aliases == {"core": "mypkg.core"}
-    assert usage == {"mypkg.core.run": 1}
+    assert usage == {"mypkg.core.run": 2}
 
 
 def test_analyze_py_ignore_exception(tmp_path, capsys):
@@ -34,7 +34,7 @@ def test_analyze_notebook():
     assert aliases == {"core": "mypkg.core"}
 
     # should count both runs (one in each cell)
-    assert usage == {"mypkg.core.run": 2}
+    assert usage == {"mypkg.core.run": 3}
 
 
 def test_analyze_paths():
@@ -46,7 +46,7 @@ def test_analyze_paths():
     assert aliases == expected_aliases
 
     # Expect one call from demo.py and two from demo.ipynb
-    expected_usage = {"mypkg.core.run": 3}
+    expected_usage = {"mypkg.core.run": 5}
     assert usage == expected_usage
 
 

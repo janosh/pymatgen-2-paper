@@ -1,11 +1,9 @@
 import os
 
-from api_analyzer import analyze_paths, analyze_py
+from api_analyzer import analyze_py, analyze_paths
 
-pmg_root = os.getenv("PMG_REPO_PATH")
-if not pmg_root:
-    raise ValueError("PMG_REPO_PATH environment variable must be set")
-PMG_REPO_PATH: str = f"{pmg_root}/src/pymatgen"
+
+PMG_REPO_PATH: str = os.getenv("PMG_REPO_PATH") + "/src/pymatgen"
 
 
 def test_pmg_py_numpy():

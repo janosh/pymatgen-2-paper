@@ -5,6 +5,7 @@ import subprocess
 
 import pytest
 
+
 PMG_REPO_PATH: str = os.getenv("PMG_REPO_PATH")
 PMG_COMMIT: str = "ab34799d8ab5dee80756489cf2ca28a97de78121"
 
@@ -21,7 +22,7 @@ if PMV_REPO_PATH is None or not os.path.isdir(PMV_REPO_PATH):
 @pytest.fixture(scope="session", autouse=True)
 def checkout_pmg_commit():
     orig = subprocess.check_output(
-        ["git", "-C", PMG_REPO_PATH, "rev-parse", "HEAD"], text=True
+        ["git", "-C", PMG_REPO_PATH, "rev-parse", "--abbrev-ref", "HEAD"], text=True
     ).strip()
 
     subprocess.run(["git", "-C", PMG_REPO_PATH, "fetch"], check=True)

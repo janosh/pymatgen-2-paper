@@ -10,9 +10,8 @@ def test_analyze_py():
     """Test analyzing a regular Python file."""
     demo_py = TEST_DIR / "demo.py"
     aliases, usage = analyze_py(demo_py, "mypkg")
-    assert "core" in aliases
-    assert "mypkg.core.run" in usage
-    assert usage["mypkg.core.run"] == 1
+    assert aliases == {"core": "mypkg.core"}
+    assert usage == {"mypkg.core.run": 1}
 
 
 def test_analyze_py_ignore_exception(tmp_path, capsys):

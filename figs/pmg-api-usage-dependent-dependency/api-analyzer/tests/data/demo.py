@@ -9,11 +9,13 @@ if typing.TYPE_CHECKING:
 
     _: NDArray | None = None
 
+
 if TYPE_CHECKING:
     from numpy.typing import NDArray
 
     _: NDArray | None = None
 
+    core.run()  # (edge case) this would still counted
 
 core.run()
 

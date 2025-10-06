@@ -28,4 +28,4 @@ jobs:
               working-directory: figs/pmg-api-usage-dependent-dependency/api-analyzer
               run: |
                   uv sync
-                  uv run --isolated pytest --noconftest tests/test_basic.py
+                  uv run --isolated pytest --noconftest tests

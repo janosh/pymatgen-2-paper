@@ -1,13 +1,50 @@
 import os
+import subprocess
 
-from api_analyzer import analyze_py, analyze_paths
+import pytest
+
+from api_analyzer import analyze_paths, analyze_py
+
+if os.getenv("GITHUB_ACTIONS") == "true":
+    pytest.skip("skip PMG test in CI", allow_module_level=True)
 
 
-PMG_REPO_PATH: str = os.getenv("PMG_REPO_PATH") + "/src/pymatgen"
+PMG_REPO_PATH: str | None = os.getenv("PMG_REPO_PATH")
+PMG_COMMIT = "ab34799d8ab5dee80756489cf2ca28a97de78121"
+
+
+if PMG_REPO_PATH is None or not os.path.isdir(PMG_REPO_PATH):
+    raise RuntimeError("You have to set `PMG_REPO_PATH` to the pymatgen repo path")
+
+
+@pytest.fixture(scope="module", autouse=True)
+def checkout_pmg_commit():
+    orig = subprocess.check_output(
+        ["git", "-C", PMG_REPO_PATH, "rev-parse", "HEAD"], text=True
+    ).strip()
+
+    subprocess.run(["git", "-C", PMG_REPO_PATH, "fetch"], check=True)
+    subprocess.run(
+        ["git", "-C", PMG_REPO_PATH, "checkout", PMG_COMMIT],
+        check=True,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+
+    yield
+
+    subprocess.run(
+        ["git", "-C", PMG_REPO_PATH, "checkout", orig],
+        check=True,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
 
 
 def test_pmg_py_numpy():
-    aliases, usage = analyze_py(f"{PMG_REPO_PATH}/core/structure.py", package="numpy")
+    aliases, usage = analyze_py(
+        f"{PMG_REPO_PATH}/src/pymatgen/core/structure.py", package="numpy"
+    )
 
     assert aliases
 
@@ -16,7 +53,9 @@ def test_pmg_py_numpy():
 
 
 def test_pmg_py_scipy():
-    aliases, usage = analyze_py(f"{PMG_REPO_PATH}/core/surface.py", package="scipy")
+    aliases, usage = analyze_py(
+        f"{PMG_REPO_PATH}/src/pymatgen/core/surface.py", package="scipy"
+    )
 
     assert aliases == {
         "fcluster": "scipy.cluster.hierarchy.fcluster",
@@ -32,7 +71,9 @@ def test_pmg_py_scipy():
 
 
 def test_pmg_core_dir_scipy():
-    aliases, usage = analyze_paths(f"{PMG_REPO_PATH}/core", package="scipy")
+    aliases, usage = analyze_paths(
+        f"{PMG_REPO_PATH}/src/pymatgen/core", package="scipy"
+    )
 
     assert len(aliases) >= 5
     assert usage == {

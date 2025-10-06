@@ -124,7 +124,7 @@ def analyze_notebook(
         """Remove Jupyter magics and shell commands."""
         cleaned: list[str] = []
         for line in code.splitlines():
-            if not line or line.startswith(("!", "%", "?")):
+            if not line or line.lstrip().startswith(("!", "%", "?")):
                 continue  # skip shell/magic/help commands
             cleaned.append(line)
         return "\n".join(cleaned)

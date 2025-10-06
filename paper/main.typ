@@ -290,6 +290,6 @@ We remain committed to fostering an open, collaborative environment that drives 
 
 We thank the numerous developers, researchers, and users who have contributed to #pmg. We also acknowledge the funding agencies and institutions that have supported its development, including the U.S. Department of Energy, the National Science Foundation, and various academic institutions.
 
-Special thanks to the broader open-source scientific computing community for their invaluable tools and libraries, especially NumFocus and their efforts around `numpy`, `pandas` and `matplotlib`, all of which #pmg heavily relies on. //corresponding citations should be added
+Special thanks to the broader open-source scientific computing community for their invaluable tools and libraries, especially NumFocus and their efforts around `numpy` @harris_array_2020, `pandas` @mckinney_data_2010 @team_pandasdev_2025 and `matplotlib` @hunter_matplotlib_2007, all of which #pmg heavily relies on.
 
 #bibliography("refs.bib", style: "ieee")

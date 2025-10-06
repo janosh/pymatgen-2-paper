@@ -39,7 +39,7 @@ def test_analyze_notebook():
 
 def test_analyze_paths():
     """Test directory-level analysis combining .py and .ipynb results."""
-    aliases, usage = analyze_paths(TEST_DIR, "mypkg", exclude=[".venv"])
+    aliases, usage = analyze_paths(TEST_DIR, "mypkg", exclude=["excluded"])
 
     # Expect combined aliases from both demo.py and demo.ipynb
     expected_aliases = {"core": "mypkg.core"}

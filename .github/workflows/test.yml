@@ -1,0 +1,31 @@
+name: Tests API analyzer
+
+on:
+    push:
+        branches: [main, develop]
+        paths:
+            - "figs/pmg-api-usage-dependent-dependency/api-analyzer/**"
+    pull_request:
+        paths:
+            - "figs/pmg-api-usage-dependent-dependency/api-analyzer/**"
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v5
+
+            - name: Install uv
+              uses: astral-sh/setup-uv@v6
+
+            - name: Set up Python
+              uses: actions/setup-python@v6
+              with:
+                  python-version: "3.12"
+
+            - name: Run pytest
+              working-directory: figs/pmg-api-usage-dependent-dependency/api-analyzer
+              run: |
+                  uv sync
+                  uv run --isolated pytest --noconftest tests/test_basic.py

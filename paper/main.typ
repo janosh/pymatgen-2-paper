@@ -226,10 +226,19 @@ Case study: Battery materials research with #pmg
 
 = Community Impact and Involvement
 
-// #SK[This is a nice figure, though I would say it shows community _involvement_ (which is kind of a step ahead of community _impact_). What about also showing something like downloads over time (which can be quantitatively inaccurate but should show the trend? 'without mirrors'), and packages requiring #pmg over time? (Edit: I see from the GitHub repo that this is in progress)]
-// JR: use fig from PR21 once merged
+#figure(
+  image("figs/pmg_dependency_usage.svg"),
+  caption: [3rd-party dependency usage of #pmg modules.],
+) <fig:pmg-dependency-usage>
 
-The growth of #pmg is reflected not only in its feature set but also in its expanding user base and community engagement. Steady growth in package downloads and the number of packages requiring #pmg as a dependency over time are evidence of #pmg's increasing adoption across the materials science community.
+#figure(
+  image("figs/dependent-usage-of-pmg.svg"),
+  caption: [Dependent repositories' usage of #pmg submodules.],
+) <fig:dependent-usage-of-pmg>
+
+#SK[What about also showing something like downloads over time (which can be quantitatively inaccurate but should show the trend? 'without mirrors'), and packages requiring #pmg over time?]
+
+The growth of #pmg is reflected not only in its feature set but also in its expanding user base and community engagement. Steady growth in package downloads and the number of packages requiring #pmg as a dependency over time are evidence of #pmg's increasing adoption across the materials science community, as shown in @fig:pmg-dependency-usage and @fig:dependent-usage-of-pmg.
 
 #pmg's impact on the materials science community includes:
 

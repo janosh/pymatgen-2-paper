@@ -2,7 +2,6 @@ import os
 import subprocess
 
 import pytest
-
 from api_analyzer import analyze_notebook, analyze_paths, analyze_py
 
 if os.getenv("GITHUB_ACTIONS") == "true":

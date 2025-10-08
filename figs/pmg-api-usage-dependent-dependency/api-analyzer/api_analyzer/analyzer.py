@@ -10,7 +10,7 @@ def _annotate_parents(tree: ast.AST) -> None:
     """Add `.parent` links so we can walk up the tree."""
     for parent in ast.walk(tree):
         for child in ast.iter_child_nodes(parent):
-            child.parent = parent
+            child.parent = parent  # type: ignore[unresolved-attribute]
 
 
 def _in_type_checking_block(node: ast.AST) -> bool:
@@ -20,7 +20,7 @@ def _in_type_checking_block(node: ast.AST) -> bool:
         if isinstance(parent, ast.If):
             if isinstance(parent.test, ast.Name) and parent.test.id == "TYPE_CHECKING":
                 return True
-        node = parent
+        node = parent  # type: ignore[assignment]
     return False
 
 
@@ -189,7 +189,7 @@ def analyze_paths(
         exclude = []
     elif isinstance(exclude, str):
         exclude = [exclude]
-    exclude = set(exclude)
+    exclude_set = set(exclude)
 
     all_aliases: dict[str, str] = {}
     all_usage: dict[str, int] = defaultdict(int)
@@ -199,7 +199,7 @@ def analyze_paths(
         if p.name.startswith("."):
             return True
         # skip if any parent directory matches an excluded subdir
-        if any(parent.name in exclude for parent in p.parents):
+        if any(parent.name in exclude_set for parent in p.parents):
             return True
         return False
 

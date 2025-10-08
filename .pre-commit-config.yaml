@@ -6,10 +6,20 @@ repos:
     rev: v0.13.2
     hooks:
       - id: ruff
-        args: ["--fix", "--per-file-ignores", "*.ipynb:E402"]
+        args: ['--fix', '--per-file-ignores', '*.ipynb:E402']
         exclude: ^figs/pmg-api-usage-dependent-dependency/api-analyzer/tests/data/
       - id: ruff-format
         exclude: ^figs/pmg-api-usage-dependent-dependency/api-analyzer/tests/data/
+
+  - repo: local
+    hooks:
+      - id: ty
+        args: [--ignore, unresolved-import]
+        name: ty check
+        exclude: tests/data
+        entry: ty check
+        language: python
+        additional_dependencies: [ty]
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
@@ -35,7 +45,7 @@ repos:
         # MD033: no inline HTML
         # MD041: first line in a file should be a top-level heading
         # MD025: single title
-        args: [--disable, MD013, MD024, MD025, MD033, MD041, "--"]
+        args: [--disable, MD013, MD024, MD025, MD033, MD041, '--']
 
   - repo: https://github.com/kynan/nbstripout
     rev: 0.8.1

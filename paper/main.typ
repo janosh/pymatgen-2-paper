@@ -126,7 +126,10 @@ The growing complexity of computational materials science requires powerful, fle
 
 #pmg has been applied in diverse fields, including battery materials, catalysis, thermoelectrics, and materials discovery using machine learning @jain_computational_2016.
 
-#image("figs/pmg_citation_google_scholar_screenshot.png")
+#figure(
+  image("figs/citations.svg"),
+  caption: [Citations of #pmg over time.],
+) <fig:citations>
 
 == Downstream Packages
 

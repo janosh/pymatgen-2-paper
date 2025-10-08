@@ -132,8 +132,7 @@ The growing complexity of computational materials science requires powerful, fle
 
 #pmg has spawned several downstream packages, including:
 
-+ `atomate1/2`: High-throughput computational materials science workflows @mathew_atomate_2017
-// TODO mention that atomate was published in Digital Discovery (as a high-profile use case of pymatgen)
++ `atomate1/2`: High-throughput computational materials science workflows @mathew_atomate_2017. `atomate2`, also published in Digital Discovery, demonstrates #pmg's role as a foundational tool for diverse materials science workflows used across the community for high-throughput studies.
 + `custodian`: Job management and error recovery
 + `matminer`: Data mining in materials science @ward_matminer_2018
 + `pymatgen-analysis-diffusion`: Diffusion analysis tools @deng_datadriven_2017
@@ -142,16 +141,14 @@ The growing complexity of computational materials science requires powerful, fle
 
 These packages demonstrate #pmg's extensibility and its role in the materials informatics ecosystem @butler_machine_2018.
 
-#SK[For instance, the utility of #pmg as a foundational tool in computational materials science workflows is well-illustrated by its usage in the modelling of crystal defects...
-  + Defect simulations require many steps, using a wide range of core tools (structure manipulations, symmetry analyses, efficient I/O w/electronic structure codes, lightweight metadata & serialization for reproducibility, interface with Materials Project...)
-  + *But*, with specific requirements for their special case (e.g. efficient & appropriate supercell generation, point symmetries of defect sites in symmetry-breaking supercells, efficient algorithms for large structure analyses, calculation parameter consistency checks, targeted distortions, site multiplicities & degeneracies, smart algorithms for sub-phase diagrams...).
-  + Defect modelling is a rapidly growing field, due to advances in computational power and methods making these calculations tractable, along with the importance of these species to diverse materials applications. These community tools, facilitated by the foundational toolkit of #pmg, have accelerated and expanded computational defect investigations, and have reducing the barrier to entry for new researchers in this field.
+=== Case Study: Defect Modeling Tools
+
+#SK[
+  The utility of #pmg as a foundational tool in computational materials science workflows is well-illustrated by its usage in the modeling of crystal defects. Defect simulations require many steps, utilizing a wide range of core tools including structure manipulations, symmetry analyses, efficient I/O with electronic structure codes, lightweight metadata and serialization for reproducibility, and interfaces with the Materials Project. However, defect modeling also has specific requirements for specialized cases, such as efficient and appropriate supercell generation, point symmetries of defect sites in symmetry-breaking supercells, efficient algorithms for large structure analyses, calculation parameter consistency checks, targeted distortions, site multiplicities and degeneracies, and smart algorithms for sub-phase diagrams.
+
+  Defect modeling is a rapidly growing field, driven by advances in computational power and methods that make these calculations tractable, along with the critical importance of defect species to diverse materials applications. Community tools facilitated by the foundational functionality in #pmg, have accelerated and expanded computational defect investigations while reducing the barrier to entry for new researchers in this field.
   + (If we want a figure here, could make a diagram showing the workflow: Pull materials from MP -> Oxi-state Guess w/PMG -> Vacancy generation w/`doped` (via PMG etc) -> Electrostatic analysis with PMG (Ewald tools) -> VASP DFT I/O w/PMG -> Energetic & Structural (w/`doped` & PMG) analysis; from 10.1088/2515-7655/ade916, as example).
 ]
-
-
-
-
 
 == Similar and Related Software
 
@@ -227,9 +224,12 @@ Case study: Battery materials research with #pmg
 
 #set text(size: 11pt) */
 
-= Community Impact
+= Community Impact and Involvement
 
-#SK[This is a nice figure, though I would say it shows community _involvement_ (which is kind of a step ahead of community _impact_). What about also showing something like downloads over time (which can be quantitatively inaccurate but should show the trend? 'without mirrors'), and packages requiring #pmg over time? (Edit: I see from the GitHub repo that this is in progress)]
+// #SK[This is a nice figure, though I would say it shows community _involvement_ (which is kind of a step ahead of community _impact_). What about also showing something like downloads over time (which can be quantitatively inaccurate but should show the trend? 'without mirrors'), and packages requiring #pmg over time? (Edit: I see from the GitHub repo that this is in progress)]
+// JR: use fig from PR21 once merged
+
+The growth of #pmg is reflected not only in its feature set but also in its expanding user base and community engagement. Steady growth in package downloads and the number of packages requiring #pmg as a dependency over time are evidence of #pmg's increasing adoption across the materials science community.
 
 #pmg's impact on the materials science community includes:
 
@@ -280,9 +280,9 @@ Future considerations include integrating Rust components for improved performan
 Future developments may include:
 
 + Enhanced machine learning and AI integration @butler_machine_2018
-+ Improved multi-scale modeling support // TODO add ref(s)
++ Improved multi-scale modeling support, bridging atomistic and continuum approaches // TODO add ref(s)
 + More user-friendly interfaces and visualization tools (#link("https://github.com/materialsproject/crystaltoolkit")[`crystaltoolkit`] @horton_crystal_2023 #link("https://github.com/janosh/pymatviz")[`pymatviz`] @riebesell_pymatviz_2022 #link("https://github.com/janosh/matterviz")[`matterviz`] @riebesell_matterviz_2025)
-+ Exploration of hybrid Python-Rust architectures @lunnikivi_transpiling_2020
++ Performance optimizations through compiled extensions and algorithmic improvements. E.g. exploration of hybrid Python-Rust bindings @lunnikivi_transpiling_2020. // TODO mention moyo as a successful example of this?
 
 We remain committed to fostering an open, collaborative environment that drives innovation in computational materials science.
 

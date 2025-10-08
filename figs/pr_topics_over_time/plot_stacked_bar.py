@@ -28,7 +28,7 @@ THEME_RULES: list[tuple[str, str]] = [
     ),
     (r"performance|speed|optimization", "Performance"),
     (
-        r"test|ci|continuous integration|type annotation|code modern|dependency|compatibility|deprecat|breaking",
+        r"test|ci|continuous integration|type annotation|code modern|dependency|compatibility|deprecate|breaking",
         "Testing & Code Quality",
     ),
     (r"doc|readme|tutorial", "Documentation"),
@@ -60,8 +60,11 @@ def map_theme(topic: str) -> str:
 rows: list[dict[str, str | int]] = []
 for year, topics in topics_by_year.items():
     for topic in topics:
-        count = int(re.search(r"\((\d+)\)\s*$", topic)[1])
-        rows.append({"year": int(year), "theme": map_theme(topic), "count": count})
+        if match := re.search(r"\((\d+)\)\s*$", topic):
+            row = {"year": int(year), "theme": map_theme(topic), "count": int(match[1])}
+            rows.append(row)
+        else:
+            raise ValueError(f"Cannot extract count from {topic=}")
 
 df = pd.DataFrame(rows)
 counts = df.groupby(["year", "theme"])["count"].sum().unstack(fill_value=0).sort_index()

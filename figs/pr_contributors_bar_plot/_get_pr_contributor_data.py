@@ -6,15 +6,15 @@
 # ///
 """Get all merged PRs and calculate time since first contribution for each."""
 
-import os
 import json
-import time
+import os
 import re
+import time
 from datetime import datetime
 
 import requests
 
-GITHUB_TOKEN: str = os.getenv("GITHUB_TOKEN")
+GITHUB_TOKEN: str = os.getenv("GITHUB_TOKEN", "")
 REPO: str = "materialsproject/pymatgen"
 DATAFILE: str = "_pr_contributors.json"
 

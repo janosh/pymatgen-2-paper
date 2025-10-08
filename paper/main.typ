@@ -6,6 +6,9 @@
 
 #let title = "pymatgen: A decade of community growth, new functionality, and future prospects"
 
+
+// TODO think about concluding/outlook/perspective paragraphs at the end of each subsection
+
 // commands for attributed notes in different colors and with initials prefix
 #let JG(body) = {
   set text(fill: red)
@@ -95,7 +98,18 @@ Since 2011, #pmg has enabled both individual and high-throughput computational m
 
 On #pmg's 10th anniversary, we review its evolution, sharing challenges and solutions encountered during its growth. We highlight factors that established #pmg as a cornerstone of materials science software.
 
-= Summary
+= Overview and Design Principles
+
+== Background
+
+#pmg was developed in 2011 by Shyue Ping Ong and colleagues at MIT to support the Materials Project @ong_python_2013 @jain_commentary_2013. Initial features included:
+
++ Crystallographic operations and symmetry analysis
++ VASP DFT code integration
++ Basic electronic structure analysis
++ Phase diagram generation
+
+Since then, #pmg has expanded significantly, incorporating new features and adapting to the evolving landscape of materials informatics @butler_machine_2018.
 
 #pmg is an open-source Python library for materials analysis, offering tools from basic crystallographic operations to complex electronic structure analysis @ong_python_2013 @jain_commentary_2013. Key features include:
 
@@ -107,7 +121,7 @@ On #pmg's 10th anniversary, we review its evolution, sharing challenges and solu
 
 #pmg aims to accelerate materials discovery by providing a comprehensive toolkit for researchers at all levels @curtarolo_highthroughput_2013.
 
-= Statement of Need
+== Statement of Need
 
 The growing complexity of computational materials science requires powerful, flexible, and reliable software tools @horton_promises_2021. #pmg addresses this need by offering:
 
@@ -117,6 +131,57 @@ The growing complexity of computational materials science requires powerful, fle
 + Open-source development encouraging community contributions
 
 #pmg complements other materials science software like ASE @larsen_atomic_2017, VASP @kresse_efficient_1996, and LAMMPS @plimpton_fast_1995 @thompson_lammps_2022, enhancing accessibility and reproducibility in materials research.
+
+== Similar and Related Software
+
+While #pmg holds a unique position, other valuable tools in the field include:
+
++ ASE: Python library for atomistic simulations @larsen_atomic_2017
++ spglib: C library for crystal symmetries, used by #pmg //@togo2018texttt
++ Phonopy: Package for phonon calculations @togo_firstprinciples_2023
++ NOMAD parsers // TODO add ref
+
+These tools often complement each other in materials science workflows. #pmg's strength lies in its comprehensive coverage of materials analysis tasks and integration capabilities @jain_computational_2016.
+
+= Community Adoption
+
+== Package Ecosystem
+
+#pmg has spawned several downstream packages, including:
+
++ `atomate1/2`: High-throughput computational materials science workflows @mathew_atomate_2017. `atomate2`, also published in Digital Discovery, demonstrates #pmg's role as a foundational tool for diverse materials science workflows used across the community for high-throughput studies.
++ `custodian`: Job management and error recovery
++ `matminer`: Data mining in materials science @ward_matminer_2018
++ `pymatgen-analysis-diffusion`: Diffusion analysis tools @deng_datadriven_2017
++ `pymatgen-analysis-alloys`: Alloy analysis tools
++ `doped`, `ShakeNBreak`: Defect modelling tools, building on `pymatgen-analysis-defects` & `PyCDT`
+
+These packages demonstrate #pmg's extensibility and its role in the materials informatics ecosystem @butler_machine_2018.
+
+// TODO turn this into single figure spanning 2 cols
+#figure(
+  image("figs/pmg_dependency_usage.svg"),
+  caption: [3rd-party dependency usage of #pmg modules.],
+) <fig:pmg-dependency-usage>
+
+#figure(
+  image("figs/dependent-usage-of-pmg.svg"),
+  caption: [Dependent repositories' usage of #pmg submodules.],
+) <fig:dependent-usage-of-pmg>
+
+#SK[What about also showing something like downloads over time (which can be quantitatively inaccurate but should show the trend? 'without mirrors'), and packages requiring #pmg over time?]
+
+The growth of #pmg is reflected not only in its feature set but also in its expanding user base and community engagement. Steady growth in package downloads and the number of packages requiring #pmg as a dependency over time are evidence of #pmg's increasing adoption across the materials science community, as shown in @fig:pmg-dependency-usage and @fig:dependent-usage-of-pmg.
+
+#pmg's impact on the materials science community includes:
+
++ Accelerated research across various domains @butler_machine_2018
++ Standardization of materials analysis procedures
++ Educational tool for students and early-career researchers @ong_python_2013
++ Industry adoption in R&D workflows @jain_commentary_2013
++ Promotion of open science and collaborative development @horton_promises_2021
+
+The library's impact is evident in its usage in high-impact publications and integration into platforms like the Materials Project, AFLOW, and OQMD @curtarolo_aflow_2012.
 
 == Literature Usage
 
@@ -131,20 +196,9 @@ The growing complexity of computational materials science requires powerful, fle
   caption: [Citations of #pmg over time.],
 ) <fig:citations>
 
-== Downstream Packages
+== Case Studies
 
-#pmg has spawned several downstream packages, including:
-
-+ `atomate1/2`: High-throughput computational materials science workflows @mathew_atomate_2017. `atomate2`, also published in Digital Discovery, demonstrates #pmg's role as a foundational tool for diverse materials science workflows used across the community for high-throughput studies.
-+ `custodian`: Job management and error recovery
-+ `matminer`: Data mining in materials science @ward_matminer_2018
-+ `pymatgen-analysis-diffusion`: Diffusion analysis tools @deng_datadriven_2017
-+ `pymatgen-analysis-alloys`: Alloy analysis tools
-+ `doped`, `ShakeNBreak`: Defect modelling tools, building on `pymatgen-analysis-defects` & `PyCDT`
-
-These packages demonstrate #pmg's extensibility and its role in the materials informatics ecosystem @butler_machine_2018.
-
-=== Case Study: Defect Modeling Tools
+=== Defect Modeling Tools
 
 #SK[
   The utility of #pmg as a foundational tool in computational materials science workflows is well-illustrated by its usage in the modeling of crystal defects. Defect simulations require many steps, utilizing a wide range of core tools including structure manipulations, symmetry analyses, efficient I/O with electronic structure codes, lightweight metadata and serialization for reproducibility, and interfaces with the Materials Project. However, defect modeling also has specific requirements for specialized cases, such as efficient and appropriate supercell generation, point symmetries of defect sites in symmetry-breaking supercells, efficient algorithms for large structure analyses, calculation parameter consistency checks, targeted distortions, site multiplicities and degeneracies, and smart algorithms for sub-phase diagrams.
@@ -153,30 +207,7 @@ These packages demonstrate #pmg's extensibility and its role in the materials in
   + (If we want a figure here, could make a diagram showing the workflow: Pull materials from MP -> Oxi-state Guess w/PMG -> Vacancy generation w/`doped` (via PMG etc) -> Electrostatic analysis with PMG (Ewald tools) -> VASP DFT I/O w/PMG -> Energetic & Structural (w/`doped` & PMG) analysis; from 10.1088/2515-7655/ade916, as example).
 ]
 
-== Similar and Related Software
-
-While #pmg holds a unique position, other valuable tools in the field include:
-
-+ ASE: Python library for atomistic simulations @larsen_atomic_2017
-+ spglib: C library for crystal symmetries, used by #pmg //@togo2018texttt
-+ GPAW: DFT Python code using PAW method @mortensen_realspace_2005
-+ Phonopy: Package for phonon calculations @togo_firstprinciples_2023
-+ LAMMPS: Classical molecular dynamics code @plimpton_fast_1995 @thompson_lammps_2022
-
-These tools often complement each other in materials science workflows. #pmg's strength lies in its comprehensive coverage of materials analysis tasks and integration capabilities @jain_computational_2016.
-
-= Background
-
-#pmg was developed in 2011 by Shyue Ping Ong and colleagues at MIT to support the Materials Project @ong_python_2013 @jain_commentary_2013. Initial features included:
-
-+ Crystallographic operations and symmetry analysis
-+ VASP DFT code integration
-+ Basic electronic structure analysis
-+ Phase diagram generation
-
-Since then, #pmg has expanded significantly, incorporating new features and adapting to the evolving landscape of materials informatics @butler_machine_2018.
-
-= New Features and Case Study
+= New Features
 
 Recent additions to #pmg include:
 
@@ -227,32 +258,6 @@ Case study: Battery materials research with #pmg
 
 #set text(size: 11pt) */
 
-= Community Impact and Involvement
-
-#figure(
-  image("figs/pmg_dependency_usage.svg"),
-  caption: [3rd-party dependency usage of #pmg modules.],
-) <fig:pmg-dependency-usage>
-
-#figure(
-  image("figs/dependent-usage-of-pmg.svg"),
-  caption: [Dependent repositories' usage of #pmg submodules.],
-) <fig:dependent-usage-of-pmg>
-
-#SK[What about also showing something like downloads over time (which can be quantitatively inaccurate but should show the trend? 'without mirrors'), and packages requiring #pmg over time?]
-
-The growth of #pmg is reflected not only in its feature set but also in its expanding user base and community engagement. Steady growth in package downloads and the number of packages requiring #pmg as a dependency over time are evidence of #pmg's increasing adoption across the materials science community, as shown in @fig:pmg-dependency-usage and @fig:dependent-usage-of-pmg.
-
-#pmg's impact on the materials science community includes:
-
-+ Accelerated research across various domains @butler_machine_2018
-+ Standardization of materials analysis procedures
-+ Educational tool for students and early-career researchers @ong_python_2013
-+ Industry adoption in R&D workflows @jain_commentary_2013
-+ Promotion of open science and collaborative development @horton_promises_2021
-
-The library's impact is evident in its usage in high-impact publications and integration into platforms like the Materials Project, AFLOW, and OQMD @curtarolo_aflow_2012.
-
 = Challenges and Solutions
 
 Maintaining and evolving a project of #pmg's scale presents unique challenges that have shaped its development approach.
@@ -285,7 +290,7 @@ As shown in @fig:pr-since-1st @fig:active-contributors and @fig:contributors-wor
 Future considerations include integrating Rust components for improved performance while maintaining Python's ease of use @lunnikivi_transpiling_2020. // is this fine with all maintainers?
 // JR: rust migration is probably a personal hobby horse of mine and something Shyue would reject outright...
 
-= Conclusion
+= Outlook and Future Developments
 
 #pmg has evolved from a specialized tool into a cornerstone of computational materials science. Its growth reflects the collaborative spirit of the materials informatics community and the importance of open-source software in scientific research @ong_python_2013 @jain_computational_2016.
 

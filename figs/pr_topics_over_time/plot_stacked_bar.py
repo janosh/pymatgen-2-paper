@@ -28,7 +28,7 @@ THEME_RULES: list[tuple[str, str]] = [
     ),
     (r"performance|speed|optimization", "Performance"),
     (
-        r"test|ci|continuous integration|type annotation|code modern|dependency|compatibility|deprecat|breaking",
+        r"test|ci|continuous integration|type annotation|code modern|dependency|compatibility|deprecate|breaking",
         "Testing & Code Quality",
     ),
     (r"doc|readme|tutorial", "Documentation"),

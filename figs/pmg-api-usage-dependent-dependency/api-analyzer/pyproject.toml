@@ -5,11 +5,20 @@ description = "Analyze API usage in Python and Jupyter notebooks"
 requires-python = ">=3.10"
 
 [build-system]
-requires = ["setuptools>=61"]
-build-backend = "setuptools.build_meta"
+requires = ["uv_build>=0.9.2"]
+build-backend = "uv_build"
 
-[tool.setuptools]
-packages = ["api_analyzer"]
+[tool.uv.build-backend]
+module-name = "api_analyzer"
+module-root = ""
+source-include = ["api_analyzer/**/*.py"]
 
 [dependency-groups]
 dev = ["pytest>=8.0"]
+
+[tool.typos.default]
+locale = "en-us"
+extend-ignore-words-re = [
+  "\\b(ND)\\b",                       # array
+  "\\b(atomate2|atomate|dscribe)\\b", # Names
+]

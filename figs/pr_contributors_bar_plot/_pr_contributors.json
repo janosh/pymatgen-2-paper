@@ -14752,7 +14752,7 @@
     "author": "janosh",
     "created_at": "2024-05-01T18:32:19Z",
     "first_contribution_date": "2021-01-21T09:18:37+00:00",
-    "title": "Fix overlayed subplots in `BSPlotterProjected.get_projected_plots_dots()`",
+    "title": "Fix overlaid subplots in `BSPlotterProjected.get_projected_plots_dots()`",
     "years_since_first": 3.27
   },
   "3799": {
@@ -16166,7 +16166,7 @@
     "author": "DanielYang59",
     "created_at": "2024-11-23T05:20:49Z",
     "first_contribution_date": "2023-12-20T03:20:17+00:00",
-    "title": "Remove unnecesary isotope conversion in `core.periodic_table.get_el_sp`",
+    "title": "Remove unnecessary isotope conversion in `core.periodic_table.get_el_sp`",
     "years_since_first": 0.93
   },
   "4194": {

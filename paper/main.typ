@@ -154,7 +154,7 @@ These tools often complement each other in materials science workflows. #pmg's s
 + `matminer`: Data mining in materials science @ward_matminer_2018
 + `pymatgen-analysis-diffusion`: Diffusion analysis tools @deng_datadriven_2017
 + `pymatgen-analysis-alloys`: Alloy analysis tools
-+ `doped`, `ShakeNBreak`: Defect modelling tools, building on `pymatgen-analysis-defects` & `PyCDT`
++ `doped`, `ShakeNBreak`: Defect modeling tools, building on `pymatgen-analysis-defects` & `PyCDT`
 
 These packages demonstrate #pmg's extensibility and its role in the materials informatics ecosystem @butler_machine_2018.
 

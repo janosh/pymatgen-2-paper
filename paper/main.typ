@@ -96,13 +96,13 @@ As shown in @fig:mindmap, #pmg has evolved into a comprehensive ecosystem spanni
 
 Since 2011, #pmg has enabled both individual and high-throughput computational materials science efforts @ong_python_2013. It started as a central code in the Materials Project@jain_commentary_2013 and nowadays provides tools for setup and analysis of materials simulations, and interfaces to various materials science codes. The library has grown significantly through community efforts, adapting to expanding needs in the field of materials informatics @butler_machine_2018.  // potentially one or two more sentences on the impact it has
 
-On #pmg's 10th anniversary, we review its evolution and impact, sharing challenges and solutions encountered during its growth. We furthermore highlight factors that established #pmg as a cornerstone of materials science software. This retrospective could also serve as a guiding example for other community codes in the materials science domain. Lastly, we outline future developments. 
+On #pmg's 10th anniversary, we review its evolution and impact, sharing challenges and solutions encountered during its growth. We furthermore highlight factors that established #pmg as a cornerstone of materials science software. This retrospective could also serve as a guiding example for other community codes in the materials science domain. Lastly, we outline future developments.
 
 = Overview and Design Principles
 
 == Background
 
-#pmg was developed in 2011 by Shyue Ping Ong and colleagues at MIT to support the Materials Project @ong_python_2013 @jain_commentary_2013. Initially, #pmg provided essential tools for crystallographic operations, symmetry analysis, integration with the VASP density functional theory (DFT) code, and basic electronic structure and phase diagram analysis. These foundational capabilities enabled researchers to automate and standardize many aspects of computational materials science, laying the groundwork for high-throughput materials discovery. 
+#pmg was developed in 2011 by Shyue Ping Ong and colleagues at MIT to support the Materials Project @ong_python_2013 @jain_commentary_2013. Initially, #pmg provided essential tools for crystallographic operations, symmetry analysis, integration with the VASP density functional theory (DFT) code, and basic electronic structure and phase diagram analysis. These foundational capabilities enabled researchers to automate and standardize many aspects of computational materials science, laying the groundwork for high-throughput materials discovery.
 
 
 Since then, #pmg has expanded significantly, incorporating new features and adapting to the evolving landscape of materials informatics @butler_machine_2018. Key trends shaping its development include:
@@ -114,7 +114,7 @@ Since then, #pmg has expanded significantly, incorporating new features and adap
 
 //#pmg is an open-source Python library for materials analysis, offering tools from basic crystallographic operations to complex electronic structure analysis @ong_python_2013 @jain_commentary_2013. Key features include:
 
-Today, #pmg aims to accelerate materials discovery by providing a comprehensive toolkit for researchers at all levels @curtarolo_highthroughput_2013. While pymatgen’s original goals—such as crystallographic operations and electronic structure analysis—remain central, its capabilities have grown substantially to support a broad spectrum of tasks in computational materials science. Today, pymatgen offers powerful tools for crystallographic and structural analysis, electronic structure parsing, thermodynamic and phase diagram construction, and seamless integration with various DFT codes. Additionally, it includes utilities for machine learning applications in materials property prediction [@ward2018matminer], reflecting its evolution into a comprehensive platform for materials informatics.
+Today, #pmg aims to accelerate materials discovery by providing a comprehensive toolkit for researchers at all levels @curtarolo_highthroughput_2013. While pymatgen’s original goals—such as crystallographic operations and electronic structure analysis—remain central, its capabilities have grown substantially to support a broad spectrum of tasks in computational materials science. Today, pymatgen offers powerful tools for crystallographic and structural analysis, electronic structure parsing, thermodynamic and phase diagram construction, and seamless integration with various DFT codes. Additionally, it includes utilities for machine learning applications in materials property prediction [@ward_matminer_2018], reflecting its evolution into a comprehensive platform for materials informatics.
 
 
 
@@ -195,7 +195,7 @@ The library's impact is evident in its usage in high-impact publications and int
 
 === Data-driven Heuristic Assessment and Machine Learning
 #pmg is a powerful toolkit that enables large-scale data analysis and machine learning studies in materials science. Through its integration with materials databases such as the Materials Project and OPTIMADE, researchers can easily retrieve extensive datasets, including machine learning targets, which serve as the foundation for data-driven assessments and the development of machine learning modules. When working with other sources like ICSD or MAGNDATA, #pmg’s ability to read (magnetic) Crystallographic Information Files (CIFs) facilitates the creation of large, structured datasets.
-Many chemical heuristics—such as those related to stability, synthesizability, defect energetics, and magnetism—rely on accurate determinations of oxidation states and coordination environments, which can both be assessed within #pmg. Additionally, #pmg is deeply integrated within matminer, a library that streamlines the generation of popular features for machine learning workflows, further supporting the derivation and validation of heuristics. 
+Many chemical heuristics—such as those related to stability, synthesizability, defect energetics, and magnetism—rely on accurate determinations of oxidation states and coordination environments, which can both be assessed within #pmg. Additionally, #pmg is deeply integrated within matminer, a library that streamlines the generation of popular features for machine learning workflows, further supporting the derivation and validation of heuristics.
 In summary, #pmg provides a framework for materials data handling, feature extraction, and heuristic development, making it an essential tool for modern, data-driven materials informatics.
 
 

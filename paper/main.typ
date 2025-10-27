@@ -230,6 +230,13 @@ Key challenges in #pmg's development:
 + Compatibility: Implemented cross-platform testing and version management
 + Community Management: Established clear contribution guidelines and regular community meetings
 
+As shown in @fig:pmg-code-structure, #pmg's test coverage varies significantly across its modules. While the most frequently used functionality like `core`, `io`, and `entries` maintain high coverage (>90%), some harder-to-test and/or specialized modules such as visualization (`vis`), certain analysis tools (`boltztrap`), and advanced diffusion features (`neb`) have low coverage (\<20%). This heterogeneity reflects both the maturity of different components and the ongoing challenge of maintaining comprehensive tests for a large, evolving codebase.
+
+#figure(
+  image("figs/py-pkg-treemap-pymatgen-coverage.svg"),
+  caption: [#pmg code structure and test coverage. The size of each module represents the number of lines of code, while colors indicate test coverage percentage.],
+) <fig:pmg-code-structure>
+
 As shown in @fig:pr-since-1st @fig:active-contributors and @fig:contributors-worldmap, the community has grown organically with contributors from around the world, though maintaining consistent development velocity requires dedicated maintainers.
 
 #figure(

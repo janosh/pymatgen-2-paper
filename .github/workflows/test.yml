@@ -4,10 +4,10 @@ on:
     push:
         branches: [main, develop]
         paths:
-            - "figs/pmg-api-usage-dependent-dependency/api-analyzer/**"
+            - "fig_scripts/pmg-api-usage-dependent-dependency/api-analyzer/**"
     pull_request:
         paths:
-            - "figs/pmg-api-usage-dependent-dependency/api-analyzer/**"
+            - "fig_scripts/pmg-api-usage-dependent-dependency/api-analyzer/**"
 
 jobs:
     test:
@@ -25,7 +25,7 @@ jobs:
                   python-version: "3.12"
 
             - name: Run pytest
-              working-directory: figs/pmg-api-usage-dependent-dependency/api-analyzer
+              working-directory: fig_scripts/pmg-api-usage-dependent-dependency/api-analyzer
               run: |
                   uv sync
                   uv run --isolated pytest --noconftest tests

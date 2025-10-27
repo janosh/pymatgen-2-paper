@@ -6,10 +6,10 @@ repos:
     rev: v0.14.0
     hooks:
       - id: ruff-check
-        args: ['--fix', '--per-file-ignores', '*.ipynb:E402']
-        exclude: ^figs/pmg-api-usage-dependent-dependency/api-analyzer/tests/data/
+        args: ["--fix", "--per-file-ignores", "*.ipynb:E402"]
+        exclude: ^fig_scripts/pmg-api-usage-dependent-dependency/api-analyzer/tests/data/
       - id: ruff-format
-        exclude: ^figs/pmg-api-usage-dependent-dependency/api-analyzer/tests/data/
+        exclude: ^fig_scripts/pmg-api-usage-dependent-dependency/api-analyzer/tests/data/
 
   - repo: local
     hooks:
@@ -46,7 +46,7 @@ repos:
         # MD033: no inline HTML
         # MD041: first line in a file should be a top-level heading
         # MD025: single title
-        args: [--disable, MD013, MD024, MD025, MD033, MD041, '--']
+        args: [--disable, MD013, MD024, MD025, MD033, MD041, "--"]
 
   - repo: https://github.com/kynan/nbstripout
     rev: 0.8.1
@@ -71,8 +71,8 @@ repos:
     hooks:
       - id: typos
         types: [text]
-        exclude: ^(.+/_.+.(json|csv)|figs/.+/.+.(csv|json))$
+        exclude: ^(.+/_.+.(json|csv)|fig_scripts/.+/.+.(csv|json))$
         exclude_types: [svg, bib]
         args:
           - --config
-          - figs/pmg-api-usage-dependent-dependency/api-analyzer/pyproject.toml
+          - fig_scripts/pmg-api-usage-dependent-dependency/api-analyzer/pyproject.toml

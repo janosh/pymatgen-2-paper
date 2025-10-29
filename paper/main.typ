@@ -170,13 +170,13 @@ Of course, #pmg itself builds on foundational open-source Python packages, such 
 
 #figure(
   image("figs/pmg_dependency_usage.svg"),
-  caption: [Usage of 3rd-party dependencies in #pmg modules. Linewidths are scaled by the number of direct code imports. *Haoyu – please confirm this is correct about linewidths*],
+  caption: [Usage of 3rd-party dependencies in #pmg modules. Linewidths are scaled by the number of function usages.],
 ) <fig:pmg-dependency-usage>
 // TODO turn this into single figure spanning 2 cols
-#SK[Along with making this 2-columns, need to remove in-figure titles. The text is currently too small; making them wider (to fill the single-column space) will help, in addition to increasing font size and possibly cutting some of the entries. At the very end, may want to manually edit.]
+#SK[Along with making this 2-columns, need to remove in-figure titles (by cropping?). The text is currently too small; making them wider (to fill the single-column space) will help, in addition to increasing font size (✅) and possibly cutting some of the entries (✅). At the very end, may want to manually edit.]
 #figure(
   image("figs/dependent-usage-of-pmg.svg"),
-  caption: [Downstream usage of #pmg modules by dependent packages.],
+  caption: [Downstream usage of #pmg modules by dependent packages. Linewidths are scaled by the number of function usages.],
 ) <fig:dependent-usage-of-pmg>
 
 Cumulatively, #pmg's impact on the materials science community includes:
@@ -192,34 +192,32 @@ Cumulatively, #pmg's impact on the materials science community includes:
 // SK: Well it's that pymatgen's API can be used with these material databases (except ofc Materials Project which it supports/'is integrated to')
 
 == Case Studies
-Below, we discuss two case studies of advanced materials analyses that the core #pmg toolkit has enabled.
+Below, we discuss case studies of advanced materials analyses that the #pmg framework has enabled.
 
 === Defect Modeling Tools
-Summary:
-- Many steps, with many different tasks, ranging from...
-- Moreover, many of these steps are somewhat specialised to defects
-- Building a comprehensive yet flexible defect modelling toolkit has been a goal in the field...
-- #pmg has allowed this development, providing a robust yet flexible framework to simplify these steps and allow their defect-specific implementation 
-- These toolkits are seeing widespread usage in the defects community, helping to accelerate research in this important space...
-\
-\
-
 Defect modeling is a rapidly growing field, driven by advances in computational power and methods that make these calculations tractable, along with the critical importance of defect species to diverse materials technologies, such as transistors, solar cells, transparent conducting materials, batteries, qubits and more. 
 Defect simulation can be a long and complex process, however, requiring many different tasks, including structure manipulations, symmetry analyses, input file generation and output parsing for electronic structure codes, lightweight metadata and serialization for reproducibility, and interfaces with databases such as the Materials Project for phase diagram analysis.
 Moreover, many of these tasks have specific requirements for the specialized case of defects, such as efficient and appropriate supercell generation (to balance computational cost and accuracy), determination of defect point symmetries, configurational degeneracies and site multiplicities in symmetry-breaking supercells, efficient algorithms for large and complex structure analyses, calculation parameter consistency checks, targeted distortions for structure-searching, smart algorithms for sub-phase diagrams and more.
-\
-\
+\ \
 
-
-
-The `doped` defect simulation toolkit has made heavy use of the tools provided by #pmg to produce a comprehensive yet flexible software suite to implement the defect modelling workflow.
-#pmg's utility as a foundational tool in computational materials science workflows is well-illustrated by its usage in the modeling of crystal defects. 
-
-Community tools facilitated by the foundational functionality in #pmg, have accelerated and expanded computational defect investigations while reducing the barrier to entry for new researchers in this field.
-+ (If we want a figure here, could make a diagram showing the workflow: Pull materials from MP -> Oxi-state Guess w/PMG -> Vacancy generation w/`doped` (via PMG etc) -> Electrostatic analysis with PMG (Ewald tools) -> VASP DFT I/O w/PMG -> Energetic & Structural (w/`doped` & PMG) analysis; from 10.1088/2515-7655/ade916, as example).
+Several open-source toolkits have now been developed which make use of core functionalities in #pmg to implement stages of the defect modeling workflow, including `doped` (@fig:dependent-usage-of-pmg), `pydefect`, `PyCDT`, `pymatgen-analysis-defects`, `ShakeNBreak`, `AiiDA-defects` and `pydecs`. 
+These toolkits are seeing widespread usage in the defects community, helping to accelerate research in this technologically crucial area, while also reducing the barrier to entry for new researchers.
+Here, the wide functionality, along with a flexible and modular code structure, has been a key enabler of these downstream developments, allowing the tailoring of #pmg functions to specialised use cases.
+One promising aspect of these developments, is the 
 
 Should mention something about reproducibility, aided by `pymatgen`/`monty`, see perspective and doped here.
-Name and cite other pymatgen-derived defect packages
+
+The `doped` defect simulation toolkit has made heavy use of the tools provided by #pmg to produce a comprehensive yet flexible software suite to implement the defect modelling workflow.
+
+#pmg's utility as a foundational tool in computational materials science workflows is well-illustrated by its usage in the modeling of crystal defects. 
+
+// + (If we want a figure here, could make a diagram showing the workflow: Pull materials from MP -> Oxi-state Guess w/PMG -> Vacancy generation w/`doped` (via PMG etc) -> Electrostatic analysis with PMG (Ewald tools) -> VASP DFT I/O w/PMG -> Energetic & Structural (w/`doped` & PMG) analysis; from 10.1088/2515-7655/ade916, as example).
+
+
+
+- #pmg has allowed this development, providing a robust yet flexible framework to simplify these steps and allow their defect-specific implementation 
+
+*TODO: Citations*
 
 === Data-driven Heuristic Assessment and Machine Learning
 *@ Janine*
@@ -227,7 +225,7 @@ Name and cite other pymatgen-derived defect packages
 Many chemical heuristics—such as those related to stability, synthesizability, defect energetics, and magnetism—rely on accurate determinations of oxidation states and coordination environments, which can both be assessed within #pmg. Additionally, #pmg is deeply integrated within matminer, a library that streamlines the generation of popular features for machine learning workflows, further supporting the derivation and validation of heuristics.
 In summary, #pmg provides a framework for materials data handling, feature extraction, and heuristic development, making it an essential tool for modern, data-driven materials informatics.
 
-// If wanted, could do case study on workflow packages
+=== Workflow Packages?
 
 
 = New Features

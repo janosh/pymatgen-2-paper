@@ -163,8 +163,6 @@ if SHOW_LABEL:
             showlegend=False,
         )
 
-fig_title = "Citations by Country for 1ˢᵗ pymatgen Paper"
-fig.layout.title.update(text=fig_title, font=dict(size=28), x=0.5, xanchor="center")
 fig.layout.geo.update(
     showframe=True, showcoastlines=False, projection_type="natural earth"
 )

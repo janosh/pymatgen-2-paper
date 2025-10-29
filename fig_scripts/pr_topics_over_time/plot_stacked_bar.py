@@ -76,7 +76,6 @@ fig = px.bar(
     counts,
     x=counts.index.astype(str),
     y=counts.columns,
-    title="PR Topics by Theme",
     labels={"value": "Number of PRs", "x": "Year", "variable": "Theme"},
     color_discrete_sequence=colors[: len(counts.columns)],
 )

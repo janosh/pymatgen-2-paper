@@ -3,6 +3,7 @@
 
 #let pmg = `pymatgen`
 #let pdf-img(path, ..args) = muchpdf(read(path, encoding: none), ..args)
+#show link: underline
 
 #let title = "pymatgen: A decade of community growth, new functionality, and future prospects"
 
@@ -152,18 +153,15 @@ These usages span diverse fields, including energy storage and conversion, catal
 In addition to direct usage for common materials analyses, many packages which are specialised for various computational materials science research areas have built upon the #pmg framework.
 A selection of the most popular downstream packages is shown in @fig:dependent-usage-of-pmg, which includes:
 
-+ `atomate(2)`, `custodian`, `quacc`: High-throughput computational materials science workflows @mathew_atomate_2017. 
++ #link("https://github.com/materialsproject/atomate2")[`atomate(2)`] @mathew_atomate_2017@ganose_atomate2_2025, #link("https://github.com/materialsproject/custodian")[`custodian`], #link("https://quantum-accelerators.github.io/quacc/")[`quacc`] @rosen_quacc_2025: High-throughput computational materials science workflows . 
 // `atomate2`, also published in Digital Discovery, demonstrates #pmg's role as a foundational tool for diverse materials science workflows used across the community for high-throughput studies.
-// + `custodian`: Job management and error recovery
-+ `matminer`: Data mining in materials science @ward_matminer_2018
-+ `pymatgen-analysis-diffusion`: Diffusion analysis suite @deng_datadriven_2017
-+ `pymatgen-analysis-alloys`: Alloy analysis suite
-+ `doped`, `ShakeNBreak`: Defect modeling and structure-searching, building on `pymatgen-analysis-defects` and `PyCDT`
-+ `pymatviz`, `SMACT`: Materials informatics toolkits
-+ `matbench-discovery`, `AIRS`, `matgl`: Machine learning for materials science
-+ `pyxtal`: Generation and manipulation of atomic structures with symmetry constraints
-
-#SK[TODO: Need to add citations for all here. Package names can have links to docs/repos maybe?]
++ #link("https://hackingmaterials.lbl.gov/matminer/")[`matminer`] @ward_matminer_2018: Data mining in materials science
++ #link("https://github.com/materialsvirtuallab/pymatgen-analysis-diffusion")[`pymatgen-analysis-diffusion`] @deng_datadriven_2017: Diffusion analysis suite
++ #link("https://doped.readthedocs.io/en/latest/")[`doped`] @kavanagh_doped_2024, #link("https://shakenbreak.readthedocs.io/en/latest/")[`ShakeNBreak`] @mosquera-lois_shakenbreak_2022: Defect modeling and structure-searching, building on #link("https://materialsproject.github.io/pymatgen-analysis-defects")[`pymatgen-analysis-defects`] @shen_pymatgen-analysis-defects_2024 and #link("https://github.com/mbkumar/pycdt")[`PyCDT`] @broberg_pycdt_2018
++ #link("https://pymatviz.janosh.dev/")[`pymatviz`] @riebesell_pymatviz_2022, #link("https://smact.readthedocs.io/en/latest/")[`SMACT`] @davies_smact_2019: Materials informatics toolkits
++ #link("https://matbench-discovery.materialsproject.org/")[`matbench-discovery`] @riebesell_framework_2025, #link("https://www.air4.science/")[`AIRS`] @zhangArtificialIntelligenceScience2025, #link("https://github.com/materialsvirtuallab/matgl")[`matgl`] @ko_materials_2025: Machine learning for materials science
++ #link("https://pyxtal.readthedocs.io/en/latest/")[`PyXtal`] @fredericksPyXtalPythonLibrary2021: Generation and manipulation of atomic structures with symmetry constraints
+\
 
 This zoo of downstream packages demonstrates #pmg's extensibility, serving a foundational role in the materials modelling and informatics ecosystems @butler_machine_2018.
 Of course, #pmg itself builds on foundational open-source Python packages, such as `numpy`, `scipy` and `pandas` for numerical operations, `matplotlib` for plotting, `spglib` for symmetry analyses and `monty` for serialization, as shown in @fig:pmg-dependency-usage.
@@ -184,7 +182,7 @@ Cumulatively, #pmg's impact on the materials science community includes:
 + Accelerated research across various domains @butler_machine_2018, including the accelerated development of specialised materials analysis toolkits (@fig:dependent-usage-of-pmg).
 + Standardization of core materials analysis procedures.
 + Improved reproducibility, through user-friendly serialization and analysis tools.
-+ Provision of accessible educational tools for students and early-career researchers @ong_python_2013 (CITE: https://github.com/materialsvirtuallab/matgenb).
++ Provision of accessible educational tools for students and early-career researchers @ong_python_2013, such as https://github.com/materialsvirtuallab/matgenb.
 + Adoption in industrial research and development workflows @jain_commentary_2013.
 + Promotion of open science and collaborative development @horton_promises_2021.
 
@@ -200,24 +198,14 @@ Defect simulation can be a long and complex process, however, requiring many dif
 Moreover, many of these tasks have specific requirements for the specialized case of defects, such as efficient and appropriate supercell generation (to balance computational cost and accuracy), determination of defect point symmetries, configurational degeneracies and site multiplicities in symmetry-breaking supercells, efficient algorithms for large and complex structure analyses, calculation parameter consistency checks, targeted distortions for structure-searching, smart algorithms for sub-phase diagrams and more.
 \ \
 
-Several open-source toolkits have now been developed which make use of core functionalities in #pmg to implement stages of the defect modeling workflow, including `doped` (@fig:dependent-usage-of-pmg), `pydefect`, `PyCDT`, `pymatgen-analysis-defects`, `ShakeNBreak`, `AiiDA-defects` and `pydecs`. 
-These toolkits are seeing widespread usage in the defects community, helping to accelerate research in this technologically crucial area, while also reducing the barrier to entry for new researchers.
+Several open-source toolkits have now been developed which make use of core functionalities in #pmg to implement stages of the defect modeling workflow, including `doped` @kavanagh_doped_2024 (@fig:dependent-usage-of-pmg), `pydefect` @kumagai_insights_2021, `PyCDT` @broberg_pycdt_2018, `pymatgen-analysis-defects` @shen_pymatgen-analysis-defects_2024, `ShakeNBreak` @mosquera-lois_shakenbreak_2022, `AiiDA-defects` @muy_aiida-defects_2023 and `pydecs` @ogawa_extended_2022. 
+These toolkits are seeing widespread usage in the defects community, helping to accelerate research in this technologically crucial area, along with reducing human errors and lowering the barrier to entry for new researchers.
 Here, the wide functionality, along with a flexible and modular code structure, has been a key enabler of these downstream developments, allowing the tailoring of #pmg functions to specialised use cases.
-One promising aspect of these developments, is the 
-
-Should mention something about reproducibility, aided by `pymatgen`/`monty`, see perspective and doped here.
-
-The `doped` defect simulation toolkit has made heavy use of the tools provided by #pmg to produce a comprehensive yet flexible software suite to implement the defect modelling workflow.
-
-#pmg's utility as a foundational tool in computational materials science workflows is well-illustrated by its usage in the modeling of crystal defects. 
+One promising aspect of these developments, is that they have greatly reduced the burden for data sharing and reproducibility in defect simulations – a particularly challenging task given the many steps involved @squiresGuidelinesRobustReproducible2025.
+Through the object-oriented architecture and efficient serialization tools provided by #pmg and its `monty` dependency, the human effort to collate and export complete metadata and calculation provenance is significantly diminished.
+It is hoped that these developments will establish clear community standards and expectations for reproducibility, strengthening the quality and impact of defect modelling research while ensuring robust foundations for future database and machine learning efforts in this area @squiresGuidelinesRobustReproducible2025.
 
 // + (If we want a figure here, could make a diagram showing the workflow: Pull materials from MP -> Oxi-state Guess w/PMG -> Vacancy generation w/`doped` (via PMG etc) -> Electrostatic analysis with PMG (Ewald tools) -> VASP DFT I/O w/PMG -> Energetic & Structural (w/`doped` & PMG) analysis; from 10.1088/2515-7655/ade916, as example).
-
-
-
-- #pmg has allowed this development, providing a robust yet flexible framework to simplify these steps and allow their defect-specific implementation 
-
-*TODO: Citations*
 
 === Data-driven Heuristic Assessment and Machine Learning
 *@ Janine*
@@ -238,6 +226,7 @@ Recent additions to #pmg include:
 + Improved structure prediction and analysis algorithms (including magnetic structure) @waroquiers_chemenv_2020 @pan_benchmarking_2021 @horton_highthroughput_2019
 + Advanced battery materials research tools
 + Quantum chemistry code integration
++ Extension packages?
 
 As illustrated in @fig:pr-topics and @fig:commits-heatmap, the development activity has been sustained across multiple subpackages, with contributions spanning bug fixes, new features, and performance improvements.
 
@@ -292,9 +281,8 @@ As shown in @fig:pr-since-1st @fig:active-contributors and @fig:contributors-wor
 
 #figure(
   image("figs/active-contributors-colored.svg"),
-  caption: [Active contributors to #pmg over time.],
+  caption: [Active contributors to #pmg over time – SK: Could potentially cut, somewhat duplicating info from other figures],
 ) <fig:active-contributors>
-// Can potentially cut
 
 #figure(
   image("figs/pr_contributors_worldmap.svg"),
@@ -317,6 +305,7 @@ Future developments may include:
 + Performance optimizations through compiled extensions and algorithmic improvements. E.g. exploration of hybrid Python-Rust bindings @lunnikivi_transpiling_2020. // TODO mention moyo as a successful example of this?
 // Mention widespread benefit & accelerations
 + Docs?
++ (More) Extension packages / support? Reflecting a change in development scope
 
 We remain committed to fostering an open, collaborative environment that drives innovation in computational materials science.
 

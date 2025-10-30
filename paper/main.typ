@@ -269,23 +269,36 @@ Case study: Battery materials research with #pmg
 
 
 = Challenges and Solutions
-*@ Janosh & Matt*
 
-Maintaining and evolving a project of #pmg's scale presents unique challenges that have shaped its development approach.
+Maintaining and evolving a project of #pmg's scale over more than a decade presents unique challenges that offer valuable lessons for the broader scientific software community. We discuss key challenges encountered and the possible solutions to address them.
 
-// TODO discuss how to better credit/recognize maintainers and contributors. one possible way: highlight projects on data infrastructure and code development (e.g. FAIRmat)
+== Sustainability and Maintainer Resources
 
-Key challenges in #pmg's development:
+Perhaps the most critical challenge facing long-lived open-source scientific software is sustainability. Unlike commercial software with dedicated development teams, #pmg has evolved primarily through volunteer contributions from academic researchers, where software development competes with research publications, teaching, and other career pressures. This model, while fostering community ownership, creates inherent tensions around maintenance, code review capacity, and long-term feature development.
 
-+ Code Maintenance: Implemented comprehensive unit testing and continuous integration @ong_python_2013
-+ Performance: Optimized critical paths and used compiled languages for key sections
-+ Documentation: Adopted auto-documentation tools and prioritized documentation contributions
-+ Compatibility: Implemented cross-platform testing and version management
-+ Community Management: Established clear contribution guidelines and regular community meetings
+The Materials Project has provided crucial institutional support, offering paid developer time, computational resources, and organizational infrastructure. This hybrid model (combining institutional backing with community contributions) has proven essential for #pmg's longevity. Yet acquiring funding for software maintenance remains challenging, as grant agencies strongly favor novel research over infrastructure upkeep. Projects like FAIRmat @fairmat_web_2025 and the Molecular Sciences Software Institute (MolSSI) @molssi_web_2025 represent important steps toward recognizing computational infrastructure as research infrastructure deserving sustained investment.
+
+As shown in @fig:pr-since-1st and @fig:contributors-worldmap, #pmg has cultivated a globally distributed contributor base which affords some amount of resilience to changing resource situations at any one institution. However, the concentration of maintenance burden on a small number of core developers remains an ongoing concern. We hope that clear contribution guidelines, responsive code review, and explicit recognition of contributors (through authorship opportunities, acknowledgments in papers, and community visibility) can help sustain engagement and grow the pool of active maintainers.
+
+== Backwards Compatibility and API Evolution
+
+A fundamental tension in mature software libraries is balancing API stability for existing users against the need for improvements and corrections. #pmg has accumulated substantial technical debt from early design decisions made before certain use cases were anticipated. TODO give some examples
+
+== Test Coverage and Code Quality
 
 As shown in @fig:pmg-code-structure, #pmg's test coverage varies significantly across its modules. While the most frequently used functionality like `core`, `io`, and `entries` maintain high coverage (>90%), some harder-to-test and/or specialized modules such as visualization (`vis`), certain analysis tools (`boltztrap`), and advanced diffusion features (`neb`) have low coverage (\<20%). This heterogeneity reflects both the maturity of different components and the ongoing challenge of maintaining comprehensive tests for a large, evolving codebase.
 
-*Elaborate on challenges, in context of figures. Solutions? Mention MP foundation?*
+This heterogeneity is not merely neglect but reflects genuine trade-offs. Some modules require external executables and/or long-running operations for meaningful testing, making comprehensive CI difficult. Visualization code often requires rendering backends that complicate automated testing. #pmg has focused testing resources on core modules that attract the largest user bases, accepting lower coverage for specialized and infrequently used features.
+
+Continuous integration via GitHub Actions, along with tools like `pytest`, `coverage.py`, `ruff` (for linting) and `ty` for type checking, form the backbone of our quality assurance. Pre-commit hooks automate formatting and catch common issues before review. However, the test suite's growing execution time creates friction for contributors. Some efforts need to be directed towards improving test efficiency and parallelization beyond the current use of `pytest-split` spreading tests across multiple 4 concurrent runners.
+
+== Governance and Contributor Onboarding
+
+TODO
+
+== Dependencies and Dependents
+
+TODO
 
 #place(top + center, float: true, scope: "parent")[
   #figure(

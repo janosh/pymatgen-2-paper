@@ -1,8 +1,9 @@
-#import "./template.typ": float, template
+#import "./template.typ": float, subfigure, template
 #import "@preview/muchpdf:0.1.0": muchpdf
 
 #let pmg = `pymatgen`
 #let pdf-img(path, ..args) = muchpdf(read(path, encoding: none), ..args)
+#show link: underline
 
 #let title = "pymatgen: A decade of community growth, new functionality, and future prospects"
 
@@ -58,11 +59,7 @@
   doi: "00.0000/XXXXXXXXXX",
   citation: [MP et al., _Digital Discovery_, 2025, *1*, 1---2],
 )
-
-#figure(
-  image("figs/pymatgen-2-logo.svg", width: 20%),
-  caption: [Logo for the pymatgen 2 release.],
-)
+#align(center, image("figs/pymatgen-2-logo.svg", width: 20%))
 
 
 // Notes from May 16
@@ -131,7 +128,7 @@ The growing complexity of computational materials science requires powerful, fle
 + Interoperability with popular DFT codes and databases
 + Open-source development encouraging community contributions
 
-#pmg complements other materials science software and we will discuss the package infrastructure and dependent codes below. The closest software of similar popularity is likely ASE @larsen_atomic_2017. However, the design philosophy and use cases of both software are different and partially complementary. #pmg and ASE can be used alongside eachother. Both packages provide parsers for DFT and quantum chemistry codes and general analysis and manipulation tools for molecules and structures. However, ASE enables quantum-chemical simulations by tightly integrating quantum-chemical calculators and MD and other structural optimization capabilities. In contrast, #pmg focuses more on providing materials data analysis functionalities and parsers for quantum-chemical simulations. #pmg's strength lies in its comprehensive coverage of materials analysis tasks and integration capabilities @jain_computational_2016.
+#pmg complements other materials science software and we will discuss the package infrastructure and dependent codes below. The closest software of similar popularity is likely ASE @larsen_atomic_2017. However, the design philosophy and use cases of both software are different and partially complementary. #pmg and ASE can be used alongside each other. Both packages provide parsers for DFT and quantum chemistry codes and general analysis and manipulation tools for molecules and structures. However, ASE enables quantum-chemical simulations by tightly integrating quantum-chemical calculators and MD and other structural optimization capabilities. In contrast, #pmg focuses more on providing materials data analysis functionalities and parsers for quantum-chemical simulations. #pmg's strength lies in its comprehensive coverage of materials analysis tasks and integration capabilities @jain_computational_2016.
 // Maybe rephrase to be a bit more succinct in comparing pymatgen and ASE
 
 = Community Adoption and Impact
@@ -149,42 +146,52 @@ These usages span diverse fields, including energy storage and conversion, catal
 
 == Package Ecosystem
 
-In addition to direct usage for common materials analyses, many packages which are specialised for various computational materials science research areas have built upon the #pmg framework.
+In addition to direct usage for common materials analyses, many packages which are specialized for various computational materials science research areas have built upon the #pmg framework.
 A selection of the most popular downstream packages is shown in @fig:dependent-usage-of-pmg, which includes:
 
-+ `atomate(2)`, `custodian`, `quacc`: High-throughput computational materials science workflows @mathew_atomate_2017. 
++ #link("https://github.com/materialsproject/atomate2")[`atomate(2)`] @mathew_atomate_2017@ganose_atomate2_2025, #link("https://github.com/materialsproject/custodian")[`custodian`], #link("https://quantum-accelerators.github.io/quacc/")[`quacc`] @rosen_quacc_2025: High-throughput computational materials science workflows .
 // `atomate2`, also published in Digital Discovery, demonstrates #pmg's role as a foundational tool for diverse materials science workflows used across the community for high-throughput studies.
-// + `custodian`: Job management and error recovery
-+ `matminer`: Data mining in materials science @ward_matminer_2018
-+ `pymatgen-analysis-diffusion`: Diffusion analysis suite @deng_datadriven_2017
-+ `pymatgen-analysis-alloys`: Alloy analysis suite
-+ `doped`, `ShakeNBreak`: Defect modeling and structure-searching, building on `pymatgen-analysis-defects` and `PyCDT`
-+ `pymatviz`, `SMACT`: Materials informatics toolkits
-+ `matbench-discovery`, `AIRS`, `matgl`: Machine learning for materials science
-+ `pyxtal`: Generation and manipulation of atomic structures with symmetry constraints
++ #link("https://hackingmaterials.lbl.gov/matminer/")[`matminer`] @ward_matminer_2018: Data mining in materials science
++ #link("https://github.com/materialsvirtuallab/pymatgen-analysis-diffusion")[`pymatgen-analysis-diffusion`] @deng_datadriven_2017: Diffusion analysis suite
++ #link("https://doped.readthedocs.io/en/latest/")[`doped`] @kavanagh_doped_2024, #link("https://shakenbreak.readthedocs.io/en/latest/")[`ShakeNBreak`] @mosquera-lois_shakenbreak_2022: Defect modeling and structure-searching, building on #link("https://materialsproject.github.io/pymatgen-analysis-defects")[`pymatgen-analysis-defects`] @shen_pymatgen-analysis-defects_2024 and #link("https://github.com/mbkumar/pycdt")[`PyCDT`] @broberg_pycdt_2018
++ #link("https://pymatviz.janosh.dev/")[`pymatviz`] @riebesell_pymatviz_2022, #link("https://smact.readthedocs.io/en/latest/")[`SMACT`] @davies_smact_2019: Materials informatics toolkits
++ #link("https://matbench-discovery.materialsproject.org/")[`matbench-discovery`] @riebesell_framework_2025, #link("https://www.air4.science/")[`AIRS`] @zhangArtificialIntelligenceScience2025, #link("https://github.com/materialsvirtuallab/matgl")[`matgl`] @ko_materials_2025: Machine learning for materials science
++ #link("https://pyxtal.readthedocs.io/en/latest/")[`PyXtal`] @fredericksPyXtalPythonLibrary2021: Generation and manipulation of atomic structures with symmetry constraints
+\
 
-#SK[TODO: Need to add citations for all here. Package names can have links to docs/repos maybe?]
+This zoo of downstream packages demonstrates #pmg's extensibility, serving a foundational role in the materials modeling and informatics ecosystems @butler_machine_2018.
+Of course, #pmg itself builds on foundational open-source Python packages, such as `numpy`, `scipy` and `pandas` for numerical operations, `matplotlib` for plotting, `spglib` for symmetry analyses and `monty` for serialization, as shown in @fig:package-ecosystem.
 
-This zoo of downstream packages demonstrates #pmg's extensibility, serving a foundational role in the materials modelling and informatics ecosystems @butler_machine_2018.
-Of course, #pmg itself builds on foundational open-source Python packages, such as `numpy`, `scipy` and `pandas` for numerical operations, `matplotlib` for plotting, `spglib` for symmetry analyses and `monty` for serialization, as shown in @fig:pmg-dependency-usage.
-
-#figure(
-  image("figs/pmg_dependency_usage.svg"),
-  caption: [Usage of 3rd-party dependencies in #pmg modules. Linewidths are scaled by the number of direct code imports. *Haoyu – please confirm this is correct about linewidths*],
-) <fig:pmg-dependency-usage>
-// TODO turn this into single figure spanning 2 cols
-#SK[Along with making this 2-columns, need to remove in-figure titles. The text is currently too small; making them wider (to fill the single-column space) will help, in addition to increasing font size and possibly cutting some of the entries. At the very end, may want to manually edit.]
-#figure(
-  image("figs/dependent-usage-of-pmg.svg"),
-  caption: [Downstream usage of #pmg modules by dependent packages.],
-) <fig:dependent-usage-of-pmg>
+#place(top + center, float: true, scope: "parent")[
+  #figure(
+    {
+      grid(
+        columns: 2,
+        gutter: 2em,
+        subfigure(
+          pad(x: -1em, image("figs/pmg_dependency_usage.svg")),
+          caption: [Usage of 3rd-party Python packages in #pmg.],
+          dy: 3%,
+          label: <fig:pmg-dependency-usage>,
+        ),
+        subfigure(
+          pad(x: -1em, image("figs/dependent-usage-of-pmg.svg")),
+          caption: [Downstream usage of #pmg modules by dependent packages.],
+          label: <fig:dependent-usage-of-pmg>,
+        ),
+      )
+      place(center + horizon, dy: -5%, image("figs/pymatgen-2-logo.svg", width: 3em))
+    },
+    caption: [Package dependency ecosystem. Linewidths are scaled by the number of function usages.],
+  ) <fig:package-ecosystem>
+]
 
 Cumulatively, #pmg's impact on the materials science community includes:
 
-+ Accelerated research across various domains @butler_machine_2018, including the accelerated development of specialised materials analysis toolkits (@fig:dependent-usage-of-pmg).
++ Accelerated research across various domains @butler_machine_2018, including the accelerated development of specialized materials analysis toolkits (@fig:dependent-usage-of-pmg).
 + Standardization of core materials analysis procedures.
 + Improved reproducibility, through user-friendly serialization and analysis tools.
-+ Provision of accessible educational tools for students and early-career researchers @ong_python_2013 (CITE: https://github.com/materialsvirtuallab/matgenb).
++ Provision of accessible educational tools for students and early-career researchers @ong_python_2013, such as https://github.com/materialsvirtuallab/matgenb.
 + Adoption in industrial research and development workflows @jain_commentary_2013.
 + Promotion of open science and collaborative development @horton_promises_2021.
 
@@ -192,34 +199,22 @@ Cumulatively, #pmg's impact on the materials science community includes:
 // SK: Well it's that pymatgen's API can be used with these material databases (except ofc Materials Project which it supports/'is integrated to')
 
 == Case Studies
-Below, we discuss two case studies of advanced materials analyses that the core #pmg toolkit has enabled.
+Below, we discuss case studies of advanced materials analyses that the #pmg framework has enabled.
 
 === Defect Modeling Tools
-Summary:
-- Many steps, with many different tasks, ranging from...
-- Moreover, many of these steps are somewhat specialised to defects
-- Building a comprehensive yet flexible defect modelling toolkit has been a goal in the field...
-- #pmg has allowed this development, providing a robust yet flexible framework to simplify these steps and allow their defect-specific implementation 
-- These toolkits are seeing widespread usage in the defects community, helping to accelerate research in this important space...
-\
-\
-
-Defect modeling is a rapidly growing field, driven by advances in computational power and methods that make these calculations tractable, along with the critical importance of defect species to diverse materials technologies, such as transistors, solar cells, transparent conducting materials, batteries, qubits and more. 
+Defect modeling is a rapidly growing field, driven by advances in computational power and methods that make these calculations tractable, along with the critical importance of defect species to diverse materials technologies, such as transistors, solar cells, transparent conducting materials, batteries, qubits and more.
 Defect simulation can be a long and complex process, however, requiring many different tasks, including structure manipulations, symmetry analyses, input file generation and output parsing for electronic structure codes, lightweight metadata and serialization for reproducibility, and interfaces with databases such as the Materials Project for phase diagram analysis.
 Moreover, many of these tasks have specific requirements for the specialized case of defects, such as efficient and appropriate supercell generation (to balance computational cost and accuracy), determination of defect point symmetries, configurational degeneracies and site multiplicities in symmetry-breaking supercells, efficient algorithms for large and complex structure analyses, calculation parameter consistency checks, targeted distortions for structure-searching, smart algorithms for sub-phase diagrams and more.
-\
-\
+\ \
 
+Several open-source toolkits have now been developed which make use of core functionalities in #pmg to implement stages of the defect modeling workflow, including `doped` @kavanagh_doped_2024 (@fig:dependent-usage-of-pmg), `pydefect` @kumagai_insights_2021, `PyCDT` @broberg_pycdt_2018, `pymatgen-analysis-defects` @shen_pymatgen-analysis-defects_2024, `ShakeNBreak` @mosquera-lois_shakenbreak_2022, `AiiDA-defects` @muy_aiida-defects_2023 and `pydecs` @ogawa_extended_2022.
+These toolkits are seeing widespread usage in the defects community, helping to accelerate research in this technologically crucial area, along with reducing human errors and lowering the barrier to entry for new researchers.
+Here, the wide functionality, along with a flexible and modular code structure, has been a key enabler of these downstream developments, allowing the tailoring of #pmg functions to specialized use cases.
+One promising aspect of these developments, is that they have greatly reduced the burden for data sharing and reproducibility in defect simulations – a particularly challenging task given the many steps involved @squiresGuidelinesRobustReproducible2025.
+Through the object-oriented architecture and efficient serialization tools provided by #pmg and its `monty` dependency, the human effort to collate and export complete metadata and calculation provenance is significantly diminished.
+It is hoped that these developments will establish clear community standards and expectations for reproducibility, strengthening the quality and impact of defect modeling research while ensuring robust foundations for future database and machine learning efforts in this area @squiresGuidelinesRobustReproducible2025.
 
-
-The `doped` defect simulation toolkit has made heavy use of the tools provided by #pmg to produce a comprehensive yet flexible software suite to implement the defect modelling workflow.
-#pmg's utility as a foundational tool in computational materials science workflows is well-illustrated by its usage in the modeling of crystal defects. 
-
-Community tools facilitated by the foundational functionality in #pmg, have accelerated and expanded computational defect investigations while reducing the barrier to entry for new researchers in this field.
-+ (If we want a figure here, could make a diagram showing the workflow: Pull materials from MP -> Oxi-state Guess w/PMG -> Vacancy generation w/`doped` (via PMG etc) -> Electrostatic analysis with PMG (Ewald tools) -> VASP DFT I/O w/PMG -> Energetic & Structural (w/`doped` & PMG) analysis; from 10.1088/2515-7655/ade916, as example).
-
-Should mention something about reproducibility, aided by `pymatgen`/`monty`, see perspective and doped here.
-Name and cite other pymatgen-derived defect packages
+// + (If we want a figure here, could make a diagram showing the workflow: Pull materials from MP -> Oxi-state Guess w/PMG -> Vacancy generation w/`doped` (via PMG etc) -> Electrostatic analysis with PMG (Ewald tools) -> VASP DFT I/O w/PMG -> Energetic & Structural (w/`doped` & PMG) analysis; from 10.1088/2515-7655/ade916, as example).
 
 === Data-driven Heuristic Assessment and Machine Learning
 *@ Janine*
@@ -227,7 +222,7 @@ Name and cite other pymatgen-derived defect packages
 Many chemical heuristics—such as those related to stability, synthesizability, defect energetics, and magnetism—rely on accurate determinations of oxidation states and coordination environments, which can both be assessed within #pmg. Additionally, #pmg is deeply integrated within matminer, a library that streamlines the generation of popular features for machine learning workflows, further supporting the derivation and validation of heuristics.
 In summary, #pmg provides a framework for materials data handling, feature extraction, and heuristic development, making it an essential tool for modern, data-driven materials informatics.
 
-// If wanted, could do case study on workflow packages
+=== Workflow Packages?
 
 
 = New Features
@@ -240,18 +235,30 @@ Recent additions to #pmg include:
 + Improved structure prediction and analysis algorithms (including magnetic structure) @waroquiers_chemenv_2020 @pan_benchmarking_2021 @horton_highthroughput_2019
 + Advanced battery materials research tools
 + Quantum chemistry code integration
++ Extension packages?
 
 As illustrated in @fig:pr-topics and @fig:commits-heatmap, the development activity has been sustained across multiple subpackages, with contributions spanning bug fixes, new features, and performance improvements.
 
-#figure(
-  image("figs/pr-topics-over-time-stacked-bar.svg"),
-  caption: [Pull request topics over time in the pymatgen repository.],
-) <fig:pr-topics>
-
-#figure(
-  image("figs/commits_per_package_heatmap.svg"),
-  caption: [Monthly commits per pymatgen subpackage (heatmap).],
-) <fig:commits-heatmap>
+#place(top + center, float: true, scope: "parent")[
+  #figure(
+    grid(
+      columns: (1fr, 2fr),
+      gutter: 1em,
+      subfigure(
+        pad(x: -1em, image("figs/pr-topics-over-time-stacked-bar.svg")),
+        caption: [Pull request topics over time in the pymatgen repository.],
+        dy: 12%,
+        label: <fig:pr-topics>,
+      ),
+      subfigure(
+        pad(x: -1em, image("figs/commits_per_package_heatmap.svg")),
+        caption: [Monthly commits per pymatgen subpackage (heatmap).],
+        label: <fig:commits-heatmap>,
+      ),
+    ),
+    caption: [Development activity in the pymatgen repository over time.],
+  ) <fig:development-activity>
+]
 
 Case study: Battery materials research with #pmg
 
@@ -262,28 +269,43 @@ Case study: Battery materials research with #pmg
 
 
 = Challenges and Solutions
-*@ Janosh & Matt*
 
-Maintaining and evolving a project of #pmg's scale presents unique challenges that have shaped its development approach.
+Maintaining and evolving a project of #pmg's scale over more than a decade presents unique challenges that offer valuable lessons for the broader scientific software community. We discuss key challenges encountered and the possible solutions to address them.
 
-// TODO discuss how to better credit/recognize maintainers and contributors. one possible way: highlight projects on data infrastructure and code development (e.g. FAIRmat)
+== Sustainability and Maintainer Resources
 
-Key challenges in #pmg's development:
+Perhaps the most critical challenge facing long-lived open-source scientific software is sustainability. Unlike commercial software with dedicated development teams, #pmg has evolved primarily through volunteer contributions from academic researchers, where software development competes with research publications, teaching, and other career pressures. This model, while fostering community ownership, creates inherent tensions around maintenance, code review capacity, and long-term feature development.
 
-+ Code Maintenance: Implemented comprehensive unit testing and continuous integration @ong_python_2013
-+ Performance: Optimized critical paths and used compiled languages for key sections
-+ Documentation: Adopted auto-documentation tools and prioritized documentation contributions
-+ Compatibility: Implemented cross-platform testing and version management
-+ Community Management: Established clear contribution guidelines and regular community meetings
+The Materials Project has provided crucial institutional support, offering paid developer time, computational resources, and organizational infrastructure. This hybrid model (combining institutional backing with community contributions) has proven essential for #pmg's longevity. Yet acquiring funding for software maintenance remains challenging, as grant agencies strongly favor novel research over infrastructure upkeep. Projects like FAIRmat @fairmat_web_2025 and the Molecular Sciences Software Institute (MolSSI) @molssi_web_2025 represent important steps toward recognizing computational infrastructure as research infrastructure deserving sustained investment.
+
+As shown in @fig:pr-since-1st and @fig:contributors-worldmap, #pmg has cultivated a globally distributed contributor base which affords some amount of resilience to changing resource situations at any one institution. However, the concentration of maintenance burden on a small number of core developers remains an ongoing concern. We hope that clear contribution guidelines, responsive code review, and explicit recognition of contributors (through authorship opportunities, acknowledgments in papers, and community visibility) can help sustain engagement and grow the pool of active maintainers.
+
+== Backwards Compatibility and API Evolution
+
+A fundamental tension in mature software libraries is balancing API stability for existing users against the need for improvements and corrections. #pmg has accumulated substantial technical debt from early design decisions made before certain use cases were anticipated. TODO give some examples
+
+== Test Coverage and Code Quality
 
 As shown in @fig:pmg-code-structure, #pmg's test coverage varies significantly across its modules. While the most frequently used functionality like `core`, `io`, and `entries` maintain high coverage (>90%), some harder-to-test and/or specialized modules such as visualization (`vis`), certain analysis tools (`boltztrap`), and advanced diffusion features (`neb`) have low coverage (\<20%). This heterogeneity reflects both the maturity of different components and the ongoing challenge of maintaining comprehensive tests for a large, evolving codebase.
 
-*Elaborate on challenges, in context of figures. Solutions? Mention MP foundation?*
+This heterogeneity is not merely neglect but reflects genuine trade-offs. Some modules require external executables and/or long-running operations for meaningful testing, making comprehensive CI difficult. Visualization code often requires rendering backends that complicate automated testing. #pmg has focused testing resources on core modules that attract the largest user bases, accepting lower coverage for specialized and infrequently used features.
 
-#figure(
-  image("figs/py-pkg-treemap-pymatgen-coverage.svg"),
-  caption: [#pmg code structure and test coverage. The size of each module represents the number of lines of code, while colors indicate test coverage percentage.],
-) <fig:pmg-code-structure>
+Continuous integration via GitHub Actions, along with tools like `pytest`, `coverage.py`, `ruff` (for linting) and `ty` for type checking, form the backbone of our quality assurance. Pre-commit hooks automate formatting and catch common issues before review. However, the test suite's growing execution time creates friction for contributors. Some efforts need to be directed towards improving test efficiency and parallelization beyond the current use of `pytest-split` spreading tests across multiple 4 concurrent runners.
+
+== Governance and Contributor Onboarding
+
+TODO
+
+== Dependencies and Dependents
+
+TODO
+
+#place(top + center, float: true, scope: "parent")[
+  #figure(
+    image("figs/py-pkg-treemap-pymatgen-coverage.svg"),
+    caption: [#pmg code structure and test coverage. The size of each module represents the number of lines of code, while colors indicate test coverage percentage.],
+  ) <fig:pmg-code-structure>
+]
 
 As shown in @fig:pr-since-1st @fig:active-contributors and @fig:contributors-worldmap, the community has grown organically with contributors from around the world, though maintaining consistent development velocity requires dedicated maintainers.
 
@@ -294,14 +316,15 @@ As shown in @fig:pr-since-1st @fig:active-contributors and @fig:contributors-wor
 
 #figure(
   image("figs/active-contributors-colored.svg"),
-  caption: [Active contributors to #pmg over time.],
+  caption: [Active contributors to #pmg over time – SK: Could potentially cut, somewhat duplicating info from other figures],
 ) <fig:active-contributors>
-// Can potentially cut
 
-#figure(
-  image("figs/pr_contributors_worldmap.svg"),
-  caption: [Geographic distribution of #pmg pull request contributors. Note caveats; pulled from GitHub profiles],
-) <fig:contributors-worldmap>
+#place(top + center, float: true, scope: "parent")[
+  #figure(
+    pad(x: -3em, top: -2em, bottom: -5em, image("figs/pr_contributors_worldmap.svg")),
+    caption: [Geographic distribution of #pmg pull request contributors. Note caveats; pulled from GitHub profiles],
+  ) <fig:contributors-worldmap>
+]
 
 Future considerations include integrating Rust components for improved performance while maintaining Python's ease of use @lunnikivi_transpiling_2020. // is this fine with all maintainers?
 // JR: rust migration is probably a personal hobby horse of mine and something Shyue would reject outright...
@@ -319,6 +342,7 @@ Future developments may include:
 + Performance optimizations through compiled extensions and algorithmic improvements. E.g. exploration of hybrid Python-Rust bindings @lunnikivi_transpiling_2020. // TODO mention moyo as a successful example of this?
 // Mention widespread benefit & accelerations
 + Docs?
++ (More) Extension packages / support? Reflecting a change in development scope
 
 We remain committed to fostering an open, collaborative environment that drives innovation in computational materials science.
 

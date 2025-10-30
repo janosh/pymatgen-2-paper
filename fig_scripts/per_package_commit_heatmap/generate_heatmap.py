@@ -194,8 +194,8 @@ fig.add_heatmap(
     connectgaps=False,
 )
 
-title = f"Commits per Package (log scale, every {BIN_MONTHS} months)"
-fig.layout.title.update(text=title, x=0.5, font=dict(size=PLOT_TITLE_FONTSIZE))
+# title = f"Commits per Package (log scale, every {BIN_MONTHS} months)"
+# fig.layout.title.update(text=title, x=0.5, font=dict(size=PLOT_TITLE_FONTSIZE))
 fig.layout.xaxis.update(
     title=dict(text="Year", font=dict(size=XY_AXIS_CBAR_TITLE_FONTSIZE)),
     tickfont=dict(size=TICK_LABEL_FONTSIZE),
@@ -210,5 +210,5 @@ fig.layout.yaxis.update(
 )
 fig.layout.update(height=500, width=1400, plot_bgcolor="lightgrey")
 
-fig.write_image("../../paper/figs/commits_per_package_heatmap.svg")
+fig.write_image("../../paper/figs/commits_per_package_heatmap.pdf")
 fig.show()

@@ -34,11 +34,11 @@ fig = px.bar(
 fig.update_layout(
     plot_bgcolor="rgba(0,0,0,0)",  # remove background (inside plot)
     paper_bgcolor="rgba(0,0,0,0)",  # remove outer background
-    title=dict(
-        text="1<sup>st</sup> pymatgen Paper Citations Per Year",
-        x=0.5,
-        font=dict(size=24),
-    ),
+    # title=dict(
+    #     text="1<sup>st</sup> pymatgen Paper Citations Per Year",
+    #     x=0.5,
+    #     font=dict(size=24),
+    # ),
     xaxis=dict(
         title=dict(text="Year", font=dict(size=18)),
         tickfont=dict(size=14),
@@ -56,4 +56,4 @@ fig.update_layout(
 fig.update_traces(textposition="outside", textfont=dict(size=14, color="black"))
 
 # fig.show()
-fig.write_image(f"{ROOT}/paper/figs/citations.svg")
+fig.write_image(f"{ROOT}/paper/figs/citations.pdf")

@@ -102,6 +102,6 @@ fig.layout.geo.update(
 fig.update_geos(fitbounds="locations", visible=True)
 
 fig.write_image(
-    f"{ROOT}/paper/figs/pr_contributors_worldmap.svg", width=1200, height=600, scale=3
+    f"{ROOT}/paper/figs/pr_contributors_worldmap.pdf", width=1200, height=600, scale=3
 )
 fig.show()

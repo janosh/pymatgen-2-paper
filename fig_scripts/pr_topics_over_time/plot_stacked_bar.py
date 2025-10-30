@@ -110,4 +110,4 @@ fig.update_layout(
     paper_bgcolor="white",
 )
 
-fig.write_image(f"{ROOT}/paper/figs/pr-topics-over-time-stacked-bar.svg")
+fig.write_image(f"{ROOT}/paper/figs/pr-topics-over-time-stacked-bar.pdf")

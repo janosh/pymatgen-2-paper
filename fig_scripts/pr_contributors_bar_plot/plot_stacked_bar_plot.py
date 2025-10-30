@@ -95,4 +95,4 @@ fig.update_layout(
 fig.layout.margin.update(t=50, l=0, b=0, r=0)
 fig.layout.legend.update(x=0, y=1)
 
-fig.write_image(f"{ROOT}/paper/figs/pr-since-1st.svg")
+fig.write_image(f"{ROOT}/paper/figs/pr-since-1st.pdf")

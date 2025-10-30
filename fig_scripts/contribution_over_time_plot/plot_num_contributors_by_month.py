@@ -126,5 +126,5 @@ fig.layout.yaxis.update(
 )
 fig.layout.font.update(size=14)
 
-fig.write_image(f"{ROOT}/paper/figs/active-contributors-colored.svg")
+fig.write_image(f"{ROOT}/paper/figs/active-contributors-colored.pdf")
 fig.show()

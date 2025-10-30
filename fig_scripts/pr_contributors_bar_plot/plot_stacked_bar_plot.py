@@ -66,7 +66,7 @@ fig = px.bar(
     df,
     x=df.index.astype(str),
     y=columns,
-    title="Pull Requests by Year",
+    # title="Pull Requests by Year",
     labels={
         "x": "Year",
         "value": "Total Number of Pull Requests",
@@ -95,4 +95,4 @@ fig.update_layout(
 fig.layout.margin.update(t=50, l=0, b=0, r=0)
 fig.layout.legend.update(x=0, y=1)
 
-fig.write_image(f"{ROOT}/paper/figs/pr_since_1st.svg")
+fig.write_image(f"{ROOT}/paper/figs/pr-since-1st.pdf")

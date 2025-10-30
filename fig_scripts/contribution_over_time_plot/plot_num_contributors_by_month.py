@@ -109,8 +109,8 @@ fig.add_scatter(
     showlegend=False,
 )
 
-title = f"Active Contributors per {BINNED_PERIOD_MONTH}-Month Period"
-fig.layout.title.update(text=title, x=0.5, font=dict(size=PLOT_TITLE_FONTSIZE))
+# title = f"Active Contributors per {BINNED_PERIOD_MONTH}-Month Period"
+# fig.layout.title.update(text=title, x=0.5, font=dict(size=PLOT_TITLE_FONTSIZE))
 fig.layout.update(width=1100, height=600, template="plotly_white")
 fig.layout.xaxis.update(
     title=dict(text="Year", font=dict(size=XY_AXIS_CBAR_TITLE_FONTSIZE)),
@@ -126,5 +126,5 @@ fig.layout.yaxis.update(
 )
 fig.layout.font.update(size=14)
 
-fig.write_image(f"{ROOT}/paper/figs/active_contributors_colored.svg")
+fig.write_image(f"{ROOT}/paper/figs/active-contributors-colored.pdf")
 fig.show()

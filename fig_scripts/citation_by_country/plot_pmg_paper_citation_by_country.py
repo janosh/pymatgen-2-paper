@@ -163,14 +163,14 @@ if SHOW_LABEL:
             showlegend=False,
         )
 
-fig_title = "Citations by Country for 1ˢᵗ pymatgen Paper"
-fig.layout.title.update(text=fig_title, font=dict(size=28), x=0.5, xanchor="center")
+# fig_title = "Citations by Country for 1ˢᵗ pymatgen Paper"
+# fig.layout.title.update(text=fig_title, font=dict(size=28), x=0.5, xanchor="center")
 fig.layout.geo.update(
     showframe=True, showcoastlines=False, projection_type="natural earth"
 )
 fig.update_geos(fitbounds="locations", visible=True)
 
 fig.write_image(
-    "../../paper/figs/citations-by-country.svg", width=1200, height=600, scale=3
+    "../../paper/figs/citations-by-country.pdf", width=1200, height=600, scale=3
 )
 fig.show()

@@ -1,8 +1,6 @@
 #import "./template.typ": float, subfigure, template
-#import "@preview/muchpdf:0.1.0": muchpdf
 
 #let pmg = `pymatgen`
-#let pdf-img(path, ..args) = muchpdf(read(path, encoding: none), ..args)
 #show link: underline
 
 #let title = "pymatgen: A decade of community growth, new functionality, and future prospects"
@@ -58,7 +56,7 @@
   doi: "00.0000/XXXXXXXXXX",
   citation: [MP et al., _Digital Discovery_, 2025, *1*, 1---2],
 )
-#align(center, image("figs/pymatgen-2-logo.svg", width: 20%))
+#align(center, image("figs/pymatgen-2-logo.pdf", width: 20%))
 
 
 
@@ -72,7 +70,7 @@ We present the second major release of the Python Materials Genomics (#pmg) libr
 As shown in @fig:mindmap, #pmg has evolved into a comprehensive ecosystem spanning diverse research areas from battery materials to machine learning applications.
 
 #figure(
-  image("figs/mindmap.svg"),
+  image("figs/mindmap.pdf"),
   caption: [#pmg functionality grouped into research topics, colored by number of papers in each topic citing #pmg.],
 ) <fig:mindmap>
 
@@ -123,7 +121,7 @@ The growth of #pmg is reflected not only in its feature set but also in its expa
 These usages span diverse fields, including energy storage and conversion, catalysis, defects, informatics and materials discovery via machine learning @jain_computational_2016 (@fig:mindmap).
 
 #figure(
-  image("figs/citations.svg"),
+  image("figs/citations.pdf"),
   caption: [Citations of #pmg over time.],
 ) <fig:citations>
 
@@ -152,18 +150,18 @@ Of course, #pmg itself builds on foundational open-source Python packages, such 
         columns: 2,
         gutter: 2em,
         subfigure(
-          pad(x: -1em, image("figs/pmg_dependency_usage.svg")),
+          pad(x: -1em, image("figs/pmg_dependency_usage.pdf")),
           caption: [Usage of 3rd-party Python packages in #pmg.],
           dy: 3%,
           label: <fig:pmg-dependency-usage>,
         ),
         subfigure(
-          pad(x: -1em, image("figs/dependent-usage-of-pmg.svg")),
+          pad(x: -1em, image("figs/dependent-usage-of-pmg.pdf")),
           caption: [Downstream usage of #pmg modules by dependent packages.],
           label: <fig:dependent-usage-of-pmg>,
         ),
       )
-      place(center + horizon, dy: -5%, image("figs/pymatgen-2-logo.svg", width: 3em))
+      place(center + horizon, dy: -5%, image("figs/pymatgen-2-logo.pdf", width: 3em))
     },
     caption: [Package dependency ecosystem. Linewidths are scaled by the number of function usages.],
   ) <fig:package-ecosystem>
@@ -226,13 +224,13 @@ As illustrated in @fig:pr-topics and @fig:commits-heatmap, the development activ
       columns: (1fr, 2fr),
       gutter: 1em,
       subfigure(
-        pad(x: -1em, image("figs/pr-topics-over-time-stacked-bar.svg")),
+        pad(x: -1em, image("figs/pr-topics-over-time-stacked-bar.pdf")),
         caption: [Pull request topics over time in the pymatgen repository.],
         dy: 12%,
         label: <fig:pr-topics>,
       ),
       subfigure(
-        pad(x: -1em, image("figs/commits_per_package_heatmap.svg")),
+        pad(x: -1em, image("figs/commits_per_package_heatmap.pdf")),
         caption: [Monthly commits per pymatgen subpackage (heatmap).],
         label: <fig:commits-heatmap>,
       ),
@@ -283,7 +281,7 @@ TODO
 
 #place(top + center, float: true, scope: "parent")[
   #figure(
-    image("figs/py-pkg-treemap-pymatgen-coverage.svg"),
+    pad(right: -2em, image("figs/py-pkg-treemap-pymatgen-coverage.pdf")),
     caption: [#pmg code structure and test coverage. The size of each module represents the number of lines of code, while colors indicate test coverage percentage.],
   ) <fig:pmg-code-structure>
 ]
@@ -291,18 +289,18 @@ TODO
 As shown in @fig:pr-since-1st @fig:active-contributors and @fig:contributors-worldmap, the community has grown organically with contributors from around the world, though maintaining consistent development velocity requires dedicated maintainers.
 
 #figure(
-  image("figs/pr-since-1st.svg"),
+  image("figs/pr-since-1st.pdf"),
   caption: [Pull requests per contributor since their first contribution.],
 ) <fig:pr-since-1st>
 
 #figure(
-  image("figs/active-contributors-colored.svg"),
+  image("figs/active-contributors-colored.pdf"),
   caption: [Active contributors to #pmg over time],
 ) <fig:active-contributors>
 
 #place(top + center, float: true, scope: "parent")[
   #figure(
-    pad(x: -3em, top: -2em, bottom: -5em, image("figs/pr_contributors_worldmap.svg")),
+    pad(x: -3em, top: -2em, bottom: -5em, image("figs/pr_contributors_worldmap.pdf")),
     caption: [Geographic distribution of #pmg pull request contributors. Note caveats; pulled from GitHub profiles],
   ) <fig:contributors-worldmap>
 ]

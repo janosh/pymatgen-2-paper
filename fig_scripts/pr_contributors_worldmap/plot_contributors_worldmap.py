@@ -87,12 +87,12 @@ fig.add_choropleth(
     hovertemplate="<b>%{text}</b><br>PRs: %{customdata}<extra></extra>",
 )
 
-fig.layout.title.update(
-    text="Merged PRs per Country (log scale)",
-    font=dict(size=28),
-    x=0.5,
-    xanchor="center",
-)
+# fig.layout.title.update(
+#     text="Merged PRs per Country (log scale)",
+#     font=dict(size=28),
+#     x=0.5,
+#     xanchor="center",
+# )
 
 fig.layout.geo.update(
     showframe=True,
@@ -102,6 +102,6 @@ fig.layout.geo.update(
 fig.update_geos(fitbounds="locations", visible=True)
 
 fig.write_image(
-    f"{ROOT}/paper/figs/pr_contributors_worldmap.svg", width=1200, height=600, scale=3
+    f"{ROOT}/paper/figs/pr_contributors_worldmap.pdf", width=1200, height=600, scale=3
 )
 fig.show()

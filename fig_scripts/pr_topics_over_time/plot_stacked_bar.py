@@ -76,7 +76,7 @@ fig = px.bar(
     counts,
     x=counts.index.astype(str),
     y=counts.columns,
-    title="PR Topics by Theme",
+    # title="PR Topics by Theme",
     labels={"value": "Number of PRs", "x": "Year", "variable": "Theme"},
     color_discrete_sequence=colors[: len(counts.columns)],
 )
@@ -110,4 +110,4 @@ fig.update_layout(
     paper_bgcolor="white",
 )
 
-fig.write_image(f"{ROOT}/paper/figs/pr-topics-over-time-stacked-bar.svg")
+fig.write_image(f"{ROOT}/paper/figs/pr-topics-over-time-stacked-bar.pdf")

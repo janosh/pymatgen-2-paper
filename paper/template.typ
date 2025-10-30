@@ -1,25 +1,20 @@
-#import "@preview/valkyrie:0.2.2" as z;
-#import "@preview/chic-hdr:0.4.0": *
+// Subfigure support
+#let subfigure-kind = "subfigure"
+#let subfigure-counter = counter(subfigure-kind)
+
+#let subfigure(body, caption: "", numbering: "a)", pos: bottom + center, dy: 10%, label: none) = {
+  subfigure-counter.step()
+  let fig = figure(body, caption: none, kind: subfigure-kind, supplement: none, numbering: numbering, outlined: false)
+  context {
+    let num = subfigure-counter.display(numbering)
+    [ #fig#label #place(pos, dy: dy)[#num #caption] ]
+  }
+}
 
 // Define a function to use the ORCID SVG logo with minimal padding
 #let orcid-logo(height: 1em) = {
   box(height: height, image("orcid-logo.svg"))
 }
-
-// Define a custom author schema that includes affiliations
-#let author-schema = z.dictionary((
-  name: z.content(),
-  corresponding: z.boolean(default: false),
-  orcid: z.string(optional: true),
-  affiliations: z.array(z.string(), optional: true),
-))
-
-// Define a custom affiliation schema
-#let affiliation-schema = z.dictionary((
-  label: z.string(),
-  affiliation: z.string(),
-  key: z.string(optional: true),
-))
 
 #let header-block(args) = block(
   text(weight: 200, 24pt, fill: white, args.header.article-type),
@@ -176,55 +171,51 @@
   )
 }
 
-#let abstracts = z.dictionary(
-  (
-    title: z.string(default: "Abstract"),
-    content: z.content(),
-  ),
-  pre-transform: z.coerce.dictionary(it => (content: it)),
-)
-
-#let template-schema = z.dictionary(
-  aliases: (
-    "author": "authors",
-    "running-title": "short-title",
-    "running-head": "short-title",
-    "affiliation": "affiliations",
-    "abstract": "abstracts",
-    "date": "dates",
-  ),
-  (
-    header: z.dictionary((
-      article-type: z.content(default: "Article"),
-      article-color: z.color(default: rgb(167, 195, 212)),
-      article-meta: z.content(default: []),
-    )),
-    title: z.content(optional: true),
-    subtitle: z.content(optional: true),
-    short-title: z.string(optional: true),
-    authors: z.array(author-schema, pre-transform: z.coerce.array),
-    affiliations: z.array(affiliation-schema, pre-transform: z.coerce.array, optional: true),
-    abstracts: z.array(abstracts, pre-transform: z.coerce.array),
-    citation: z.content(optional: true),
-    open-access: z.boolean(optional: true),
-    venue: z.content(optional: true),
-    doi: z.string(optional: true),
-    keywords: z.array(z.string()),
-    dates: z.array(
-      z.dictionary(
-        (
-          type: z.content(optional: true),
-          date: z.date(pre-transform: z.coerce.date),
-        ),
-        pre-transform: z.coerce.dictionary(it => (date: it)),
-      ),
-      pre-transform: z.coerce.array,
-    ),
-  ),
-)
-
 #let template(body, ..args) = {
-  let args = z.parse(args.named(), (template-schema))
+  let raw = args.named()
+
+  // Handle aliases and ensure arrays
+  let get-array(key, ..aliases) = {
+    for alias in (key,) + aliases.pos() {
+      if alias in raw {
+        return if type(raw.at(alias)) == array { raw.at(alias) } else { (raw.at(alias),) }
+      }
+    }
+    return ()
+  }
+
+  let header = raw.at("header", default: (:))
+  let args = (
+    header: (
+      article-type: header.at("article-type", default: "Article"),
+      article-color: header.at("article-color", default: rgb(167, 195, 212)),
+      article-meta: header.at("article-meta", default: []),
+    ),
+    title: raw.at("title", default: none),
+    subtitle: raw.at("subtitle", default: none),
+    short-title: raw.at("short-title", default: raw.at("running-title", default: raw.at(
+      "running-head",
+      default: none,
+    ))),
+    authors: get-array("authors", "author").map(a => (
+      name: a.name,
+      corresponding: a.at("corresponding", default: false),
+      orcid: a.at("orcid", default: none),
+      affiliations: a.at("affiliations", default: none),
+    )),
+    affiliations: raw.at("affiliations", default: raw.at("affiliation", default: none)),
+    abstracts: get-array("abstracts", "abstract").map(a => if type(a) == dictionary { a } else {
+      (title: "Abstract", content: a)
+    }),
+    citation: raw.at("citation", default: none),
+    open-access: raw.at("open-access", default: none),
+    venue: raw.at("venue", default: none),
+    doi: raw.at("doi", default: none),
+    keywords: raw.at("keywords", default: ()),
+    dates: get-array("dates", "date").map(d => if type(d) == datetime { (type: none, date: d) } else {
+      (type: d.at("type", default: none), date: d.date)
+    }),
+  )
 
   set text(lang: "en", size: 9pt)
 
@@ -268,17 +259,35 @@
 
   show figure.caption: c => {
     set par(justify: true, first-line-indent: 0cm)
-    align(
-      left,
-      context {
-        par(justify: true, first-line-indent: 0cm)[
-          *#c.supplement #c.counter.display(c.numbering)#c.separator*#c.body
-        ]
-      },
-    )
+    v(2em, weak: false) // gap between main caption and subfigure captions
+    align(center, context {
+      par(justify: true, first-line-indent: 0cm)[
+        *#c.supplement #c.counter.display(c.numbering)#c.separator*#c.body
+      ]
+    })
+    v(1em, weak: false) // gap between main caption main body
   }
 
   set math.equation(numbering: "(Eq. 1)")
   show math.equation: set block(spacing: 1em, above: 1.618em, below: 1em)
+
+  // reset subfigure counter when out of the parent figure
+  show figure: itm => {
+    if itm.kind != subfigure-kind { subfigure-counter.update(0) }
+    itm
+  }
+
+  // format references to subfigures as "Figure 1a)"
+  show ref: itm => {
+    let elem = itm.element
+    if elem != none and elem.func() == figure and elem.kind == subfigure-kind {
+      let figs-before = query(figure.where(outlined: true).before(elem.location())).filter(f => f.kind != table)
+      let parent-num = figs-before.len()
+      let subfig-num = numbering(elem.numbering, ..subfigure-counter.at(elem.location()))
+      return [#figs-before.last().supplement #parent-num#subfig-num]
+    }
+    itm
+  }
+
   body
 }

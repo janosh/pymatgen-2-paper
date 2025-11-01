@@ -161,18 +161,19 @@ Of course, #pmg itself builds on foundational open-source Python packages, such 
         columns: 2,
         gutter: 2em,
         subfigure(
-          pad(x: -1em, image("figs/pmg_dependency_usage.pdf")),
+          pad(left: -5em, image("figs/pmg-dependency-usage.pdf")),
           caption: [Usage of 3rd-party Python packages in #pmg.],
-          dy: 3%,
+          dy: -1em,
           label: <fig:pmg-dependency-usage>,
         ),
         subfigure(
-          pad(x: -1em, image("figs/dependent-usage-of-pmg.pdf")),
+          pad(right: -5em, image("figs/dependent-usage-of-pmg.pdf")),
           caption: [Downstream usage of #pmg modules by dependent packages.],
+          dy: 3pt,
           label: <fig:dependent-usage-of-pmg>,
         ),
       )
-      place(center + horizon, dy: -5%, image("figs/pymatgen-2-logo.pdf", width: 3em))
+      place(center + horizon, dy: -5%, image("figs/pymatgen-2-logo.pdf", width: 8em))
     },
     caption: [Package dependency ecosystem. Linewidths are scaled by the number of function usages.],
   ) <fig:package-ecosystem>
@@ -245,7 +246,7 @@ As illustrated in @fig:pr-topics and @fig:commits-heatmap, the development activ
         label: <fig:pr-topics>,
       ),
       subfigure(
-        pad(x: -1em, image("figs/commits_per_package_heatmap.pdf")),
+        pad(x: -1em, image("figs/commits-per-package-heatmap.pdf")),
         caption: [Monthly commits per pymatgen subpackage (heatmap).],
         label: <fig:commits-heatmap>,
       ),
@@ -315,7 +316,7 @@ As shown in @fig:pr-since-1st @fig:active-contributors and @fig:contributors-wor
 
 #place(top + center, float: true, scope: "parent")[
   #figure(
-    pad(x: -3em, top: -2em, bottom: -5em, image("figs/pr_contributors_worldmap.pdf")),
+    pad(x: -3em, top: -2em, bottom: -5em, image("figs/pr-contributors-worldmap.pdf")),
     caption: [Geographic distribution of #pmg pull request contributors. Note caveats; pulled from GitHub profiles],
   ) <fig:contributors-worldmap>
 ]

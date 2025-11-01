@@ -13,7 +13,7 @@
 
 // Define a function to use the ORCID SVG logo with minimal padding
 #let orcid-logo(height: 1em) = {
-  box(height: height, image("orcid-logo.svg"))
+  box(height: height, image("figs/orcid-logo.svg"))
 }
 
 #let header-block(args) = block(

@@ -150,9 +150,9 @@ A selection of the most popular downstream packages is shown in @fig:dependent-u
 + #link("https://github.com/materialsvirtuallab/pymatgen-analysis-diffusion")[`pymatgen-analysis-diffusion`] @deng_datadriven_2017: Diffusion analysis suite
 + #link("https://doped.readthedocs.io/en/latest/")[`doped`] @kavanagh_doped_2024, #link("https://shakenbreak.readthedocs.io/en/latest/")[`ShakeNBreak`] @mosquera-lois_shakenbreak_2022: Defect modeling and structure-searching, building on #link("https://materialsproject.github.io/pymatgen-analysis-defects")[`pymatgen-analysis-defects`] @shen_pymatgen-analysis-defects_2024 and #link("https://github.com/mbkumar/pycdt")[`PyCDT`] @broberg_pycdt_2018
 + #link("https://pymatviz.janosh.dev/")[`pymatviz`] @riebesell_pymatviz_2022, #link("https://smact.readthedocs.io/en/latest/")[`SMACT`] @davies_smact_2019: Materials informatics toolkits
-+ #link("https://matbench-discovery.materialsproject.org/")[`matbench-discovery`] @riebesell_framework_2025, #link("https://www.air4.science/")[`AIRS`] @zhangArtificialIntelligenceScience2025, #link("https://github.com/materialsvirtuallab/matgl")[`matgl`] @ko_materials_2025: Machine learning for materials science
++ #link("https://matbench-discovery.materialsproject.org/")[`matbench-discovery`] @riebesell_framework_2025, #link("https://www.air4.science/")[`AIRS`] @zhangArtificialIntelligenceScience2025, #link("https://github.com/materialsvirtuallab/matgl")[`matgl`] @ko_materials_2025, #link("https://github.com/Radical-AI/torch-sim")[`torch-sim`] @cohen_torchsim_2025: Machine learning for materials science
 + #link("https://pyxtal.readthedocs.io/en/latest/")[`PyXtal`] @fredericksPyXtalPythonLibrary2021: Generation and manipulation of atomic structures with symmetry constraints
-+ #link("https://lobsterpy.readthedocs.io/en/latest/")[`LobsterPy`] @TODO: ...
++ #link("https://lobsterpy.readthedocs.io/en/latest/")[`LobsterPy`]: TODO
 \
 
 This zoo of downstream packages demonstrates #pmg's extensibility, serving a foundational role in the materials modeling and informatics ecosystems @butler_machine_2018.
@@ -230,7 +230,7 @@ In summary, #pmg provides a framework for materials data handling, feature extra
 
 The growth of #pmg closely follows trends in materials science research, reflecting its critical role in advancing science.
 
-Modelling of Li- and Co-alternative battery electrodes has long driven atomistic analysis tools in #pmg.
+Modeling of Li- and Co-alternative battery electrodes has long driven atomistic analysis tools in #pmg.
 The `pymatgen-analysis-diffusion` extension @shen_topological_2023 grew out of a smaller submodule of diffusivity analysis tools which were eventually migrated to a separate namespace package.
 These tools enable faster estimates of ionic mobility from molecular dynamics trajectories.
 They also include tools to identify likely topotactic ion insertion defect sites based on electronic charge densities @shen_charge_2020, used when estimating ionic mobility from transition-state type mappings of the potential energy surface.
@@ -329,8 +329,6 @@ TODO
   ) <fig:pmg-code-structure>
 ]
 
-As shown in @fig:pr-since-1st @fig:active-contributors and @fig:contributors-worldmap, the community has grown organically with contributors from around the world, though maintaining consistent development velocity requires dedicated maintainers.
-
 #figure(
   image("figs/pr-since-1st.pdf"),
   caption: [Pull requests per contributor since their first contribution.],
@@ -356,14 +354,12 @@ This latter approach has already been taken with the "analysis" and "io" namespa
 // AK: Rewrote to make it more generic
 
 = Outlook and Future Developments
-*@ Janosh & Matt*
 
-#pmg has evolved from a specialized tool into a cornerstone of computational materials science. Its growth reflects the collaborative spirit of the materials informatics community and the importance of open-source software in scientific research @ong_python_2013 @jain_computational_2016.
+#pmg has evolved from a specialized tool into a cornerstone of computational materials science. Its growth reflects the collaborative spirit of the materials informatics community and the importance of open-source software in scientific research.
 
 While the core features of pymatgen are relatively stable, more peripheral features require constant community review beyond the stewardship of a small team of maintainers.
 Improving performance of the most essential #pmg libraries is key to its growth.
 Division of #pmg into namespaces, with separately installable #pmg`-core` and `-io` namespace modules, would greatly help this goal.
-Further rewriting of low-level, oft-used code in a compiled language could also be explored.
 
 At its current scope, the feature set of #pmg is beyond the expertise of any one person and would ideally require a larger team for maintenance.
 The development team will try to use its standing in the community to better assign maintenance tasks, such as code review, issue closure, and bug fixes, for more niche submodules of #pmg.
@@ -377,20 +373,17 @@ However, as noted previously, any extension of functionality that is not in a se
 While community fora such as `matsci.org` exist alongside the issue tracker for #pmg, the documentation of #pmg is very sparse given its breadth.
 We plan to use large language models with review from the user community to generate better documentation.
 
-Future developments may include:
+Future development priorities informed by community needs and emerging trends in materials science include:
 
-+ Enhanced machine learning and AI support @butler_machine_2018
-+ Improved multi-scale modeling support, bridging atomistic and continuum approaches // TODO add ref(s)
-+ More user-friendly interfaces and visualization tools (#link("https://github.com/materialsproject/crystaltoolkit")[`crystaltoolkit`] @horton_crystal_2023 #link("https://github.com/janosh/pymatviz")[`pymatviz`] @riebesell_pymatviz_2022 #link("https://github.com/janosh/matterviz")[`matterviz`] @riebesell_matterviz_2025)
-+ Performance optimizations through compiled extensions and algorithmic improvements. E.g. exploration of hybrid Python-Rust bindings @lunnikivi_transpiling_2020. // TODO mention moyo as a successful example of this?
-// Mention widespread benefit & accelerations
-+ Docs?
-+ (More) Extension packages / support? Reflecting a change in development scope
+*Machine learning integration* will be important as ML methods increasingly enter materials discovery and design @butler_machine_2018. Future development should emphasize native support for modern frameworks (PyTorch, JAX) and efficient structure-to-graph conversions for neural network architectures. Better integration with benchmarking frameworks like Matbench Discovery @riebesell_framework_2025 will standardize evaluation and accelerate method development.
 
-We remain committed to fostering an open, collaborative environment that drives innovation in computational materials science.
+*Visualization and user experience* improvements through tighter integration with `crystal-toolkit` @horton_crystal_2023, `pymatviz` @riebesell_pymatviz_2022, and `matterviz` @riebesell_matterviz_2025 will lower barriers to entry. Enhanced Jupyter notebook support, interactive structure manipulation, and publication-ready figure generation remain priorities.
 
-*TODO: Elaborate*
-*Reiterate Pymatgen's place in the community*
+*Performance optimizations* will target bottlenecks through strategic use of compiled extensions. The `moyo` project demonstrates successful Rust migration of symmetry analysis while maintaining an easy-to-use Python API via bindings. Similar approaches could accelerate oft-used compute-intensive operations such as structure matching, neighbor searching, convex hull calculations, and more. Meanwhile Python's new and improved no-GIL (global interpreter lock) multi-processing available from Python 3.14+ could serve as a middle ground, enabling faster processing of large datasets without the need to rewrite in compiled languages.
+
+*Extension package ecosystem* growth will strengthen #pmg's federated architecture: a stable core supplemented by domain-specific namespace packages (e.g., `pymatgen-analysis-diffusion` @deng_datadriven_2017, `pymatgen-analysis-defects` @shen_pymatgen-analysis-defects_2024) maintained by experts. Increasing the number and quality of these extensions distributes maintenance burden while enabling rapid iteration in specialized domains. New functionality areas—such as multi-scale modeling bridging atomistic and mesoscale simulations—are best developed as extension packages rather than expanding the core.
+
+We invite contributions at all levels—from bug reports and documentation improvements to new features and extension packages. The project's GitHub repository, documentation site, and community forums provide entry points for new contributors.
 
 = Acknowledgments
 

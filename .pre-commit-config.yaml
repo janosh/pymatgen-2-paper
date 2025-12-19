@@ -17,6 +17,7 @@ repos:
         args: [--ignore, unresolved-import]
         name: ty check
         exclude: tests/data
+        files: \.py$
         entry: ty check
         language: python
         additional_dependencies: [ty]

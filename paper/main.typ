@@ -268,7 +268,7 @@ As illustrated in @fig:pr-topics and @fig:commits-heatmap, the development activ
         label: <fig:pr-topics>,
       ),
       subfigure(
-        pad(x: -1em, image("figs/commits-per-package-heatmap.pdf")),
+        pad(x: -1em, image("figs/commits-per-package-heatmap.png")),
         caption: [Monthly commits per pymatgen subpackage (heatmap).],
         label: <fig:commits-heatmap>,
       ),

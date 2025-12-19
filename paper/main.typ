@@ -34,7 +34,7 @@
   title: title,
   abstract: (
     [
-We present the second major release of the Python Materials Genomics (#pmg) library, reflecting on a decade of community growth and established best practices. This version builds on #pmg's robust, open-source foundation, emphasizing its collaborative nature. Over the past decade, #pmg has thrived as one of the largest open-source materials science codebases. We detail how #pmg aids modern computational materials science, its adaptation to changing demands, and lessons learned from its growing community. 
+We present the second major release of the Python Materials Genomics (#pmg) library, reflecting on a decade of community growth and established best practices. This version builds on #pmg's robust, open-source foundation, emphasizing its collaborative nature. Over the past decade, #pmg has thrived as one of the largest open-source materials science codebases. We detail how #pmg aids modern computational materials science, its adaptation to changing demands, and lessons learned from its growing community.
 #pmg will continue to evolve based on current developments and requirements in the rapidly changing landscape of computational materials science and materials informatics.
 We discuss the challenges and potential solutions to managing the community-driven evolution of #pmg, providing an outlook on its future development.
     ],
@@ -117,8 +117,8 @@ Today, #pmg aims to accelerate materials discovery by providing a comprehensive 
 
 == Interoperability and Comparative Tools
 
-One of #pmg's strengths is its interoperability, as it has the capability to read various molecule and structure file formats and to retrieve molecules and structures from databases. Furthermore, #pmg provides interfaces to DFT codes (e.g., VASP, Quantum Espresso) or post-processing tools, such as `Phonopy`. 
-#pmg also complements other materials science tools, most notably the Atomic Simulation Environment (ASE) @larsen_atomic_2017. While both software packages offer parsers for DFT and quantum chemistry codes, as well as tools for structure and molecule manipulation, their focuses differ. #pmg centers on materials data analysis,@jain_computational_2016 supporting tasks from oxidation state prediction to thermal conductivity modeling. ASE emphasizes simulation workflows, integrating quantum-chemical calculators and molecular dynamics. The two are thus complementary and often used together. To streamline the usage of both codes, #pmg makes it possible to convert between the #pmg `Structure` object representation of a material and the ASE `Atoms` object representation. 
+One of #pmg's strengths is its interoperability, as it has the capability to read various molecule and structure file formats and to retrieve molecules and structures from databases. Furthermore, #pmg provides interfaces to DFT codes (e.g., VASP, Quantum Espresso) or post-processing tools, such as `Phonopy`.
+#pmg also complements other materials science tools, most notably the Atomic Simulation Environment (ASE) @larsen_atomic_2017. While both software packages offer parsers for DFT and quantum chemistry codes, as well as tools for structure and molecule manipulation, their focuses differ. #pmg centers on materials data analysis,@jain_computational_2016 supporting tasks from oxidation state prediction to thermal conductivity modeling. ASE emphasizes simulation workflows, integrating quantum-chemical calculators and molecular dynamics. The two are thus complementary and often used together. To streamline the usage of both codes, #pmg makes it possible to convert between the #pmg `Structure` object representation of a material and the ASE `Atoms` object representation.
 
 // Maybe rephrase to be a bit more succinct in comparing pymatgen and ASE
 // Again, I tried. I hope I succeeded
@@ -186,7 +186,7 @@ Cumulatively, #pmg's impact on the materials science community includes:
 + Accelerated research across various domains @butler_machine_2018, including the accelerated development of specialized materials analysis toolkits (@fig:dependent-usage-of-pmg).
 + Standardization of core materials analysis procedures.
 + Improved reproducibility, through user-friendly serialization and analysis tools.
-+ Provision of accessible educational tools for students and early-career researchers @ong_python_2013, such as https://github.com/materialsvirtuallab/matgenb and https://github.com/sp8rks/MaterialsInformatics. 
++ Provision of accessible educational tools for students and early-career researchers @ong_python_2013, such as https://github.com/materialsvirtuallab/matgenb and https://github.com/sp8rks/MaterialsInformatics.
 // Andrew notebook potentially live soon
 + Adoption in industrial research and development workflows @jain_commentary_2013.
 + Promotion of open science and collaborative development @horton_promises_2021.

@@ -59,7 +59,7 @@ if not (PMG_REPO_PATH := os.environ.get("PMG_REPO_PATH")):
 
 # Generate commit per package data
 def run_git_command(args: list[str]) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(
+    return subprocess.run(  # type: ignore[call-overload]
         ["git", "-C", PMG_REPO_PATH] + args,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,

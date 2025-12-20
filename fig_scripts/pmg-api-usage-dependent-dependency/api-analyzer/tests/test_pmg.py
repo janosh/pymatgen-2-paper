@@ -19,13 +19,13 @@ if PMG_REPO_PATH is None or not os.path.isdir(PMG_REPO_PATH):
 
 @pytest.fixture(scope="module", autouse=True)
 def checkout_pmg_commit():
-    orig = subprocess.check_output(  # type: ignore[call-overload]
-        ["git", "-C", PMG_REPO_PATH, "rev-parse", "HEAD"], text=True
+    orig = subprocess.check_output(
+        ["git", "-C", str(PMG_REPO_PATH), "rev-parse", "HEAD"], text=True
     ).strip()
 
-    subprocess.run(["git", "-C", PMG_REPO_PATH, "fetch"], check=True)  # type: ignore[call-overload]
-    subprocess.run(  # type: ignore[call-overload]
-        ["git", "-C", PMG_REPO_PATH, "checkout", PMG_COMMIT],
+    subprocess.run(["git", "-C", str(PMG_REPO_PATH), "fetch"], check=True)
+    subprocess.run(
+        ["git", "-C", str(PMG_REPO_PATH), "checkout", PMG_COMMIT],
         check=True,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
@@ -33,8 +33,8 @@ def checkout_pmg_commit():
 
     yield
 
-    subprocess.run(  # type: ignore[call-overload]
-        ["git", "-C", PMG_REPO_PATH, "checkout", orig],
+    subprocess.run(
+        ["git", "-C", str(PMG_REPO_PATH), "checkout", orig],
         check=True,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,

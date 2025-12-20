@@ -15,16 +15,18 @@ PMV_COMMIT = "11f61e431e0ea6dd2f45797edf9e58479f36255c"
 if PMV_REPO_PATH is None or not os.path.isdir(PMV_REPO_PATH):
     raise RuntimeError("You have to set `PMV_REPO_PATH` to the pymatviz repo path")
 
+_PMV_REPO_PATH = PMV_REPO_PATH
+
 
 @pytest.fixture(scope="module", autouse=True)
 def checkout_pmv_commit():
     orig = subprocess.check_output(
-        ["git", "-C", str(PMV_REPO_PATH), "rev-parse", "HEAD"], text=True
+        ["git", "-C", _PMV_REPO_PATH, "rev-parse", "HEAD"], text=True
     ).strip()
 
-    subprocess.run(["git", "-C", str(PMV_REPO_PATH), "fetch"], check=True)
+    subprocess.run(["git", "-C", _PMV_REPO_PATH, "fetch"], check=True)
     subprocess.run(
-        ["git", "-C", str(PMV_REPO_PATH), "checkout", PMV_COMMIT],
+        ["git", "-C", _PMV_REPO_PATH, "checkout", PMV_COMMIT],
         check=True,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
@@ -33,7 +35,7 @@ def checkout_pmv_commit():
     yield
 
     subprocess.run(
-        ["git", "-C", str(PMV_REPO_PATH), "checkout", orig],
+        ["git", "-C", _PMV_REPO_PATH, "checkout", orig],
         check=True,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,

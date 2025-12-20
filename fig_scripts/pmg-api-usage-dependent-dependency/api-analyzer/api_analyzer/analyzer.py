@@ -183,7 +183,7 @@ def analyze_paths(
     """
     if isinstance(paths, (str, Path)):
         paths = [paths]
-    paths = [Path(p) for p in paths]
+    _paths: list[Path] = [Path(p) for p in paths]
 
     if exclude is None:
         exclude = []
@@ -203,7 +203,7 @@ def analyze_paths(
             return True
         return False
 
-    for path in paths:
+    for path in _paths:
         if not path.is_dir():
             raise NotADirectoryError(f"{path} is not a directory")
 

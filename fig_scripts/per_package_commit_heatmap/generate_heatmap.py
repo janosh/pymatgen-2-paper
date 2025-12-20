@@ -210,5 +210,5 @@ fig.layout.yaxis.update(
 )
 fig.layout.update(height=500, width=1400, plot_bgcolor="lightgrey")
 
-fig.write_image("../../paper/figs/commits-per-package-heatmap.pdf")
+fig.write_image("../../paper/figs/commits-per-package-heatmap.png")
 fig.show()

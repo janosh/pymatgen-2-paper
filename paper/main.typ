@@ -303,18 +303,12 @@ The Materials Project has provided crucial institutional support, offering paid 
 As shown in @fig:pr-since-1st and @fig:contributors-worldmap, #pmg has cultivated a globally distributed contributor base which affords some amount of resilience to changing resource situations at any one institution. However, the concentration of maintenance burden on a small number of core developers remains an ongoing concern. We hope that clear contribution guidelines, responsive code review, and explicit recognition of contributors (through authorship opportunities, acknowledgments in papers, and community visibility) can help sustain engagement and grow the pool of active maintainers.
 
 == Backwards Compatibility and API Evolution
-//janosh
-//pro and cons
-//best practices?/deprecation periods
-//responsibility
 
-A fundamental tension in mature software libraries is balancing API stability for existing users against the need for improvements and corrections. #pmg has accumulated substantial technical debt from early design decisions made before certain use cases were anticipated. For example, in some cases, the classes to parse ab initio code outputs are used to return objects representing electronic structure properties (```
-io.vasp.outputs.Vasprun.complete_dos
-```). In other cases, the classes representing electronic structure properties can be used to parse such files (e.g., ```
-electronic_structure.cohp.CompleteCohp.from_file()
-```). This leads to inconsistencies in the API logic.
-The development of #pmg has generally sought to avoid breaking changes to minimize downstream impact on its end users, thereby allowing for extensive deprecation periods when a breaking change to the API is planned.
-These choices follow best practices established in other open-source software libraries.
+A fundamental tension in mature software libraries is balancing API stability against the need for improvements. #pmg has accumulated technical debt from early design decisions—for example, parsing classes sometimes return property objects (`io.vasp.outputs.Vasprun.complete_dos`), while elsewhere property classes parse files directly (`electronic_structure.cohp.CompleteCohp.from_file()`).
+
+#pmg uses Calendar Versioning (CalVer) with the format `YYYY.MM.DD`, providing immediate insight into release recency. Unlike Semantic Versioning, CalVer does not encode change magnitude in the version number, so users consult release notes to assess upgrade impact.
+
+With thousands of users and hundreds of dependent packages, #pmg bears significant responsibility for API stability. Breaking changes can cascade through the ecosystem, disrupting research workflows and requiring coordinated updates across multiple projects. To manage this, #pmg follows established deprecation best practices: deprecated features raise `DeprecationWarning` with clear removal timelines (typically 6--12 months), giving downstream maintainers time to adapt. Major changes are communicated through release notes, GitHub discussions, and the matsci.org forum. The namespace package architecture (`pymatgen-io-*`, `pymatgen-analysis-*`) further enables specialized APIs to evolve independently, reducing the blast radius of breaking changes on the core library.
 
 == Test Coverage and Code Quality
 

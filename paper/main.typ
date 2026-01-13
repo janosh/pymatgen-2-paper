@@ -34,9 +34,9 @@
   title: title,
   abstract: (
     [
-We present the second major release of the Python Materials Genomics (#pmg) library, reflecting on a decade of community growth and established best practices. This version builds on #pmg's robust, open-source foundation, emphasizing its collaborative nature. Over the past decade, #pmg has thrived as one of the largest open-source materials science codebases. We detail how #pmg aids modern computational materials science, its adaptation to changing demands, and lessons learned from its growing community.
-#pmg will continue to evolve based on current developments and requirements in the rapidly changing landscape of computational materials science and materials informatics.
-We discuss the challenges and potential solutions to managing the community-driven evolution of #pmg, providing an outlook on its future development.
+      We present the second major release of the Python Materials Genomics (#pmg) library, reflecting on a decade of community growth and established best practices. This version builds on #pmg's robust, open-source foundation, emphasizing its collaborative nature. Over the past decade, #pmg has thrived as one of the largest open-source materials science codebases. We detail how #pmg aids modern computational materials science, its adaptation to changing demands, and lessons learned from its growing community.
+      #pmg will continue to evolve based on current developments and requirements in the rapidly changing landscape of computational materials science and materials informatics.
+      We discuss the challenges and potential solutions to managing the community-driven evolution of #pmg, providing an outlook on its future development.
     ],
     (
       title: "Plain Language Abstract",
@@ -311,7 +311,7 @@ These choices follow best practices established in other open-source software li
 
 == Test Coverage and Code Quality
 
-As shown in @fig:pmg-code-structure, #pmg's test coverage varies significantly across its modules. While the most frequently used functionality like `core`, `io`, and `entries` maintain high coverage (>90%), some harder-to-test and/or specialized modules such as visualization (`vis`), certain analysis tools (`boltztrap`), and advanced diffusion features (`neb`) have low coverage (\<20%). This heterogeneity reflects both the maturity of different components and the ongoing challenge of maintaining comprehensive tests for a large, evolving codebase.
+As shown in @fig:pmg-code-structure, #pmg's test coverage varies significantly across its modules. While the most frequently used functionality like `core`, `io`, and `entries` maintain high coverage (>90%), some harder-to-test and/or specialized modules such as visualization (`vis`) and certain analysis tools (`boltztrap`) have low coverage (\<20%). This heterogeneity reflects both the maturity of different components and the ongoing challenge of maintaining comprehensive tests for a large, evolving codebase.
 
 This heterogeneity is not merely neglect but reflects genuine trade-offs. Some modules require external executables and/or long-running operations for meaningful testing, making comprehensive continuous integration (CI) difficult. Visualization code often requires rendering backends that complicate automated testing. #pmg has focused testing resources on core modules that attract the largest user bases, accepting lower coverage for specialized and infrequently used features.
 
@@ -345,8 +345,7 @@ However, #pmg also depends on the Python ecosystem for scientific computing, plo
 #place(top + center, float: true, scope: "parent")[
   #figure(
     pad(right: -2em, image("figs/py-pkg-treemap-pymatgen-coverage.pdf")),
-    caption: [#pmg code structure and test coverage. The size of each module represents the number of lines of code, while colors indicate test coverage percentage.],
-    // TODO: check that the namespace add-ons (pymatgen-io-espresso, pymatgen-analysis-diffusion, and pymatgen-analysis-defects are being accounted for correctly in test coverage)
+    caption: [#pmg code structure and test coverage. The size of each module represents lines of code, while colors indicate test coverage percentage.],
   ) <fig:pmg-code-structure>
 ]
 

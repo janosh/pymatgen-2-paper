@@ -222,6 +222,9 @@ In summary, #pmg provides a framework for materials data handling, feature extra
 
 = New Features
 *@ Aaron*
+// Subsections?
+// add other io modules as a subsection
+// Standardization of Materials Science Data -> Alexandria database
 
 The growth of #pmg closely follows trends in materials science research, reflecting its critical role in advancing science.
 
@@ -300,6 +303,10 @@ The Materials Project has provided crucial institutional support, offering paid 
 As shown in @fig:pr-since-1st and @fig:contributors-worldmap, #pmg has cultivated a globally distributed contributor base which affords some amount of resilience to changing resource situations at any one institution. However, the concentration of maintenance burden on a small number of core developers remains an ongoing concern. We hope that clear contribution guidelines, responsive code review, and explicit recognition of contributors (through authorship opportunities, acknowledgments in papers, and community visibility) can help sustain engagement and grow the pool of active maintainers.
 
 == Backwards Compatibility and API Evolution
+//janosh
+//pro and cons
+//best practices?/deprecation periods
+//responsibility
 
 A fundamental tension in mature software libraries is balancing API stability for existing users against the need for improvements and corrections. #pmg has accumulated substantial technical debt from early design decisions made before certain use cases were anticipated. For example, in some cases, the classes to parse ab initio code outputs are used to return objects representing electronic structure properties (```
 io.vasp.outputs.Vasprun.complete_dos

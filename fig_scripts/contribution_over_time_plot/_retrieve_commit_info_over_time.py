@@ -25,6 +25,7 @@ Notes:
 import os
 import subprocess
 from datetime import datetime
+from typing import Any
 
 import pandas as pd
 
@@ -58,7 +59,7 @@ for line in git_log_output.strip().split("\n"):
             _, commit_hash, name, email, date_str = parts
             try:
                 date = datetime.strptime(date_str, "%Y-%m-%d")
-                current_commit = {
+                current_commit: dict[str, Any] | None = {
                     "commit": commit_hash,
                     "name": name.strip(),
                     "email": email.strip().lower(),

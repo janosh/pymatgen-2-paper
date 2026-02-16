@@ -380,7 +380,7 @@ This latter approach has already been taken with the `analysis` and `io` namespa
 
 = Outlook and Future Developments
 // Agents?
-// 
+//
 #pmg has evolved from a specialized tool into a cornerstone of computational materials science. Its growth reflects the collaborative spirit of the materials informatics community and the importance of open-source software in scientific research.
 
 While the core features of pymatgen are relatively stable, more peripheral features require constant community review beyond the stewardship of a small team of maintainers.
@@ -423,7 +423,7 @@ Special thanks to the broader open-source scientific computing community for the
 ChatGPT was utilized to enhance the language and facilitate additional literature queries. Everything was checked carefully afterwards.
 
 // Author contributions
-// JG: organized meetings, re-wrote introduction, overview and design principles, case study on chemical heuristics, contributed to backwards compatibility and api evoluation, gave feedback to all sections and figures, contacted Digital Discovery for initial feedback on our publication, started with one draft for a figure
+// JG: organized meetings, re-wrote introduction, overview and design principles, case study on chemical heuristics, contributed to backwards compatibility and api evolution, gave feedback to all sections and figures, contacted Digital Discovery for initial feedback on our publication, started with one draft for a figure
 
 
 #bibliography("refs.bib", style: "ieee")

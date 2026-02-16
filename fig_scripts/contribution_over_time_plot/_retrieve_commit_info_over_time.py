@@ -28,6 +28,7 @@ from datetime import datetime
 
 import pandas as pd
 
+CUTOFF_DATE = "2026-01-01"
 PMG_REPO_PATH = os.environ.get("PMG_REPO_PATH")
 if PMG_REPO_PATH is None or not os.path.isdir(PMG_REPO_PATH):
     raise EnvironmentError("PMG_REPO_PATH is not set or is invalid.")
@@ -40,6 +41,7 @@ git_log_output = subprocess.check_output(
         "-C",
         PMG_REPO_PATH,
         "log",
+        f"--until={CUTOFF_DATE}",
         "--numstat",
         "--pretty=format:--COMMIT--|%H|%an|%ae|%ad",
         "--date=short",

@@ -327,7 +327,7 @@ The emergence of frontier large language models (LLMs) has significantly reduced
 // @Aaron
 // Shyue may not like this section at all. What I have here is the perspective of MP / MPSF
 
-As a core component of the Materials Project's analysis tools, #pmg is governed according to principles established by the Materials Project stakeholders, which are in turn inspired by the best practices adopted by established community organizations like Numpy @harris_array_2020 and NumFOCUS.
+As a core component of the Materials Project's analysis tools, #pmg is governed according to principles established by the Materials Project stakeholders, which are in turn inspired by the best practices adopted by established community organizations like NumPy @harris_array_2020 and NumFOCUS.
 Collectively, the MP members and MP software stakeholders which are responsible for the adoption and enforcement of codes of conduct are known as the Materials Project Software Foundation (MPSF).
 MPSF works to democratically establish a governance structure for MP's software ecosystem and has, e.g., ensured the inclusion of MP software in the NumFOCUS foundation index.
 

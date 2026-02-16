@@ -9,25 +9,23 @@ if os.getenv("GITHUB_ACTIONS") == "true":
     pytest.skip("skip PMG test in CI", allow_module_level=True)
 
 
-PMG_REPO_PATH: str | None = os.getenv("PMG_REPO_PATH")
+PMG_REPO_PATH = os.environ.get("PMG_REPO_PATH", "")
 PMG_COMMIT = "ab34799d8ab5dee80756489cf2ca28a97de78121"
 
 
-if PMG_REPO_PATH is None or not os.path.isdir(PMG_REPO_PATH):
+if not os.path.isdir(PMG_REPO_PATH):
     raise RuntimeError("You have to set `PMG_REPO_PATH` to the pymatgen repo path")
-
-_PMG_REPO_PATH = PMG_REPO_PATH
 
 
 @pytest.fixture(scope="module", autouse=True)
 def checkout_pmg_commit():
     orig = subprocess.check_output(
-        ["git", "-C", _PMG_REPO_PATH, "rev-parse", "HEAD"], text=True
+        ["git", "-C", PMG_REPO_PATH, "rev-parse", "HEAD"], text=True
     ).strip()
 
-    subprocess.run(["git", "-C", _PMG_REPO_PATH, "fetch"], check=True)
+    subprocess.run(["git", "-C", PMG_REPO_PATH, "fetch"], check=True)
     subprocess.run(
-        ["git", "-C", _PMG_REPO_PATH, "checkout", PMG_COMMIT],
+        ["git", "-C", PMG_REPO_PATH, "checkout", PMG_COMMIT],
         check=True,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
@@ -36,7 +34,7 @@ def checkout_pmg_commit():
     yield
 
     subprocess.run(
-        ["git", "-C", _PMG_REPO_PATH, "checkout", orig],
+        ["git", "-C", PMG_REPO_PATH, "checkout", orig],
         check=True,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,

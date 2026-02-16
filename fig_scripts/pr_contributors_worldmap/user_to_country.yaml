@@ -22,6 +22,7 @@ from_github:
   WardLT: United States
   Zhuoying: United States
   ab5424: Germany
+  abhardwaj73: United Kingdom
   acrutt: United States
   adam-kerrigan: United Kingdom
   adozier: United States
@@ -52,13 +53,16 @@ from_github:
   dyllamt: United States
   dynikon: Japan
   e-kwsm: Japan
-  espottesmith: United States
+  eimrek: Switzerland
+  espottesmith: Ireland
   ezpzbz: United Kingdom
   fekad: Belgium
+  felix-adams: United States
   flaviu-gostin: Denmark
-  fraricci: United States
+  fraricci: Belgium
   frssp: South Korea
   ftherrien: Canada
+  fyalcin: Austria
   gVallverdu: France
   gbrunin: Belgium
   gen4438: Japan
@@ -72,7 +76,7 @@ from_github:
   jonringer: United States
   josuav1: Germany
   jsukpark: United States
-  kaifengZheng: United States
+  kaifengZheng: China
   kaueltzen: Germany
   kavanase: United States
   kjappelbaum: Germany
@@ -86,6 +90,7 @@ from_github:
   lhycms: China
   liwt31: China
   ltalirz: Germany
+  lutfia95: Germany
   mamachra: United States
   marcoesters: United States
   matk86: United States
@@ -96,7 +101,7 @@ from_github:
   mhsiron: United States
   miaoliu: China
   migueldiascosta: Singapore
-  mjwen: United States
+  mjwen: China
   mkhorton: United States
   ml-evs: United Kingdom
   mturiansky: United States
@@ -139,7 +144,7 @@ from_github:
   wolearyc: United States
   wsyxbcl: China
   wuxiaohua1011: United States
-  yanghan234: China
+  yanghan234: United Kingdom
   yihanxiao92: United States
   yimingchen-eng: United States
   yuuukuma: Japan
@@ -163,23 +168,27 @@ unresolved:
   R1j1t: NA
   RoberTnf: NA
   SophiaRuan: NA
+  ThomasWarford: NA
   YunxingZuo: NA
-  abhardwaj73: NA
   adengz: NA
   afonari: NA
   aykol: NA
   bayesfactor: NA
   benjaminchen22: NA
+  benrich37: NA
+  bernstei: NA
   boyoungzheng: NA
   cajfisher: NA
   chunweizhu: NA
   cnncnnzh: NA
   cote3804: NA
+  czhengsci: NA
   daniel-sintef: NA
   dongsenfo: NA
   eantono: NA
+  esoteric-ephemera: NA
   exenGT: NA
-  fyalcin: NA
+  finnrk: NA
   gcheon: NA
   guycmoore: NA
   jdewasseigeosium: NA
@@ -188,6 +197,7 @@ unresolved:
   kbuma: NA
   leicheng: NA
   lllangWV: NA
+  matthewkuner: NA
   mbercx: NA
   minhsueh: NA
   nathan-diodan: NA
@@ -195,6 +205,7 @@ unresolved:
   ndardenne: NA
   nishiyamat: NA
   nkeilbart: NA
+  orionarcher: NA
   packer-jp: NA
   petousis: NA
   pmla: NA
@@ -206,12 +217,15 @@ unresolved:
   skasamatsu: NA
   slee-lab: NA
   tawe141: NA
+  tomdemeyere: NA
+  tsmathis: NA
   v1kko: NA
   w6ye: NA
   wladerer: NA
   wmdrichards: NA
   xivh: NA
   xjf729: NA
+  yang-ruoxi: NA
   yantar92: NA
   yiming-xu: NA
   zooks97: NA
@@ -226,7 +240,7 @@ manual:
   matthewkuner: United States
   czhengsci: United States
 from_pmg_doc:
-  '755452800': China
+  "755452800": China
   CifLord: United States
   CompRhys: United Kingdom
   FCMeng: United States
@@ -240,7 +254,6 @@ from_pmg_doc:
   davidwaroquiers: Belgium
   dbroberg: United States
   drew-parsons: Italy
-  eimrek: Switzerland
   gmatteo: Belgium
   gpetretto: Belgium
   hautierg: Belgium
@@ -258,6 +271,7 @@ from_pmg_doc:
   nheinsdorf: Germany
   nwinner: United States
   oxana-a: United States
+  peikai: China
   random-var-x: Taiwan, Province of China
   rees-c: United States
   rwoodsrobinson: United States
@@ -273,4 +287,3 @@ from_pmg_doc:
   welltemperedpaprika: United States
   wood-b: United States
   xhqu1981: United States
-  peikai: China

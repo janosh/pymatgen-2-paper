@@ -31,7 +31,7 @@ BASE_URL: str = "https://api.openalex.org/works"
 CACHE_FILE: str = "_citation_country_counts.json.gz"
 
 # cutoff date for collecting citation data from OpenAlex
-CUTOFF_DATE: str = "2025-06-01"
+CUTOFF_DATE: str = "2026-01-01"
 
 SHOW_LABEL: bool = False
 LABEL_THRESHOLD: int = 100  # Only show labels for countries above this

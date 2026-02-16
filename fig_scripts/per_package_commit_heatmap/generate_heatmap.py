@@ -46,7 +46,7 @@ ROW_SORTING: Literal["total_num_of_commits", "chronology", "alphabetical"] = (
 
 # Start/end identifiers (can be dates or commit hashes)
 START_COMMIT: str = "fa7f41d8bd769a04cca1f78242ebf072664c871d"
-END_COMMIT: str = "2025-06-01"
+END_COMMIT: str = "2026-01-01"
 
 # When pymatgen changed from flat to src layout
 # commit: 9100860d7d938560610bcfadd04923b53756548e

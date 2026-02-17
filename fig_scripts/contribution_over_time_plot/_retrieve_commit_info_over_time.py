@@ -25,8 +25,21 @@ Notes:
 import os
 import subprocess
 from datetime import datetime
+from typing import TypedDict
 
 import pandas as pd
+
+
+class CommitRow(TypedDict):
+    """Typed schema for parsed git commit metadata."""
+
+    commit: str
+    name: str
+    email: str
+    date: datetime
+    lines_added: int
+    lines_removed: int
+
 
 CUTOFF_DATE = "2026-01-01"
 PMG_REPO_PATH = os.environ.get("PMG_REPO_PATH")
@@ -48,8 +61,8 @@ git_log_output = subprocess.check_output(
     ]
 ).decode("utf-8")
 
-rows = []
-current_commit = None
+rows: list[CommitRow] = []
+current_commit: CommitRow | None = None
 
 for line in git_log_output.strip().split("\n"):
     if line.startswith("--COMMIT--|"):
@@ -88,13 +101,13 @@ df["month"] = df["date"].dt.to_period("M").dt.to_timestamp()
 df["lines_changed"] = df["lines_added"] + df["lines_removed"]
 
 # Generate contributor IDs by walking through (name, email)
-contributor_id_map = {}
+contributor_id_map: dict[tuple[str, str], str] = {}
 next_id = 1
-ids = []
+ids: list[str] = []
 
 for name, email in zip(df["name"], df["email"]):
-    key = None
-    for existing_key, id_val in contributor_id_map.items():
+    key: tuple[str, str] | None = None
+    for existing_key in contributor_id_map:
         if name == existing_key[0] or email == existing_key[1]:
             key = existing_key
             break

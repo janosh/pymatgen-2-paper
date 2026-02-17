@@ -21,4 +21,5 @@ locale = "en-us"
 extend-ignore-words-re = [
   "\\b(ND)\\b",                       # array
   "\\b(atomate2|atomate|dscribe)\\b", # Names
+  "\\b(slee)\\b",                     # username fragment in contributor data
 ]

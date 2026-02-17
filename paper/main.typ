@@ -112,7 +112,7 @@ Since then, #pmg has expanded significantly, incorporating new features and adap
 
 //#pmg is an open-source Python library for materials analysis, offering tools from basic crystallographic operations to complex electronic structure analysis @ong_python_2013 @jain_commentary_2013. Key features include:
 
-Today, #pmg aims to accelerate materials discovery by providing a comprehensive toolkit for researchers at all levels @curtarolo_highthroughput_2013. While #pmg’s original goals—such as crystallographic operations and electronic structure analysis—remain central, its capabilities have grown substantially to support a broad spectrum of tasks in computational materials science and materials informatics. 
+Today, #pmg aims to accelerate materials discovery by providing a comprehensive toolkit for researchers at all levels @curtarolo_highthroughput_2013. While #pmg’s original goals—such as crystallographic operations and electronic structure analysis—remain central, its capabilities have grown substantially to support a broad spectrum of tasks in computational materials science and materials informatics.
 
 #pmg offers powerful tools for crystallographic and structural analysis, including coordination environment analysis, electronic structure parsing, thermodynamic and phase diagram construction, analysis of phonon properties, and interfaces to various electronic structure codes. Additionally, it includes utilities for machine learning applications in materials property prediction @ward_matminer_2018, reflecting its evolution into a comprehensive platform for materials informatics. #pmg therefore aims to be a powerful, flexible, and reliable software tool @horton_promises_2021 for increasingly complex computational materials science and materials informatics research workflows. A key lesson learned from the wide community adoption and continued growth of the #pmg codebase, is that scientific software must continuously evolve to meet emerging demands in its field; without this adaptability, it risks becoming obsolete. It also must continuously onboard new developers; without a welcoming development environment, it is not sustainable.  //maybe strongly worded but I indeed believe that this is true – SK 👍
 
@@ -138,8 +138,6 @@ Overall, this shameless interoperability of #pmg enables seamless integration of
 This is a simple example, but one that helps illustrate the utility of #pmg's comprehensive materials analysis functionality and wide-ranging interoperability. Computational materials research workflows now widely employ #pmg as both a core analysis toolkit and a seamless glue between quantum chemistry codes and advanced research software packages.
 
 // SK: I added this example to try illustrate, but possibly too verbose / not worth including
-
-
 
 = Community Adoption and Impact
 *@ Seán*
@@ -462,6 +460,13 @@ ChatGPT was utilized to enhance the language and facilitate additional literatur
 // Noting CREDIT taxonomy https://credit.niso.org we could think about adopting before submission
 // JG: organized meetings, re-wrote introduction, overview and design principles, case study on chemical heuristics, contributed to backwards compatibility and api evolution, gave feedback to all sections and figures, contacted Digital Discovery for initial feedback on our publication, started with one draft for a figure
 // MH: primarily feedback and comments, guidance on structure, writing some small sections, tbd if more. Very early organization/co-ordination - JG has done this almost exclusively for this iteration. Developer outreach.
+// JR (LLM-assisted summary of commit history):
+// + 26 commits by 2026-02-17 with ~7,223 lines added, ~3,373 removed
+// + Wrote the "Challenges and Solutions" sections on sustainability, backward compatibility/API evolution, and test coverage/code quality; added framing around maintainer resources, deprecation policy, CalVer implications/downsides compared to SemVer, wrote section on Rust-native tooling, and AI-assisted maintenance.
+// + manuscript infra setup (repo, git repo, CI, initial bibliography), Digital Discovery Typst template, subfigure support
+// + created and/or contributed to all figures (PR-topic trend plotting, contributors-over-time tooling, world-map/contributor data pipeline support, dependent/dependency usage analysis scaffolding)
+// + Contributions to pymatgens (from `fig_scripts/pr_contributors_bar_plot/_pr_contributors.json`): 421 PRs attributed to `janosh` (out of 2,449 total PRs; 269 unique contributors) from 2021-03-09 to 2025-02-06
+// + pymatgen contribution profile: sustained multi-year activity with major emphasis on bug fixes/reliability, API design, developer tooling and CI modernization, code quality improvements, targeted feature additions, and better docs.
 
 
 #bibliography("refs.bib", style: "ieee")

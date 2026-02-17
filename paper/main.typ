@@ -49,9 +49,9 @@
     article-type: "Preprint",
     article-meta: [Not Peer-Reviewed],
   ),
-  // MH: we have plenty of time to figure out author list - still want to focus on content - 
+  // MH: we have plenty of time to figure out author list - still want to focus on content -
   //     but I would like us to consider Janine as first author since Janine has really driven
-  //     this paper development and would not have happened without her diligent efforts. Maybe 
+  //     this paper development and would not have happened without her diligent efforts. Maybe
   //     the team can share a co-author credit with a to-be-determined author ordering after this?
   // MH: also left a comment that I need to reach out to folks who were invited to participate the
   //     first time I tried to kick-off this paper ~2 yrs ago. I want to make sure they know they
@@ -225,9 +225,9 @@ One particularly promising aspect of these developments, is that they have great
 Through the object-oriented architecture and efficient serialization tools provided by #pmg and its `monty` dependency for (de)serialization, the human effort to collate and export complete metadata and calculation provenance is significantly diminished.
 It is hoped that these developments will establish clear community standards and expectations for reproducibility, strengthening the quality and impact of defect modeling research, while ensuring robust foundations for future database and machine learning efforts in this area @squires_guidelines_2026.
 
-One key lesson from the success of defect modelling packages built on #pmg is that the provision of robust functionality for common tasks (such as structure manipulations or input/output to DFT codes) allows the ready extension to more specialized research workflows by domain experts.
+One key lesson from the success of defect modeling packages built on #pmg is that the provision of robust functionality for common tasks (such as structure manipulations or input/output to DFT codes) allows the ready extension to more specialized research workflows by domain experts.
 By implementing these core materials analysis functions in a modular code structure, which can be readily imported to downstream packages, #pmg removes the need to re-implement common tasks and allows practitioners to focus on specialized domain-specific analyses (e.g. predicting defect concentrations).
-Another aspect which has proven important in this sub-field, is the use of numerically-efficient core functions. 
+Another aspect which has proven important in this sub-field, is the use of numerically-efficient core functions.
 Defect calculations involve the use of large supercells with low symmetry, pushing ...
 Efficiency is important
 Clear communication of deprecations / code changes etc
@@ -414,29 +414,29 @@ While the core features of pymatgen are relatively stable, more peripheral featu
 Improving performance of the most essential #pmg libraries is key to its growth. #pmg introduced namespace packages in ?? which allowed the independent installation and maintenance of pymatgen "add-on" packages within the pymatgen "namespace", i.e. importable from `pymatgen.io` and `pymatgen.analysis`. This can be furthered with a separately-installable `pymatgen-core` to deliver just the fundamental materials science object primitives for other developers to build upon.
 
 At its current scope, expanding and refining the feature set of #pmg would ideally require a large development team to ensure effective stewardship.
-The development team will try to use its standing in the community to better assign maintenance tasks, such as code review, issue closure, and bug fixes, for more niche submodules of #pmg.
-This will also ensure that a new group of active users are included in the development process of #pmg, ensuring its constant stewardship.
-As newer deputy code reviewers gain experience, they can also rise to fill maintainer roles.
+As #pmg continues to grow in scope and adoption, we frame the next steps as high-impact community opportunities.
+In particular, broader shared ownership of maintenance tasks (code review, issue triage, and bug fixes in niche submodules) can strengthen participation and long-term stewardship.
+As contributors gain experience in these roles, they can naturally grow into deputy reviewer and maintainer positions.
 
 There are many active areas of materials science which could benefit from extensions of #pmg key feature set.
 These include a wider variety and depth of control for `io` extensions to popular electronic structure (e.g., Quantum Espresso), atomistic (e.g., LAMMPS, GROMACS), and continuum, phase field, and multiphysics codes.
 However, as noted previously, any extension of functionality that is not in a separately-installable namespace would require concomitant community review.
 
 While community fora such as `matsci.org` exist alongside the issue tracker for #pmg, the documentation of #pmg is very sparse given its breadth.
-We plan to use large language models with review from the user community to generate better documentation.
+One promising direction is community-reviewed, LLM-assisted documentation expansion to improve coverage without increasing burden on core maintainers.
 
-Future development priorities informed by community needs and emerging trends in materials science include:
+High-impact development opportunities informed by community needs and emerging trends in materials science include:
 
-*Machine learning integration* will be important as ML methods increasingly enter materials discovery and design @butler_machine_2018. Future development should emphasize native support for modern frameworks (PyTorch, JAX) and efficient structure-to-graph conversions for neural network architectures. Better integration with benchmarking frameworks like Matbench Discovery @riebesell_framework_2025 will standardize evaluation and accelerate method development.
+*Machine learning integration* is likely to remain important as ML methods increasingly enter materials discovery and design @butler_machine_2018. High-value contributions include native support for modern frameworks (PyTorch, JAX), efficient structure-to-graph conversions for neural network architectures, and stronger integration with benchmarking frameworks like Matbench Discovery @riebesell_framework_2025.
 // Mention agentic AI able to take advantage of pymatgen platform
 
-*Visualization and user experience* improvements through tighter integration with `crystal-toolkit` @horton_crystal_2023, `pymatviz` @riebesell_pymatviz_2022, and `matterviz` @riebesell_matterviz_2025 will lower barriers to entry. Enhanced Jupyter notebook support, interactive structure manipulation, and publication-ready figure generation remain priorities.
+*Visualization and user experience* improvements through tighter integration with `crystal-toolkit` @horton_crystal_2023, `pymatviz` @riebesell_pymatviz_2022, and `matterviz` @riebesell_matterviz_2025 could lower barriers to entry. Useful community efforts include enhanced Jupyter notebook support, interactive structure manipulation, and publication-ready figure generation.
 
-*Performance optimizations* will target bottlenecks through strategic use of compiled extensions. #pmg now operates in a different regime to when it started: in early development, #pmg was used to orchestrate much-slower DFT calculations, and the additional overhead from Python and its heavily object-oriented software structure was negligible. However, today, with the rise of very rapid ML forcefield simulation capability, this overhead is now significant and radical changes to optimize #pmg are required. Examples of this being done successfully include the `moyo` project which involved a Rust migration of the symmetry analysis features in `spglib` while maintaining an easy-to-use Python API via bindings. Similar approaches could accelerate oft-used compute-intensive operations such as structure matching, neighbor searching, convex hull calculations, and more.
+*Performance optimizations* remain a major opportunity, especially via strategic use of compiled extensions. #pmg now operates in a different regime to when it started: in early development, #pmg was used to orchestrate much-slower DFT calculations, and the additional overhead from Python and its heavily object-oriented software structure was negligible. However, today, with the rise of very rapid ML forcefield simulation capability, this overhead is now significant and deeper optimization is increasingly valuable. Examples of this being done successfully include the `moyo` project which involved a Rust migration of the symmetry analysis features in `spglib` while maintaining an easy-to-use Python API via bindings. Similar approaches could accelerate oft-used compute-intensive operations such as structure matching, neighbor searching, convex hull calculations, and more.
 
 *Extension package ecosystem* growth will strengthen #pmg's federated architecture: a stable core supplemented by domain-specific namespace packages (e.g., `pymatgen-analysis-diffusion` @deng_datadriven_2017, `pymatgen-analysis-defects` @shen_pymatgen-analysis-defects_2024) maintained by experts. Increasing the number and quality of these extensions distributes maintenance burden while enabling rapid iteration in specialized domains. New functionality areas—such as multi-scale modeling bridging atomistic and mesoscale simulations—are best developed as extension packages rather than expanding the core.
 
-*GPU compatibility*: Future work will focus on replacing NumPy arrays with PyTorch tensors, enabling GPU acceleration and potentially significant speedups for many operations.
+*GPU compatibility*: A promising direction is broader support for tensor backends (e.g., PyTorch) in array-heavy code paths, enabling GPU acceleration and potential speedups for large-scale analyses.
 
 //MH: *Provenance and units*: [want to highlight a weakness in pmg, our abandoned TransformedStructure concept, the way de/re-serialization best practices have shifted, the risks of unit errors: in other words, how can we drive scientific correctness forwards. Highlight other good work here, eg AiiDA's provenance graph, while a usability nightmare [won't mention this part], is an inspiration.]
 

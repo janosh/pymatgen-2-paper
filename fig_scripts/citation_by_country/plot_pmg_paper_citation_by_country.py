@@ -89,11 +89,18 @@ country_counts = load_or_fetch_countries(WORK_ID)
 # Convert to DataFrame
 def convert_iso2_to_iso3(iso2_code: str) -> str:
     """Plotly choropleth requires ISO alpha-3 codes, e.g. USA instead of US."""
-    return pycountry.countries.get(alpha_2=iso2_code).alpha_3
+    country = pycountry.countries.get(alpha_2=iso2_code)
+    if country is None:
+        raise ValueError(f"unknown ISO alpha-2 code: {iso2_code!r}")
+    return country.alpha_3
 
 
 def iso3_to_country_name(code3: str) -> str:
-    return pycountry.countries.get(alpha_3=code3).name
+    """Map an ISO alpha-3 code to its country name."""
+    country = pycountry.countries.get(alpha_3=code3)
+    if country is None:
+        raise ValueError(f"unknown ISO alpha-3 code: {code3!r}")
+    return country.name
 
 
 df = pd.DataFrame(country_counts.items(), columns=["country_code_2", "citations"])

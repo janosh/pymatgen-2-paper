@@ -10,17 +10,20 @@ def _annotate_parents(tree: ast.AST) -> None:
     """Add `.parent` links so we can walk up the tree."""
     for parent in ast.walk(tree):
         for child in ast.iter_child_nodes(parent):
-            child.parent = parent  # type: ignore[unresolved-attribute]
+            child.parent = parent  # ty: ignore[unresolved-attribute]
 
 
 def _in_type_checking_block(node: ast.AST) -> bool:
     """Check if in an `if TYPE_CHECKING:` block."""
-    while hasattr(node, "parent"):
-        parent = node.parent
-        if isinstance(parent, ast.If):
-            if isinstance(parent.test, ast.Name) and parent.test.id == "TYPE_CHECKING":
-                return True
-        node = parent  # type: ignore[assignment]
+    parent = getattr(node, "parent", None)
+    while parent is not None:
+        if (
+            isinstance(parent, ast.If)
+            and isinstance(parent.test, ast.Name)
+            and parent.test.id == "TYPE_CHECKING"
+        ):
+            return True
+        parent = getattr(parent, "parent", None)
     return False
 
 
@@ -66,9 +69,7 @@ class ApiAnalyzerPy(ast.NodeVisitor):
 
 
 def analyze_py(
-    path: str | Path,
-    package: str,
-    ipynb_name: str | None = None,
+    path: str | Path, package: str, ipynb_name: str | None = None
 ) -> tuple[dict[str, str], dict[str, int]]:
     """
     Analyze a Python file for package API usage.
@@ -183,7 +184,7 @@ def analyze_paths(
     """
     if isinstance(paths, (str, Path)):
         paths = [paths]
-    resolved_paths: list[Path] = [Path(p) for p in paths]
+    resolved_paths = list(map(Path, paths))
 
     if exclude is None:
         exclude = []
@@ -212,16 +213,16 @@ def analyze_paths(
 
         candidates = path.rglob("*")
 
-        for f in candidates:
-            if should_skip(f):
+        for file in candidates:
+            if should_skip(file):
                 continue
-            if f.suffix == ".py":
-                aliases, usage = analyze_py(f, package)
-            elif f.suffix == ".ipynb":
+            if file.suffix == ".py":
+                aliases, usage = analyze_py(file, package)
+            elif file.suffix == ".ipynb":
                 try:
-                    aliases, usage = analyze_notebook(f, package)
+                    aliases, usage = analyze_notebook(file, package)
                 except Exception as e:
-                    print(f"⚠️ Skipping {f} (error: {e})")
+                    print(f"⚠️ Skipping {file} (error: {e})")
                     continue
             else:
                 continue

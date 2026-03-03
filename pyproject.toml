@@ -1,0 +1,36 @@
+# Root config: the figure scripts' third-party deps (so `ty`/uv resolves their
+# imports) + builds the in-place `api_analyzer` tool so it stays importable.
+[project]
+name = "pymatgen-2-paper"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+  "beautifulsoup4",
+  "geopandas",
+  "geopy",
+  "numpy",
+  "openai",
+  "pandas",
+  "plotly",
+  "pycountry",
+  "pymatviz",
+  "pytest",
+  "pyyaml",
+  "requests",
+]
+
+[build-system]
+requires = ["uv_build>=0.9.2"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "api_analyzer"
+module-root = "fig_scripts/pmg-api-usage-dependent-dependency/api-analyzer"
+
+[tool.ty.src]
+# malformed api_analyzer test fixtures (also ruff-excluded) + exploratory notebooks
+exclude = ["**/api-analyzer/tests/data/**", "**/*.ipynb"]
+
+[tool.typos.default]
+locale = "en-us"
+extend-ignore-words-re = ["\\b(ND|atomate2|atomate|dscribe|slee|basf|bse|aimd|pris)\\b"]

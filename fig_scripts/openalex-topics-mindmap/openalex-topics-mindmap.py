@@ -161,10 +161,8 @@ def value_to_hex(val: float) -> str:
 
 
 def with_text_color(hex_color: str) -> tuple[str, str]:
-    """Return (fill_color_hex, text_color_hex) with max contrast, both in hex."""
-    text_col = pick_max_contrast_color(hex_color)
-    text_hex = text_col.hex
-    return hex_color, text_hex
+    """Return (fill_color, max-contrast text color) for the given fill."""
+    return hex_color, str(pick_max_contrast_color(hex_color))
 
 
 # --- Build YAML data ---

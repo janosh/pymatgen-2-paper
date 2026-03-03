@@ -58,8 +58,8 @@ if not (PMG_REPO_PATH := os.environ.get("PMG_REPO_PATH")):
 
 
 # Generate commit per package data
-def run_git_command(args: list[str]) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(  # type: ignore[call-overload]  # ty stub limitation
+def run_git_cmd(args: list[str]) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(  # ty: ignore[no-matching-overload]  # subprocess.run stub limitation
         ["git", "-C", PMG_REPO_PATH, *args],
         capture_output=True,
         text=True,
@@ -68,23 +68,13 @@ def run_git_command(args: list[str]) -> subprocess.CompletedProcess[str]:
 
 
 def get_git_dates(path_prefix: str, since: str, until: str) -> list[str]:
-    cmd = [
-        "log",
-        "--no-merges",
-        "--since",
-        since,
-        "--until",
-        until,
-        "--format=%ad",
-        "--date=short",
-        "--",
-        path_prefix,
-    ]
-    return run_git_command(cmd).stdout.strip().splitlines()
+    flags = "log --no-merges --format=%ad --date=short".split()
+    cmd = [*flags, "--since", since, "--until", until, "--", path_prefix]
+    return run_git_cmd(cmd).stdout.strip().splitlines()
 
 
 def get_monthly_commits_per_package() -> pd.DataFrame:
-    run_git_command(["checkout", "master"])
+    run_git_cmd(["checkout", "master"])
 
     package_series = {}
 
@@ -111,7 +101,7 @@ def get_monthly_commits_per_package() -> pd.DataFrame:
 df_git = get_monthly_commits_per_package()
 
 # Format index as YYYY-MM string
-df_git.index = df_git.index.to_period("M").astype(str)
+df_git.index = df_git.index.to_period("M").astype(str)  # ty: ignore[unresolved-attribute]  # DatetimeIndex at runtime
 df_git.index.name = "time"
 
 filename: str = "_monthly_commits_per_package.csv"

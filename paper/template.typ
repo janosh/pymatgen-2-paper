@@ -1,13 +1,48 @@
 // Subfigure support
 #let subfigure-kind = "subfigure"
-#let subfigure-counter = counter(subfigure-kind)
 
-#let subfigure(body, caption: "", numbering: "a)", pos: bottom + center, dy: 10%, label: none) = {
-  subfigure-counter.step()
-  let fig = figure(body, caption: none, kind: subfigure-kind, supplement: none, numbering: numbering, outlined: false)
+// Immediate enclosing figure of a subfigure: the nearest preceding figure of
+// any kind (image, table, ...) that is not itself a subfigure. Used to scope
+// the `within` sibling lookup that determines the subfigure letter.
+#let subfigure-parent(loc) = (
+  query(selector(figure).before(loc)).filter(fig => fig.kind != subfigure-kind).last()
+)
+
+// 1-based letter index of a subfigure among the siblings sharing its parent
+// figure, via the `within` selector (Typst 0.15) — no manually stepped counter
+// that had to be reset by a show rule per parent. `inclusive: false` counts only
+// strictly-preceding siblings, so this works both during layout (loc = here(),
+// before the figure is emitted) and from ref rules (loc = the figure itself).
+#let subfigure-index(loc) = (
+  query(
+    figure.where(kind: subfigure-kind).within(subfigure-parent(loc).location()).before(loc, inclusive: false),
+  ).len() + 1
+)
+
+#let subfigure(
+  body,
+  pos: bottom + center,
+  dx: 0%,
+  dy: 6%,
+  caption: "",
+  numbering: "a)",
+  label: none,
+  supplement: none,
+  placement: top,
+) = {
+  let fig = figure(
+    body,
+    caption: none,
+    kind: subfigure-kind,
+    supplement: none,
+    numbering: numbering,
+    outlined: false,
+    placement: placement,
+  )
+
   context {
-    let num = subfigure-counter.display(numbering)
-    [ #fig#label #place(pos, dy: dy)[#num #caption] ]
+    let sub-fig-num = std.numbering(numbering, subfigure-index(here()))
+    return [ #fig#label #place(pos, dx: dx, dy: dy)[#supplement #sub-fig-num #caption] ]
   }
 }
 
@@ -172,28 +207,28 @@
 }
 
 #let template(body, ..args) = {
-  let raw = args.named()
+  let named = args.named()
 
   // Handle aliases and ensure arrays
   let get-array(key, ..aliases) = {
     for alias in (key,) + aliases.pos() {
-      if alias in raw {
-        return if type(raw.at(alias)) == array { raw.at(alias) } else { (raw.at(alias),) }
+      if alias in named {
+        return if type(named.at(alias)) == array { named.at(alias) } else { (named.at(alias),) }
       }
     }
     return ()
   }
 
-  let header = raw.at("header", default: (:))
+  let header = named.at("header", default: (:))
   let args = (
     header: (
       article-type: header.at("article-type", default: "Article"),
       article-color: header.at("article-color", default: rgb(167, 195, 212)),
       article-meta: header.at("article-meta", default: []),
     ),
-    title: raw.at("title", default: none),
-    subtitle: raw.at("subtitle", default: none),
-    short-title: raw.at("short-title", default: raw.at("running-title", default: raw.at(
+    title: named.at("title", default: none),
+    subtitle: named.at("subtitle", default: none),
+    short-title: named.at("short-title", default: named.at("running-title", default: named.at(
       "running-head",
       default: none,
     ))),
@@ -203,15 +238,15 @@
       orcid: a.at("orcid", default: none),
       affiliations: a.at("affiliations", default: none),
     )),
-    affiliations: raw.at("affiliations", default: raw.at("affiliation", default: none)),
+    affiliations: named.at("affiliations", default: named.at("affiliation", default: none)),
     abstracts: get-array("abstracts", "abstract").map(a => if type(a) == dictionary { a } else {
       (title: "Abstract", content: a)
     }),
-    citation: raw.at("citation", default: none),
-    open-access: raw.at("open-access", default: none),
-    venue: raw.at("venue", default: none),
-    doi: raw.at("doi", default: none),
-    keywords: raw.at("keywords", default: ()),
+    citation: named.at("citation", default: none),
+    open-access: named.at("open-access", default: none),
+    venue: named.at("venue", default: none),
+    doi: named.at("doi", default: none),
+    keywords: named.at("keywords", default: ()),
     dates: get-array("dates", "date").map(d => if type(d) == datetime { (type: none, date: d) } else {
       (type: d.at("type", default: none), date: d.date)
     }),
@@ -244,6 +279,12 @@
   set heading(numbering: "1.1")
   set par(leading: 0.618em, justify: true)
 
+  // Let long inline code wrap across lines via zero-width breaks after "." and "_"
+  show std.raw.where(block: false): it => {
+    show regex("[._]"): chr => chr + sym.zws
+    it
+  }
+
   v(1.2em)
   header-journal(args)
   header-block(args)
@@ -271,20 +312,16 @@
   set math.equation(numbering: "(Eq. 1)")
   show math.equation: set block(spacing: 1em, above: 1.618em, below: 1em)
 
-  // reset subfigure counter when out of the parent figure
-  show figure: itm => {
-    if itm.kind != subfigure-kind { subfigure-counter.update(0) }
-    itm
-  }
-
   // format references to subfigures as "Figure 1a)"
   show ref: itm => {
     let elem = itm.element
     if elem != none and elem.func() == figure and elem.kind == subfigure-kind {
-      let figs-before = query(figure.where(outlined: true).before(elem.location())).filter(f => f.kind != table)
-      let parent-num = figs-before.len()
-      let subfig-num = numbering(elem.numbering, ..subfigure-counter.at(elem.location()))
-      return [#figs-before.last().supplement #parent-num#subfig-num]
+      // Immediate enclosing figure (any kind) gives both the correct supplement
+      // and number: "Figure N" for image parents, "Table N" for table parents.
+      let parent = subfigure-parent(elem.location())
+      let parent-num = counter(figure.where(kind: parent.kind)).at(parent.location()).first()
+      let subfig-num = numbering(elem.numbering, subfigure-index(elem.location()))
+      return [#parent.supplement #parent-num#subfig-num]
     }
     itm
   }

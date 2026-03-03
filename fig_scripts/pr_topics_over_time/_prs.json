@@ -665,7 +665,7 @@
     "author": "DanielYang59"
   },
   "4193": {
-    "title": "Remove unnecesary isotope conversion in `core.periodic_table.get_el_sp`",
+    "title": "Remove unnecessary isotope conversion in `core.periodic_table.get_el_sp`",
     "created_at": "2024-11-23T05:20:49Z",
     "author": "DanielYang59"
   },
@@ -1670,7 +1670,7 @@
     "author": "DanielYang59"
   },
   "3798": {
-    "title": "Fix overlayed subplots in `BSPlotterProjected.get_projected_plots_dots()`",
+    "title": "Fix overlaid subplots in `BSPlotterProjected.get_projected_plots_dots()`",
     "created_at": "2024-05-01T18:32:19Z",
     "author": "janosh"
   },
@@ -1770,7 +1770,7 @@
     "author": "DanielYang59"
   },
   "3756": {
-    "title": "Fix OPTIMADE rester URL contruction and improve testing",
+    "title": "Fix OPTIMADE rester URL construction and improve testing",
     "created_at": "2024-04-13T09:58:58Z",
     "author": "ml-evs"
   },
@@ -2045,7 +2045,7 @@
     "author": "DanielYang59"
   },
   "3659": {
-    "title": "Use `np.eye(3)` instead of `[[1, 0, 0], [0, 1, 0], [0, 0, 1]]` for identies",
+    "title": "Use `np.eye(3)` instead of `[[1, 0, 0], [0, 1, 0], [0, 0, 1]]` for identities",
     "created_at": "2024-02-26T12:41:10Z",
     "author": "janosh"
   },
@@ -2545,7 +2545,7 @@
     "author": "janosh"
   },
   "3484": {
-    "title": "Standardise and update VASP input sets",
+    "title": "Standardize and update VASP input sets",
     "created_at": "2023-11-26T22:54:21Z",
     "author": "utf"
   },
@@ -3095,7 +3095,7 @@
     "author": "janosh"
   },
   "3286": {
-    "title": "`np.(arange->linspace)` in `io/vasp/optics.py` `get_delta`, `get_setp` and `epsilon_imag`",
+    "title": "`np.(arrange->linspace)` in `io/vasp/optics.py` `get_delta`, `get_step` and `epsilon_imag`",
     "created_at": "2023-08-31T13:42:11Z",
     "author": "LucasGVerga"
   },
@@ -3835,7 +3835,7 @@
     "author": "mattmcdermott"
   },
   "3031": {
-    "title": "Update `DictSet` to allow direct initialisation",
+    "title": "Update `DictSet` to allow direct initialization",
     "created_at": "2023-06-01T18:04:49Z",
     "author": "kavanase"
   },
@@ -4150,7 +4150,7 @@
     "author": "janosh"
   },
   "2894": {
-    "title": "Breaking: Rename `gen_sl_transform_matricies->gen_sl_transform_matrices`",
+    "title": "Breaking: Rename `gen_sl_transform_matrices->gen_sl_transform_matrices`",
     "created_at": "2023-03-15T14:28:37Z",
     "author": "janosh"
   },
@@ -4170,7 +4170,7 @@
     "author": "janosh"
   },
   "2886": {
-    "title": "MPAqueousCompatiblity: compute hydrate correction using reduced rather than full composition",
+    "title": "MPAqueousCompatibility: compute hydrate correction using reduced rather than full composition",
     "created_at": "2023-03-10T01:25:15Z",
     "author": "rkingsbury"
   },
@@ -4365,7 +4365,7 @@
     "author": "MichaelWolloch"
   },
   "2795": {
-    "title": "added DOSCAR.LSO.lobster file attribute to Lobsterout, updated tests",
+    "title": "added DOSCAR.ALSO.lobster file attribute to Lobsterout, updated tests",
     "created_at": "2023-01-09T11:48:12Z",
     "author": "naik-aakash"
   },
@@ -5485,7 +5485,7 @@
     "author": "janosh"
   },
   "2358": {
-    "title": "Don't perform dict type-check on the MAGMOM flag in io.vasp.sets (fixes downstream Atomate issue)",
+    "title": "Don't perform dict type-check on the MAGMOM flag in io.vasp.sets (fixes downstream Automate issue)",
     "created_at": "2022-01-19T19:46:06Z",
     "author": "Andrew-S-Rosen"
   },
@@ -5745,7 +5745,7 @@
     "author": "kmu"
   },
   "2249": {
-    "title": "Update functionality of composition.chemical_system to match expected behaviour",
+    "title": "Update functionality of composition.chemical_system to match expected behavior",
     "created_at": "2021-09-14T11:26:10Z",
     "author": "CompRhys"
   },
@@ -5810,7 +5810,7 @@
     "author": "JaGeo"
   },
   "2227": {
-    "title": "Fix c mod in neighobrs",
+    "title": "Fix c mod in neighbors",
     "created_at": "2021-08-25T03:08:39Z",
     "author": "chc273"
   },
@@ -6195,7 +6195,7 @@
     "author": "mkhorton"
   },
   "2065": {
-    "title": "Parse projected magnetisation from non-collinear calculations",
+    "title": "Parse projected magnetization from non-collinear calculations",
     "created_at": "2021-02-16T19:15:07Z",
     "author": "utf"
   },
@@ -6350,7 +6350,7 @@
     "author": "rkingsbury"
   },
   "1999": {
-    "title": "imporve legibility of 3D phase diagram plot",
+    "title": "improve legibility of 3D phase diagram plot",
     "created_at": "2020-11-18T19:39:29Z",
     "author": "bayesfactor"
   },
@@ -6475,7 +6475,7 @@
     "author": "rkingsbury"
   },
   "1938": {
-    "title": "[WIP] Implemenation  of a robust permutation invariant molecule matcher",
+    "title": "[WIP] Implementation  of a robust permutation invariant molecule matcher",
     "created_at": "2020-08-21T18:44:04Z",
     "author": "fekad"
   },
@@ -6550,7 +6550,7 @@
     "author": "rkingsbury"
   },
   "1916": {
-    "title": "Remove CPP and use only C in get neighbors optmization",
+    "title": "Remove CPP and use only C in get neighbors optimization",
     "created_at": "2020-07-30T18:04:59Z",
     "author": "chc273"
   },
@@ -6575,7 +6575,7 @@
     "author": "samblau"
   },
   "1904": {
-    "title": "Fix serialisation of slabs with list scale_factor",
+    "title": "Fix serialization of slabs with list scale_factor",
     "created_at": "2020-07-10T16:30:46Z",
     "author": "utf"
   },
@@ -6745,7 +6745,7 @@
     "author": "mamachra"
   },
   "1827": {
-    "title": "[WIP] Edge Case of VoronoiNN() not finding neighbours when called by StructureGraph.with_local_env_strategy()",
+    "title": "[WIP] Edge Case of VoronoiNN() not finding neighbors when called by StructureGraph.with_local_env_strategy()",
     "created_at": "2020-04-14T08:47:48Z",
     "author": "CompRhys"
   },
@@ -7450,7 +7450,7 @@
     "author": "oxana-a"
   },
   "1514": {
-    "title": "Fix reading the SC K-Point set when LVEL flag is set.",
+    "title": "Fix reading the SC K-Point set when LEVEL flag is set.",
     "created_at": "2019-06-27T07:46:45Z",
     "author": "JRSuckert"
   },
@@ -7665,7 +7665,7 @@
     "author": "utf"
   },
   "1440": {
-    "title": "allow the MimimumDistanceNN class to only use the cutoff distance as …",
+    "title": "allow the MinimumDistanceNN class to only use the cutoff distance as …",
     "created_at": "2019-04-10T18:00:46Z",
     "author": "jmmshn"
   },
@@ -8030,7 +8030,7 @@
     "author": "mkhorton"
   },
   "1313": {
-    "title": "fixed the accidental overide of get_min_instability",
+    "title": "fixed the accidental override of get_min_instability",
     "created_at": "2018-11-03T23:02:50Z",
     "author": "jmmshn"
   },
@@ -8130,7 +8130,7 @@
     "author": "fraricci"
   },
   "1274": {
-    "title": "- reduced excecution time for test",
+    "title": "- reduced execution time for test",
     "created_at": "2018-09-13T12:13:55Z",
     "author": "fraricci"
   },
@@ -8390,7 +8390,7 @@
     "author": "CifLord"
   },
   "1190": {
-    "title": "Added a new order paramter (q_sq_face_cap_trig_pris) and unit test",
+    "title": "Added a new order parameter (q_sq_face_cap_trig_pris) and unit test",
     "created_at": "2018-07-02T20:03:09Z",
     "author": "nisse3000"
   },
@@ -8495,7 +8495,7 @@
     "author": "dbroberg"
   },
   "1162": {
-    "title": "QChem updates for Atomate",
+    "title": "QChem updates for Automate",
     "created_at": "2018-06-05T20:48:44Z",
     "author": "samblau"
   },
@@ -9070,7 +9070,7 @@
     "author": "yihanxiao92"
   },
   "1005": {
-    "title": "Addtional change on get_environment script",
+    "title": "Additional change on get_environment script",
     "created_at": "2018-01-22T13:49:43Z",
     "author": "JaGeo"
   },
@@ -9690,7 +9690,7 @@
     "author": "wood-b"
   },
   "817": {
-    "title": "MAINT: Numerical stability for symmetrise + finer control over tolerance",
+    "title": "MAINT: Numerical stability for symmetrize + finer control over tolerance",
     "created_at": "2017-08-29T08:55:39Z",
     "author": "mcocdawc"
   },
@@ -9720,7 +9720,7 @@
     "author": "ucsdlxg"
   },
   "810": {
-    "title": "fix parsing BSE vasprun error",
+    "title": "fix parsing BASE vasprun error",
     "created_at": "2017-08-25T00:27:25Z",
     "author": "zbwang"
   },
@@ -9810,7 +9810,7 @@
     "author": "Tinaatucsd"
   },
   "785": {
-    "title": "add vasp input sets for BSE calc",
+    "title": "add vasp input sets for BASE calc",
     "created_at": "2017-08-18T03:27:33Z",
     "author": "zbwang"
   },
@@ -9875,7 +9875,7 @@
     "author": "bocklund"
   },
   "760": {
-    "title": "ENH: Implemented get_symmetrised_molecule + helper functions; Improved performance of generate_full_symmops",
+    "title": "ENH: Implemented get_symmetrized_molecule + helper functions; Improved performance of generate_full_symmops",
     "created_at": "2017-08-14T14:15:08Z",
     "author": "mcocdawc"
   },
@@ -9885,7 +9885,7 @@
     "author": "shyamd"
   },
   "757": {
-    "title": "MSONable Compatability",
+    "title": "MSONable Compatibility",
     "created_at": "2017-08-10T03:47:13Z",
     "author": "shyamd"
   },
@@ -9990,7 +9990,7 @@
     "author": "montoyjh"
   },
   "727": {
-    "title": "ingore pymatgen[matproj.snl] warning when use python3",
+    "title": "ignore pymatgen[matproj.snl] warning when use python3",
     "created_at": "2017-07-20T07:55:14Z",
     "author": "specter119"
   },
@@ -10160,7 +10160,7 @@
     "author": "mkhorton"
   },
   "672": {
-    "title": "Fix MagneticSymmteryGroup for unicode arguments in Python 2.7",
+    "title": "Fix MagneticSymmetryGroup for unicode arguments in Python 2.7",
     "created_at": "2017-05-17T17:22:22Z",
     "author": "mkhorton"
   },
@@ -10255,7 +10255,7 @@
     "author": "gmatteo"
   },
   "646": {
-    "title": "Fix CONTRAINT stre bug in QChem Input",
+    "title": "Fix CONSTRAINT stre bug in QChem Input",
     "created_at": "2017-04-17T21:37:30Z",
     "author": "xhqu1981"
   },
@@ -10550,7 +10550,7 @@
     "author": "utf"
   },
   "567": {
-    "title": "Enable NPT-AIMD simulation",
+    "title": "Enable NPT-AIMED simulation",
     "created_at": "2017-02-16T00:26:20Z",
     "author": "HanmeiTang"
   },
@@ -10565,7 +10565,7 @@
     "author": "matk86"
   },
   "560": {
-    "title": "Removed 2 bugs from order paramerter code and finished unit tests.",
+    "title": "Removed 2 bugs from order parameter code and finished unit tests.",
     "created_at": "2017-02-07T23:35:00Z",
     "author": "nisse3000"
   },
@@ -10590,7 +10590,7 @@
     "author": "gpetretto"
   },
   "553": {
-    "title": "modified BSE ouptut : modified reg pattern",
+    "title": "modified BASE output : modified reg pattern",
     "created_at": "2017-01-25T10:52:21Z",
     "author": "ndardenne"
   },
@@ -10715,7 +10715,7 @@
     "author": "davidwaroquiers"
   },
   "516": {
-    "title": "Optionnal possibility to specify that the saddle_point in the NEB sho…",
+    "title": "Optional possibility to specify that the saddle_point in the NEB sho…",
     "created_at": "2016-11-22T15:18:23Z",
     "author": "davidwaroquiers"
   },
@@ -10785,7 +10785,7 @@
     "author": "matk86"
   },
   "487": {
-    "title": "Chemenv improvents + NEBAnalysis improvements",
+    "title": "Chemenv improvements + NEBAnalysis improvements",
     "created_at": "2016-09-27T10:21:15Z",
     "author": "davidwaroquiers"
   },
@@ -11240,7 +11240,7 @@
     "author": "saurabh02"
   },
   "336": {
-    "title": "handle bracketed data in attribute data for Elememt",
+    "title": "handle bracketed data in attribute data for Element",
     "created_at": "2016-04-15T20:44:02Z",
     "author": "saurabh02"
   },
@@ -11945,7 +11945,7 @@
     "author": "mbkumar"
   },
   "99": {
-    "title": "Condition InterstitialTransfromation testing",
+    "title": "Condition InterstitialTransformation testing",
     "created_at": "2014-07-02T19:45:51Z",
     "author": "mbkumar"
   },

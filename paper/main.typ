@@ -56,8 +56,16 @@
   // MH: also left a comment that I need to reach out to folks who were invited to participate the
   //     first time I tried to kick-off this paper ~2 yrs ago. I want to make sure they know they
   //     were not forgotten and have opportunity to provide input.
-  authors: ((name: "TBD", corresponding: true),),
-  // affiliations: affiliations,
+  authors: (
+    (name: "Janine George",  corresponding: false),
+    (name: "Matthew Horton", corresponding: false),
+    (name: "Seán Kavanagh", corresponding: false),
+    (name: "Aron Kaplan", corresponding: false),
+    (name: "Janosh Riebesell", corresponding: false),
+    (name: "Andrew S. Rosen", corresponding: false),
+    (name: "Haoyu Yang", corresponding: false),
+    (name: "***", corresponding: false),), // indicate that all of them are co-first authors
+   // affiliations: affiliations,
   dates: (
     (type: [Received Date], date: datetime.today()),
     (type: [Revised Date], date: datetime.today()),
@@ -77,6 +85,8 @@
 // * Discuss code standards (+ also challenges, evolving best practices balanced with backwards compat, funding, maintenance vs new features, churn and people leaving and joining, incentives to document + structured documentation)
 // * Test coverage https://app.codecov.io/gh/materialsproject/pymatgen/tree/master/pymatgen (trade-off between test coverage and choice of tests)
 // * Highlight uniqueness in cover letter (not many codes developed over ten+ years!)
+
+// * Check Digital Discovery rules on hyperlinks - raised by SK [Feb 2026]
 
 
 // Lessons learned to each section: structures the paper -> everyone
@@ -122,11 +132,21 @@ Today, #pmg aims to accelerate materials discovery by providing a comprehensive 
 
 One of #pmg's strengths is its interoperability, having the capability to read various molecule and structure file formats and to automatically retrieve molecules and structures from databases. Furthermore, #pmg provides interfaces to a number of electronic structure / DFT codes (e.g., VASP @kresse_efficient_1996, Quantum Espresso @giannozzi_qe_2017, FHI-aims @blum_fhiaims_2009, CP2K @kuhne_cp2k_2020, Abinit @gonze_abinit_2020) or post-processing tools, such as `Phonopy` @togo_firstprinciples_2023 or `LOBSTER` @nelson_lobster_2020.
 
-#pmg also complements other materials science tools, most notably the Atomic Simulation Environment (ASE) @larsen_atomic_2017. While both software packages offer parsers for DFT and quantum chemistry codes, as well as tools for structure and molecule manipulation, their focuses differ. #pmg centers on complex materials data analyses, @jain_computational_2016 supporting tasks from oxidation state prediction to thermal conductivity modeling. ASE emphasizes simulation workflows, integrating quantum-chemical calculators and molecular dynamics, with more lightweight structural data representations and manipulation functionality. The two are thus complementary and often used together. To streamline the usage of both codes, #pmg makes it possible to convert between the #pmg `Structure` object representation of a material and the ASE `Atoms` object representation. In a diverse and rapidly evolving research ecosystem, it is unrealistic and not desirable to expect a single code to dominate community adoption. Rather than striving for exclusivity, the focus should be on interoperability between codes, allowing users to combine the strengths of both software packages. In this way, it is on the code maintainers to develop and maintain good relationships with their fellow developers, and ensure this interoperability is as smooth as engineering constraints allow.
+A crucial challenge in orchestrating heterogeneous computational workflows is normalization of the data structures used to transfer information between codes.
+By "heterogeneous", we refer to workflows which may need separate codes to run, as exemplified by the phonon workflow example below.
+Separate codes typically have bespoke input and output data structures, which hinder interoperability between related simulation tools: ex., nearly all molecular DFT codes accept `xyz` files as input to represent molecular geometries, but the precise format of simulation input (self-consistent field convergence criteria, force convergence criteria, basis sets, etc.) and logging of calculation progress are unique to each code.
+
+By normalizing the representation of this data, #pmg makes it easier to chain the outputs of different simulation tools when building complex workflows.
+Critically, when running complex workflows, the workflow provenance, metadata, and progress are typically stored in an external database. #pmg was built with this in mind, and thus supports JSON-compliant object de-/serialization for interoperability with databases that can store JSON data.
+
+#pmg also complements other materials science tools, most notably the Atomic Simulation Environment (ASE) @larsen_atomic_2017. While both software packages offer parsers for DFT and quantum chemistry codes, as well as tools for structure and molecule manipulation, their focuses differ. #pmg centers on complex materials data analyses, @jain_computational_2016 supporting tasks from oxidation state prediction to thermal conductivity modeling. ASE emphasizes atomistic simulation using normalization of crystalline and molecular data with similar basic functionality as their analogues in #pmg. Its `calculator` framework integrates quantum-chemical interoperability and in-built geometry optimization and molecular dynamics functionality.
+
+Perhaps critically, the representations of atomistic data and operations used in ASE are not natively converted to a database-friendly representation, and require additional engineering to perform this conversion when orchestrating ASE-based workflows.
+This distinction means that #pmg is often used in conjunction with ASE to orchestrate workflows where certain features (e.g., molecular dynamics driven by a classical forcefield) are only available in ASE. To streamline the usage of both codes, #pmg makes it possible to convert between the #pmg `Structure` object representation of a material and the ASE `Atoms` object representation. In a diverse and rapidly evolving research ecosystem, it is unrealistic and not desirable to expect a single code to dominate community adoption. Rather than striving for exclusivity, the focus should be on interoperability between codes, allowing users to combine the strengths of both software packages. In this way, it is on the code maintainers to develop and maintain good relationships with their fellow developers, and ensure this interoperability is as smooth as engineering constraints allow.
 // Maybe rephrase to be a bit more succinct in comparing pymatgen and ASE
 // Again, I tried. I hope I succeeded
 
-Overall, this shameless interoperability of #pmg enables seamless integration of various computational materials analyses within diverse research workflows. To illustrate, one common materials science workflow for phonon calculations could involve:
+Overall, this "shameless" interoperability of #pmg enables seamless integration of various computational materials analyses within diverse research workflows. To illustrate, one common materials science workflow for phonon calculations could involve:
 1. Obtain a crystal structure from the ICSD @zagorac2019recent or Materials Project @jain_commentary_2013 database, either manually or automatically with the #pmg API tools.
 2. Use the symmetry and structure transformation tools in #pmg, built upon `spglib` @togo2024spglib, to reduce to the primitive unit cell.
 3. Write the primitive cell to the file format required by the chosen quantum chemistry code, as well as other calculation input files (optionally).
@@ -138,6 +158,11 @@ Overall, this shameless interoperability of #pmg enables seamless integration of
 This is a simple example, but one that helps illustrate the utility of #pmg's comprehensive materials analysis functionality and wide-ranging interoperability. Computational materials research workflows now widely employ #pmg as both a core analysis toolkit and a seamless glue between quantum chemistry codes and advanced research software packages.
 
 // SK: I added this example to try illustrate, but possibly too verbose / not worth including
+
+While #pmg supports interfaces to many codes, it should be noted that these are driven in large part by the research routes pursed within the Materials Project. Thus the interfaces to VASP and QChem have been thoroughly developed, as they are regularly used in the Materials Project.
+Other interfaces to  `packmol`, `atat`, or `zeo++` have been developed to support workflows studying non-crystalline materials, configurationally disordered crystalline materials, or material porosity, respectively. These interfaces may overlap with those available in ASE or `pyiron`, but they are more often disjoint.
+We make no attempt to make a (necessarily outdated) list of codes to which #pmg natively interfaces, but we list a few which have been added or significantly enhanced since the publication of @ong_python_2013 (alphabetically): ABINIT @verstraete_Abinit2025_2025, CP2K @kuhne_cp2k_2020, icet @angqvist_icet_2019, JDFTx @sundararaman_jdftx_2017, LAMMPS @thompson_lammps_2022, LOBSTER @nelson_lobster_2020, OpenFF @wang_openff_2024, phonopy @togo_firstprinciples_2023, and QChem @krylov_qchem_2020.
+The extensibility of #pmg allows for rapid development of interfaces to codes as needs arise.
 
 = Community Adoption and Impact
 *@ Seán*
@@ -212,6 +237,8 @@ Cumulatively, #pmg's impact on the materials science community includes:
 As discussed above, many advanced materials analysis packages have built upon the #pmg codebase to enable complex domain-specific research workflows.
 Below, we briefly discuss two such cases where the #pmg framework has facilitated advanced materials analyses.
 
+// MH: let's keep 350 word limit for case studies to keep tight, Seán to move some lessons learned to end to cover both
+
 === Defect Modeling Tools
 Defect modeling is a rapidly growing field, driven by advances in computational power and methods that make these calculations tractable, along with the critical importance of defect species to diverse materials technologies, such as transistors, solar cells, transparent conducting materials, batteries, qubits and more.
 Defect simulation can be a long and complex process, however, requiring many different tasks, including structure manipulations, symmetry analyses, input file generation and output parsing for electronic structure codes, lightweight metadata and serialization for reproducibility, and interfaces with databases such as the Materials Project for phase diagram analysis.
@@ -225,14 +252,6 @@ One particularly promising aspect of these developments, is that they have great
 Through the object-oriented architecture and efficient serialization tools provided by #pmg and its `monty` dependency for (de)serialization, the human effort to collate and export complete metadata and calculation provenance is significantly diminished.
 It is hoped that these developments will establish clear community standards and expectations for reproducibility, strengthening the quality and impact of defect modeling research, while ensuring robust foundations for future database and machine learning efforts in this area @squires_guidelines_2026.
 
-One key lesson from the success of defect modeling packages built on #pmg is that the provision of robust functionality for common tasks (such as structure manipulations or input/output to DFT codes) allows the ready extension to more specialized research workflows by domain experts.
-By implementing these core materials analysis functions in a modular code structure, which can be readily imported to downstream packages, #pmg removes the need to re-implement common tasks and allows practitioners to focus on specialized domain-specific analyses (e.g. predicting defect concentrations).
-Another aspect which has proven important in this sub-field, is the use of numerically-efficient core functions.
-Defect calculations involve the use of large supercells with low symmetry, pushing ...
-Efficiency is important
-Clear communication of deprecations / code changes etc
-
-
 // + (If we want a figure here, could make a diagram showing the workflow: Pull materials from MP -> Oxi-state Guess w/PMG -> Vacancy generation w/`doped` (via PMG etc) -> Electrostatic analysis with PMG (Ewald tools) -> VASP DFT I/O w/PMG -> Energetic & Structural (w/`doped` & PMG) analysis; from 10.1088/2515-7655/ade916, as example).
 
 === Data-Driven Heuristic Assessment and Machine Learning
@@ -243,6 +262,14 @@ Through #pmg's direct interfaces to material databases (Materials Project API or
 
 Chemical heuristics have been frequently used to inspire design principles or features in machine learning models. Many of them—such as those related to stability, synthesizability, defect energetics, and magnetism—rely on accurate determinations of oxidation states and coordination environments, which can both be assessed within #pmg. #pmg implements several heuristics to determine oxidation states (e.g., based on bond valence sums or simple composition-based guessing methods) and to determine coordination environments (e.g., based on minimum distances or Hoppe's effective coordination numbers)@pan_benchmarking_2021, @waroquiers_chemenv_2020. Additionally, #pmg is deeply integrated within matminer,@ward_matminer_2018 a library that streamlines the generation of popular features for machine learning workflows, further supporting the derivation and validation of heuristics. Here, #pmg formats are used directly as input for creating machine-learning features.
 In summary, #pmg provides a framework for materials data handling, feature extraction, and heuristic development, making it an essential tool for modern, data-driven materials informatics. The codification transforms chemical and crystallographic knowledge into a resource that accelerates data-driven materials discovery.
+
+*SK to update:*
+One key lesson from the success of defect modelling packages built on #pmg is that the provision of robust functionality for common tasks (such as structure manipulations or input/output to DFT codes) allows the ready extension to more specialized research workflows by domain experts.
+By implementing these core materials analysis functions in a modular code structure, which can be readily imported to downstream packages, #pmg removes the need to re-implement common tasks and allows practitioners to focus on specialized domain-specific analyses (e.g. predicting defect concentrations).
+Another aspect which has proven important in this sub-field, is the use of numerically-efficient core functions. 
+Defect calculations involve the use of large supercells with low symmetry, pushing ...
+Efficiency is important
+Clear communication of deprecations / code changes etc
 
 //SMACT? (From Walsh group) -> I decided to remove my own publication in this context. In this way, i believe, the citations are fairer (i.e., mostly the publications actually implementing the heuristics are cited)
 
@@ -407,8 +434,8 @@ This latter approach has already been taken with the `analysis` and `io` namespa
 // AK: Rewrote to make it more generic
 
 = Outlook and Future Developments
-// Agents?
-//
+// Agents? - @Aaron: added a brief bit at the end
+// Make it less committing for us: open it up to other developers
 #pmg has evolved from a specialized tool into a cornerstone of computational materials science. Its growth reflects the collaborative spirit of the materials informatics community and the importance of open-source software in scientific research.
 
 While the core features of pymatgen are relatively stable, more peripheral features require constant community review beyond the stewardship of a small team of maintainers.
@@ -428,6 +455,9 @@ One promising direction is community-reviewed, LLM-assisted documentation expans
 
 High-impact development opportunities informed by community needs and emerging trends in materials science include:
 
+// Comment from JG: "phrase as invitation" to help/support
+// MH: maybe we can make each point similar length - again keep focused
+// AR: Instead of "we will do X", these are areas that should be areas of focus (by the community)
 *Machine learning integration* is likely to remain important as ML methods increasingly enter materials discovery and design @butler_machine_2018. High-value contributions include native support for modern frameworks (PyTorch, JAX), efficient structure-to-graph conversions for neural network architectures, and stronger integration with benchmarking frameworks like Matbench Discovery @riebesell_framework_2025.
 // Mention agentic AI able to take advantage of pymatgen platform
 
@@ -438,6 +468,8 @@ High-impact development opportunities informed by community needs and emerging t
 *Extension package ecosystem* growth will strengthen #pmg's federated architecture: a stable core supplemented by domain-specific namespace packages (e.g., `pymatgen-analysis-diffusion` @deng_datadriven_2017, `pymatgen-analysis-defects` @shen_pymatgen-analysis-defects_2024) maintained by experts. Increasing the number and quality of these extensions distributes maintenance burden while enabling rapid iteration in specialized domains. New functionality areas—such as multi-scale modeling bridging atomistic and mesoscale simulations—are best developed as extension packages rather than expanding the core.
 
 *GPU compatibility*: A promising direction is broader support for tensor backends (e.g., PyTorch) in array-heavy code paths, enabling GPU acceleration and potential speedups for large-scale analyses.
+
+*Agentic AI tools* Large language models (LLMs) can naturally run `python` code using the architecture-agnostic model context protocol (MCP) framework, provided that the data structures operated on by the MCP are (mostly) JSONable. #pmg naturally supports this interface via the de-/serialization procedures defined within `monty`. While this has naturally positioned #pmg to support MCP-type tools, to better facilitate the construction of analysis tools that LLMs can use, #pmg will need to enforce clearer type annotations and reduce the complexity of the JSON-serialized representations of objects. Both of these efforts would also likely strengthen the reliability and lower the memory usage of #pmg.
 
 //MH: *Provenance and units*: [want to highlight a weakness in pmg, our abandoned TransformedStructure concept, the way de/re-serialization best practices have shifted, the risks of unit errors: in other words, how can we drive scientific correctness forwards. Highlight other good work here, eg AiiDA's provenance graph, while a usability nightmare [won't mention this part], is an inspiration.]
 
@@ -461,6 +493,7 @@ ChatGPT was utilized to enhance the language and facilitate additional literatur
 // Noting CREDIT taxonomy https://credit.niso.org we could think about adopting before submission
 // JG: organized meetings, re-wrote introduction, overview and design principles, case study on chemical heuristics, contributed to backwards compatibility and api evolution, gave feedback to all sections and figures, contacted Digital Discovery for initial feedback on our publication, started with one draft for a figure
 // MH: primarily feedback and comments, guidance on structure, writing some small sections, tbd if more. Very early organization/co-ordination - JG has done this almost exclusively for this iteration. Developer outreach.
+// SK: case study on defect modelling, community adoption and impact section, minor editing to all (particularly early) sections, feedback to all sections/figures
 // JR (LLM-assisted summary of commit history):
 // + 26 commits by 2026-02-17 with ~7,223 lines added, ~3,373 removed
 // + Wrote the "Challenges and Solutions" sections on sustainability, backward compatibility/API evolution, and test coverage/code quality; added framing around maintainer resources, deprecation policy, CalVer implications/downsides compared to SemVer, wrote section on Rust-native tooling, and AI-assisted maintenance.
@@ -468,6 +501,8 @@ ChatGPT was utilized to enhance the language and facilitate additional literatur
 // + created and/or contributed to all figures (PR-topic trend plotting, contributors-over-time tooling, world-map/contributor data pipeline support, dependent/dependency usage analysis scaffolding)
 // + Contributions to pymatgens (from `fig_scripts/pr_contributors_bar_plot/_pr_contributors.json`): 421 PRs attributed to `janosh` (out of 2,449 total PRs; 269 unique contributors) from 2021-03-09 to 2025-02-06
 // + pymatgen contribution profile: sustained multi-year activity with major emphasis on bug fixes/reliability, API design, developer tooling and CI modernization, code quality improvements, targeted feature additions, and better docs.
-
+// AR: I think I added a paragraph or two somewhere at some point, but I've more been just editing more recently. Certainly I am not expecting to be among the lead authors.
+// ADK: new features of pmg including io and use in workflows; some bigger picture stuff on direction of pymatgen development wrt MP + MPSF
+// we decided on everyone attending these meetings regularily to be joint  
 
 #bibliography("refs.bib", style: "ieee")

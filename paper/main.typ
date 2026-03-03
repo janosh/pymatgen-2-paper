@@ -495,13 +495,13 @@ Special thanks is given to the broader open-source scientific computing communit
 
 // MH: will make sure to have a callout / appendix for all our developers.
 // JG: can we get most of them be authors? [hopefully! I have a notebook too, I will need to make sure I have all author information, may need to reach out to latest developers]
-ChatGPT was utilized to enhance the language and facilitate additional literature queries. Everything was checked carefully afterwards.
+// ChatGPT was utilized to enhance the language and facilitate additional literature queries. Everything was checked carefully afterwards. -- not needed for language improvements
 
 // Author contributions
 // Noting CREDIT taxonomy https://credit.niso.org we could think about adopting before submission
 // JG: organized meetings, re-wrote introduction, overview and design principles, case study on chemical heuristics, contributed to backwards compatibility and api evolution, gave feedback to all sections and figures, contacted Digital Discovery for initial feedback on our publication, started with one draft for a figure
 // MH: primarily feedback and comments, guidance on structure, writing some small sections, tbd if more. Very early organization/co-ordination - JG has done this almost exclusively for this iteration. Developer outreach.
-// SK: case study on defect modeling, community adoption and impact section, minor editing to all (particularly early) sections, feedback to all sections/figures
+// SK: case study on defect modeling, community adoption and impact section, minor editing to all (particularly early) sections, feedback to all sections/figures. Attended all meetings.
 // JR (LLM-assisted summary of commit history):
 // + 26 commits by 2026-02-17 with ~7,223 lines added, ~3,373 removed
 // + Wrote the "Challenges and Solutions" sections on sustainability, backward compatibility/API evolution, and test coverage/code quality; added framing around maintainer resources, deprecation policy, CalVer implications/downsides compared to SemVer, wrote section on Rust-native tooling, and AI-assisted maintenance.

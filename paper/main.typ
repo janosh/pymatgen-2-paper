@@ -6,8 +6,6 @@
 #let title = "pymatgen: A decade of community growth, new functionality, and future prospects"
 
 
-// TODO think about concluding/outlook/perspective paragraphs at the end of each subsection
-
 // commands for attributed notes in different colors and with initials prefix
 #let JG(body) = {
   set text(fill: red)
@@ -40,7 +38,7 @@
     ],
     (
       title: "Plain Language Abstract",
-      content: [#pmg is a software tool that helps scientists...],
+      content: [#pmg is an open-source Python library that helps materials scientists analyze crystal structures, run computational simulations, and discover new materials. Over 14 years of development, it has grown into one of the most widely used tools in the field, with contributions from hundreds of researchers worldwide. This paper reviews how #pmg has evolved, the challenges of maintaining large community-driven scientific software, and where the project is headed next.],
     ),
   ),
   venue: [_Digital Discovery_],
@@ -57,15 +55,16 @@
   //     first time I tried to kick-off this paper ~2 yrs ago. I want to make sure they know they
   //     were not forgotten and have opportunity to provide input.
   authors: (
-    (name: "Janine George",  corresponding: false),
+    (name: "Janine George", corresponding: false),
     (name: "Matthew Horton", corresponding: false),
     (name: "Seán Kavanagh", corresponding: false),
     (name: "Aron Kaplan", corresponding: false),
     (name: "Janosh Riebesell", corresponding: false),
     (name: "Andrew S. Rosen", corresponding: false),
     (name: "Haoyu Yang", corresponding: false),
-    (name: "***", corresponding: false),), // indicate that all of them are co-first authors
-   // affiliations: affiliations,
+    (name: "***", corresponding: false),
+  ), // indicate that all of them are co-first authors
+  // affiliations: affiliations,
   dates: (
     (type: [Received Date], date: datetime.today()),
     (type: [Revised Date], date: datetime.today()),
@@ -91,7 +90,7 @@
 
 // Lessons learned to each section: structures the paper -> everyone
 = Introduction
-*@ Janine* *@ Matt*
+// *@ Janine* *@ Matt*
 
 
 #figure(
@@ -99,7 +98,7 @@
   caption: [#pmg functionality grouped into research topics, colored by number of papers in each topic citing #pmg.],
 ) <fig:mindmap>
 
-Since 2011, #pmg has enabled both individual and high-throughput computational materials science efforts @ong_python_2013. It started as a central code in the Materials Project@jain_commentary_2013 and nowadays provides many tools for setup and analysis of materials simulations, along with interfaces to various materials science codes. #pmg stands out for its exceptionally broad range of analysis capabilities across elemental, compositional, crystallographic, and material property levels. The library has grown significantly through community efforts, adapting to expanding needs in the fields of materials informatics @butler_machine_2018 and computational materials science. Due to its broad capabilities, #pmg is used in diverse research areas spanning from battery materials to machine learning applications, as shown in @fig:mindmap.
+Since 2011, #pmg has enabled both individual and high-throughput computational materials science efforts @ong_python_2013. It started as a central code in the Materials Project @jain_commentary_2013 and nowadays provides many tools for setup and analysis of materials simulations, along with interfaces to various materials science codes. #pmg stands out for its exceptionally broad range of analysis capabilities across elemental, compositional, crystallographic, and material property levels. The library has grown significantly through community efforts, adapting to expanding needs in the fields of materials informatics @butler_machine_2018 and computational materials science. Due to its broad capabilities, #pmg is used in diverse research areas spanning from battery materials to machine learning applications, as shown in @fig:mindmap.
 
 
 After more than 14 years of development, we review the evolution and impact of #pmg, sharing challenges and solutions encountered during its growth. We furthermore highlight factors that established #pmg as a cornerstone of materials science software. This retrospective could also serve as a guiding example for other community codes in the materials science domain. Lastly, we outline future developments and associated challenges.
@@ -108,7 +107,7 @@ After more than 14 years of development, we review the evolution and impact of #
 //*Pymatgen's place in the community* (I hope I covered it)
 
 = Overview and Design Principles
-*@ Janine*
+// *@ Janine*
 == Background
 
 #pmg was developed in 2011 by Shyue Ping Ong and colleagues at MIT to support the Materials Project @ong_python_2013 @jain_commentary_2013. Initially, #pmg provided essential tools for crystallographic operations, symmetry analysis, integration with the Vienna _Ab Initio_ Simulation Package (VASP) density functional theory (DFT) code @kresse_efficient_1996 and basic electronic structure and phase diagram analysis. These foundational capabilities enabled researchers to automate and standardize many aspects of computational materials science, laying the groundwork for high-throughput materials discovery. Many of these efforts were linked to the development of the Materials Project. @jain_commentary_2013 @horton_accelerated_2025
@@ -124,7 +123,7 @@ Since then, #pmg has expanded significantly, incorporating new features and adap
 
 Today, #pmg aims to accelerate materials discovery by providing a comprehensive toolkit for researchers at all levels @curtarolo_highthroughput_2013. While #pmg’s original goals—such as crystallographic operations and electronic structure analysis—remain central, its capabilities have grown substantially to support a broad spectrum of tasks in computational materials science and materials informatics.
 
-#pmg offers powerful tools for crystallographic and structural analysis, including coordination environment analysis, electronic structure parsing, thermodynamic and phase diagram construction, analysis of phonon properties, and interfaces to various electronic structure codes. Additionally, it includes utilities for machine learning applications in materials property prediction @ward_matminer_2018, reflecting its evolution into a comprehensive platform for materials informatics. #pmg therefore aims to be a powerful, flexible, and reliable software tool @horton_promises_2021 for increasingly complex computational materials science and materials informatics research workflows. A key lesson learned from the wide community adoption and continued growth of the #pmg codebase, is that scientific software must continuously evolve to meet emerging demands in its field; without this adaptability, it risks becoming obsolete. It also must continuously onboard new developers; without a welcoming development environment, it is not sustainable.  //maybe strongly worded but I indeed believe that this is true – SK 👍
+#pmg offers powerful tools for crystallographic and structural analysis, including coordination environment analysis, electronic structure parsing, thermodynamic and phase diagram construction, analysis of phonon properties, and interfaces to various electronic structure codes. Additionally, it includes utilities for machine learning applications in materials property prediction @ward_matminer_2018, reflecting its evolution into a comprehensive platform for materials informatics. #pmg therefore aims to be a powerful, flexible, and reliable software tool @horton_promises_2021 for increasingly complex computational materials science and materials informatics research workflows. A key lesson learned from the wide community adoption and continued growth of the #pmg codebase, is that scientific software must continuously evolve to meet emerging demands in its field; without this adaptability, it risks becoming obsolete. It also must continuously onboard new developers; without a welcoming development environment, it is not sustainable. //maybe strongly worded but I indeed believe that this is true – SK 👍
 
 
 
@@ -148,24 +147,24 @@ This distinction means that #pmg is often used in conjunction with ASE to orches
 
 Overall, this "shameless" interoperability of #pmg enables seamless integration of various computational materials analyses within diverse research workflows. To illustrate, one common materials science workflow for phonon calculations could involve:
 1. Obtain a crystal structure from the ICSD @zagorac2019recent or Materials Project @jain_commentary_2013 database, either manually or automatically with the #pmg API tools.
-2. Use the symmetry and structure transformation tools in #pmg, built upon `spglib` @togo2024spglib, to reduce to the primitive unit cell.
-3. Write the primitive cell to the file format required by the chosen quantum chemistry code, as well as other calculation input files (optionally).
-4. Perform geometry relaxation with the chosen quantum chemistry code.
-5. Directly read in the relaxed structure to #pmg, and generate a set of supercells with displaced atoms using the `pymatgen.io.phonopy` interface.
-6. Parse the displaced-atom calculations with `phonopy` @togo_firstprinciples_2023 and compute atomic force constants.
-6. Plot the phonon dispersion with `phonopy` or the `pymatgen.io.phonopy` interface, which additionally allows further analyses of Grüneisen parameters, phonon band structure and density of states manipulations etc.
+1. Use the symmetry and structure transformation tools in #pmg, built upon `spglib` @togo2024spglib, to reduce to the primitive unit cell.
+1. Write the primitive cell to the file format required by the chosen quantum chemistry code, as well as other calculation input files (optionally).
+1. Perform geometry relaxation with the chosen quantum chemistry code.
+1. Directly read in the relaxed structure to #pmg, and generate a set of supercells with displaced atoms using the `pymatgen.io.phonopy` interface.
+1. Parse the displaced-atom calculations with `phonopy` @togo_firstprinciples_2023 and compute atomic force constants.
+1. Plot the phonon dispersion with `phonopy` or the `pymatgen.io.phonopy` interface, which additionally allows further analyses of Grüneisen parameters, phonon band structure and density of states manipulations etc.
 
 This is a simple example, but one that helps illustrate the utility of #pmg's comprehensive materials analysis functionality and wide-ranging interoperability. Computational materials research workflows now widely employ #pmg as both a core analysis toolkit and a seamless glue between quantum chemistry codes and advanced research software packages.
 
 // SK: I added this example to try illustrate, but possibly too verbose / not worth including
 
 While #pmg supports interfaces to many codes, it should be noted that these are driven in large part by the research routes pursed within the Materials Project. Thus the interfaces to VASP and QChem have been thoroughly developed, as they are regularly used in the Materials Project.
-Other interfaces to  `packmol`, `atat`, or `zeo++` have been developed to support workflows studying non-crystalline materials, configurationally disordered crystalline materials, or material porosity, respectively. These interfaces may overlap with those available in ASE or `pyiron`, but they are more often disjoint.
+Other interfaces to `packmol`, `atat`, or `zeo++` have been developed to support workflows studying non-crystalline materials, configurationally disordered crystalline materials, or material porosity, respectively. These interfaces may overlap with those available in ASE or `pyiron`, but they are more often disjoint.
 We make no attempt to make a (necessarily outdated) list of codes to which #pmg natively interfaces, but we list a few which have been added or significantly enhanced since the publication of @ong_python_2013 (alphabetically): ABINIT @verstraete_Abinit2025_2025, CP2K @kuhne_cp2k_2020, icet @angqvist_icet_2019, JDFTx @sundararaman_jdftx_2017, LAMMPS @thompson_lammps_2022, LOBSTER @nelson_lobster_2020, OpenFF @wang_openff_2024, phonopy @togo_firstprinciples_2023, and QChem @krylov_qchem_2020.
 The extensibility of #pmg allows for rapid development of interfaces to codes as needs arise.
 
 = Community Adoption and Impact
-*@ Seán*
+// *@ Seán*
 
 The growth of #pmg is reflected not only in its feature set but also in its expanding user base and community engagement. Steady growth in downloads and the number of packages requiring #pmg as a dependency over time are evidence of widespread and increasing adoption across the materials science community. Indeed, #pmg has been cited over 4000 times since 2013 @ong_python_2013, reaching just under 1000 citations in 2025 alone.
 #pmg now averages over 1 million downloads per month on the Python Package Index (PyPI), though we note that these numbers are somewhat inflated due to automated continuous integration (CI) testing.
@@ -184,7 +183,7 @@ A selection of the most popular downstream packages is shown in @fig:dependent-u
 + #link("https://github.com/materialsproject/atomate2")[`atomate(2)`] @ganose_atomate2_2025, #link("https://github.com/materialsproject/custodian")[`custodian`], #link("https://quantum-accelerators.github.io/quacc/")[`quacc`] @rosen_quacc_2025: High-throughput computational materials science workflows.
 // `atomate2`, also published in Digital Discovery, demonstrates #pmg's role as a foundational tool for diverse materials science workflows used across the community for high-throughput studies.
 + #link("https://hackingmaterials.lbl.gov/matminer/")[`matminer`] @ward_matminer_2018: Data mining in materials science
-+ #link("https://github.com/materialsvirtuallab/pymatgen-analysis-diffusion")[`pymatgen-analysis-diffusion`] @deng_datadriven_2017: Diffusion analysis suite // TODO: Fuse with later discussion of extension/namespace packages
++ #link("https://github.com/materialsvirtuallab/pymatgen-analysis-diffusion")[`pymatgen-analysis-diffusion`] @deng_datadriven_2017: Diffusion analysis suite (discussed further in #link(<sec:new-features>)[New Features])
 + #link("https://doped.readthedocs.io/en/latest/")[`doped`] @kavanagh_doped_2024, #link("https://shakenbreak.readthedocs.io/en/latest/")[`ShakeNBreak`] @mosquera-lois_shakenbreak_2022: Defect modeling and structure-searching, building on #link("https://materialsproject.github.io/pymatgen-analysis-defects")[`pymatgen-analysis-defects`] @shen_pymatgen-analysis-defects_2024 and #link("https://github.com/mbkumar/pycdt")[`PyCDT`] @broberg_pycdt_2018
 + #link("https://pymatviz.janosh.dev/")[`pymatviz`] @riebesell_pymatviz_2022, #link("https://smact.readthedocs.io/en/latest/")[`SMACT`] @davies_smact_2019: Materials informatics toolkits
 + #link("https://matbench-discovery.materialsproject.org/")[`matbench-discovery`] @riebesell_framework_2025, #link("https://www.air4.science/")[`AIRS`] @zhangArtificialIntelligenceScience2025, #link("https://github.com/materialsvirtuallab/matgl")[`matgl`] @ko_materials_2025, #link("https://github.com/Radical-AI/torch-sim")[`torch-sim`] @cohen_torchsim_2025: Machine learning for materials science
@@ -255,7 +254,7 @@ It is hoped that these developments will establish clear community standards and
 // + (If we want a figure here, could make a diagram showing the workflow: Pull materials from MP -> Oxi-state Guess w/PMG -> Vacancy generation w/`doped` (via PMG etc) -> Electrostatic analysis with PMG (Ewald tools) -> VASP DFT I/O w/PMG -> Energetic & Structural (w/`doped` & PMG) analysis; from 10.1088/2515-7655/ade916, as example).
 
 === Data-Driven Heuristic Assessment and Machine Learning
-*@ Janine*
+// *@ Janine*
 // remove? add other publications to make it fairer
 #pmg is a powerful toolkit that enables large-scale data analysis and machine learning studies in materials science. These are typical tasks required when finding new design principles for certain materials properties or when developing feature-based machine learning models. The latter is frequently a core component in Materials Acceleration Platforms or self-driving labs.@stier_materials_2024
 Through #pmg's direct interfaces to material databases (Materials Project API or OPTIMADE API @andersen2021optimade), researchers can easily retrieve extensive datasets, including machine learning targets, which serve as the foundation for data-driven assessments of design principles and heuristics and the development of machine learning models. When working with other crystal structure sources such as the Cambridge Structural Database @groom2016cambridge, Inorganic Crystal Structure Database @zagorac2019recent or MAGNDATA @gallego2016magndata, #pmg’s ability to read (magnetic) Crystallographic Information Files (CIFs) facilitates the creation of large, structured datasets. #pmg allows simplified filtering by composition or crystal symmetry, depending on requirements. Additionally, many post-processing features are available in pymatgen, enabling the simpler generation of targets.
@@ -264,17 +263,17 @@ Chemical heuristics have been frequently used to inspire design principles or fe
 In summary, #pmg provides a framework for materials data handling, feature extraction, and heuristic development, making it an essential tool for modern, data-driven materials informatics. The codification transforms chemical and crystallographic knowledge into a resource that accelerates data-driven materials discovery.
 
 *SK to update:*
-One key lesson from the success of defect modelling packages built on #pmg is that the provision of robust functionality for common tasks (such as structure manipulations or input/output to DFT codes) allows the ready extension to more specialized research workflows by domain experts.
+One key lesson from the success of defect modeling packages built on #pmg is that the provision of robust functionality for common tasks (such as structure manipulations or input/output to DFT codes) allows the ready extension to more specialized research workflows by domain experts.
 By implementing these core materials analysis functions in a modular code structure, which can be readily imported to downstream packages, #pmg removes the need to re-implement common tasks and allows practitioners to focus on specialized domain-specific analyses (e.g. predicting defect concentrations).
-Another aspect which has proven important in this sub-field, is the use of numerically-efficient core functions. 
+Another aspect which has proven important in this sub-field, is the use of numerically-efficient core functions.
 Defect calculations involve the use of large supercells with low symmetry, pushing ...
 Efficiency is important
 Clear communication of deprecations / code changes etc
 
 //SMACT? (From Walsh group) -> I decided to remove my own publication in this context. In this way, i believe, the citations are fairer (i.e., mostly the publications actually implementing the heuristics are cited)
 
-= New Features
-*@ Aaron*
+= New Features <sec:new-features>
+// *@ Aaron*
 // Subsections?
 // add other io modules as a subsection -> standard parameters for metals, insulators etc. (but pros and cons); Codified Materials Intelligence
 // Standardization of Materials Science Data -> Alexandria database
@@ -397,10 +396,11 @@ Because the analysis tools of #pmg are integral to MP's workflows and data pipel
 However, the more peripheral features of #pmg will require this kind of community-driven maintenance structure to prevent them becoming vaporware.
 
 == Dependencies and Dependents
-// TODO: extend?
 
 As discussed in previous sections, a large ecosystem of materials science codes depends on #pmg (see @fig:dependent-usage-of-pmg).
 However, #pmg also depends on the Python ecosystem for scientific computing, plotting, and data science (@fig:pmg-dependency-usage). This includes `numpy`, `scipy`, `matplotlib`, `plotly`, `pandas`, and `sympy`. `networkx` supports graph-based analysis within #pmg. For serialization, #pmg uses `monty` and `orjson`. `monty` itself has been developed to support #pmg in such tasks.
+
+As a core component of the base layer of the computational materials science infrastructure layer that sits between foundational packages and hundreds of downstream dependents, #pmg's dependency management has ecosystem-wide implications. #pmg follows the Scientific Python community's SPEC 0 policy @spec0_minimum_supported_dependencies, specifying minimum-version constraints but avoiding upper-version caps to prevent resolver conflicts in downstream packages. When upstream libraries introduce breaking changes---as occurred with the NumPy 2.0 C API transition @harris_array_2020 ---#pmg must adapt promptly, often ahead of its own dependents, to avoid blocking the wider ecosystem. This bidirectional responsibility is a recurring theme in maintaining community infrastructure: changes propagate both up and down the dependency graph, and delayed adaptation in either direction compounds across the ecosystem, underscoring that widely adopted software like #pmg requires a responsive maintainer team to avoid becoming a bottleneck for the broader ecosystem.
 
 #place(top + center, float: true, scope: "parent")[
   #figure(
@@ -416,7 +416,8 @@ However, #pmg also depends on the Python ecosystem for scientific computing, plo
 
 #figure(
   image("figs/active-contributors-colored.pdf"),
-  caption: [Active contributors to #pmg over time – SK: Could potentially cut, somewhat duplicating info from other figures],
+  caption: [Active contributors to #pmg over time.],
+  // SK: Could potentially cut, somewhat duplicating info from other figures
 ) <fig:active-contributors>
 
 #place(top + center, float: true, scope: "parent")[
@@ -426,20 +427,13 @@ However, #pmg also depends on the Python ecosystem for scientific computing, plo
   ) <fig:contributors-worldmap>
 ]
 
-Future considerations include performance improvements in the #pmg core submodule, as well as for submodules for interoperability with electronic structure codes.
-These improvements may require partial rewriting of code with compiled languages, or partitioning into namespace modules.
-This latter approach has already been taken with the `analysis` and `io` namespaces of #pmg, which permit integration with external python libraries with more niche functionality.
-// Future considerations include integrating Rust components for improved performance while maintaining Python's ease of use @lunnikivi_transpiling_2020. // is this fine with all maintainers?
-// JR: rust migration is probably a personal hobby horse of mine and something Shyue would reject outright...
-// AK: Rewrote to make it more generic
-
 = Outlook and Future Developments
 // Agents? - @Aaron: added a brief bit at the end
 // Make it less committing for us: open it up to other developers
 #pmg has evolved from a specialized tool into a cornerstone of computational materials science. Its growth reflects the collaborative spirit of the materials informatics community and the importance of open-source software in scientific research.
 
 While the core features of pymatgen are relatively stable, more peripheral features require constant community review beyond the stewardship of a small team of maintainers.
-Improving performance of the most essential #pmg libraries is key to its growth. #pmg introduced namespace packages in ?? which allowed the independent installation and maintenance of pymatgen "add-on" packages within the pymatgen "namespace", i.e. importable from `pymatgen.io` and `pymatgen.analysis`. This can be furthered with a separately-installable `pymatgen-core` to deliver just the fundamental materials science object primitives for other developers to build upon.
+Improving performance of the most essential #pmg libraries is key to its growth. #pmg introduced namespace packages in #link("https://github.com/materialsproject/pymatgen/commit/f462d35c")[v2022.0.3] (March 2021, see also #link("https://github.com/materialsproject/pymatgen/commit/8f097cf7")[`8f097cf`], #link("https://github.com/materialsproject/pymatgen/commit/711edf42")[`711edf4`], #link("https://github.com/materialsproject/pymatgen/commit/9f86ea4e")[`9f86ea4`], and the #link("https://github.com/materialsproject/pymatgen-addon-template")[addon template]), which allowed the independent installation and maintenance of pymatgen "add-on" packages within the pymatgen "namespace", i.e. importable from `pymatgen.io` and `pymatgen.analysis`. Critically, this decouples the release cadence of add-on packages from that of the core library---enabling the higher release frequency often needed during a package's early development without being blocked by the slower, more deliberate release cycle of #pmg itself. This can be furthered with a separately-installable `pymatgen-core` to deliver just the fundamental materials science object primitives for other developers to build upon.
 
 At its current scope, expanding and refining the feature set of #pmg would ideally require a large development team to ensure effective stewardship.
 As #pmg continues to grow in scope and adoption, we frame the next steps as high-impact community opportunities.
@@ -464,6 +458,9 @@ High-impact development opportunities informed by community needs and emerging t
 *Visualization and user experience* improvements through tighter integration with `crystal-toolkit` @horton_crystal_2023, `pymatviz` @riebesell_pymatviz_2022, and `matterviz` @riebesell_matterviz_2025 could lower barriers to entry. Useful community efforts include enhanced Jupyter notebook support, interactive structure manipulation, and publication-ready figure generation.
 
 *Performance optimizations* remain a major opportunity, especially via strategic use of compiled extensions. #pmg now operates in a different regime to when it started: in early development, #pmg was used to orchestrate much-slower DFT calculations, and the additional overhead from Python and its heavily object-oriented software structure was negligible. However, today, with the rise of very rapid ML forcefield simulation capability, this overhead is now significant and deeper optimization is increasingly valuable. Examples of this being done successfully include the `moyo` project which involved a Rust migration of the symmetry analysis features in `spglib` while maintaining an easy-to-use Python API via bindings. Similar approaches could accelerate oft-used compute-intensive operations such as structure matching, neighbor searching, convex hull calculations, and more.
+// Previously discussed integrating Rust components more broadly @lunnikivi_transpiling_2020, but this may not have consensus among all maintainers.
+// JR: rust migration is probably a personal hobby horse of mine and something Shyue would reject outright...
+// AK: Rewrote to make it more generic (focus on compiled extensions generally, not Rust specifically)
 
 *Extension package ecosystem* growth will strengthen #pmg's federated architecture: a stable core supplemented by domain-specific namespace packages (e.g., `pymatgen-analysis-diffusion` @deng_datadriven_2017, `pymatgen-analysis-defects` @shen_pymatgen-analysis-defects_2024) maintained by experts. Increasing the number and quality of these extensions distributes maintenance burden while enabling rapid iteration in specialized domains. New functionality areas—such as multi-scale modeling bridging atomistic and mesoscale simulations—are best developed as extension packages rather than expanding the core.
 
@@ -493,7 +490,7 @@ ChatGPT was utilized to enhance the language and facilitate additional literatur
 // Noting CREDIT taxonomy https://credit.niso.org we could think about adopting before submission
 // JG: organized meetings, re-wrote introduction, overview and design principles, case study on chemical heuristics, contributed to backwards compatibility and api evolution, gave feedback to all sections and figures, contacted Digital Discovery for initial feedback on our publication, started with one draft for a figure
 // MH: primarily feedback and comments, guidance on structure, writing some small sections, tbd if more. Very early organization/co-ordination - JG has done this almost exclusively for this iteration. Developer outreach.
-// SK: case study on defect modelling, community adoption and impact section, minor editing to all (particularly early) sections, feedback to all sections/figures
+// SK: case study on defect modeling, community adoption and impact section, minor editing to all (particularly early) sections, feedback to all sections/figures
 // JR (LLM-assisted summary of commit history):
 // + 26 commits by 2026-02-17 with ~7,223 lines added, ~3,373 removed
 // + Wrote the "Challenges and Solutions" sections on sustainability, backward compatibility/API evolution, and test coverage/code quality; added framing around maintainer resources, deprecation policy, CalVer implications/downsides compared to SemVer, wrote section on Rust-native tooling, and AI-assisted maintenance.
@@ -503,6 +500,6 @@ ChatGPT was utilized to enhance the language and facilitate additional literatur
 // + pymatgen contribution profile: sustained multi-year activity with major emphasis on bug fixes/reliability, API design, developer tooling and CI modernization, code quality improvements, targeted feature additions, and better docs.
 // AR: I think I added a paragraph or two somewhere at some point, but I've more been just editing more recently. Certainly I am not expecting to be among the lead authors.
 // ADK: new features of pmg including io and use in workflows; some bigger picture stuff on direction of pymatgen development wrt MP + MPSF
-// we decided on everyone attending these meetings regularily to be joint  
+// we decided on everyone attending these meetings regularly to be joint
 
 #bibliography("refs.bib", style: "ieee")

@@ -8,14 +8,14 @@
 
 // Per-level style: 0 = root, 1 = topics, 2 = subtopics
 #let NODE_STYLE = (
-  "0": (text-size: 14pt, radius_multi: 9.0),
-  "1": (text-size: 9pt, radius_multi: 8.0),
-  "2": (text-size: 7pt, radius_multi: 7.0),
+  "0": (text-size: 16pt, radius_multi: 9.0),
+  "1": (text-size: 12pt, radius_multi: 8.0),
+  "2": (text-size: 12pt, radius_multi: 7.0),
 )
 
 // Layout params
-#let r1 = 4               // topic stroke length
-#let r2 = 3               // subtopic stroke length
+#let r1 = 6               // topic stroke length
+#let r2 = 4.75            // subtopic stroke length
 #let sub-step = 40deg     // children step
 #let start-angle = 0deg   // root "clockwise from=0"
 

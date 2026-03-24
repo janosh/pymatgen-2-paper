@@ -90,7 +90,7 @@
   width: 12cm,
   height: auto,
   [#canvas({
-    let (cbar_width, cbar_height) = (12cm, 0.4cm)
+    let (cbar_width, cbar_height) = (16cm, 0.8cm)
 
     // Color bar rectangle
     content(
@@ -106,10 +106,10 @@
     let num_ticks = tick_labels.len() - 1
     for (tick_idx, tick_label) in tick_labels.enumerate() {
       let tick_x = -cbar_width / 2 + (cbar_width * tick_idx / num_ticks)
-      line((tick_x, -0.15cm), (tick_x, -0.25cm), stroke: 0.7pt)
-      content((tick_x, -0.45cm), align(center, text(size: 7pt, tick_label)))
+      line((tick_x, -0.2cm), (tick_x, -0.4cm), stroke: 1pt)
+      content((tick_x, -0.75cm), align(center, text(size: 14pt, tick_label)))
     }
     // Axis label
-    content((0, -0.9cm), align(center, text(size: 8pt, [Citation Counts (log)])))
+    content((0, -1.5cm), align(center, text(size: 14pt, [Citation Counts (log)])))
   })],
 ))

@@ -17,9 +17,9 @@ import pandas as pd
 import plotly.graph_objects as go
 
 COLORSCALE: str = "viridis"
-TICK_LABEL_FONTSIZE: int = 18
+TICK_LABEL_FONTSIZE: int = 22
 PLOT_TITLE_FONTSIZE: int = 24
-XY_AXIS_CBAR_TITLE_FONTSIZE: int = 20
+XY_AXIS_CBAR_TITLE_FONTSIZE: int = 24
 
 PACKAGES: dict[str, str] = {
     # NOTE: for a file the `.py` suffix is necessary (e.g. `core/structure.py`)
@@ -207,7 +207,7 @@ fig.layout.yaxis.update(
     showgrid=False,
     ticksuffix=" ",  # hack to add more spacing between tick labels and plot
 )
-fig.layout.update(height=500, width=1400, plot_bgcolor="lightgrey")
+fig.layout.update(height=600, width=1400, plot_bgcolor="lightgrey")
 
-fig.write_image("../../paper/figs/commits-per-package-heatmap.png")
+fig.write_image("../../paper/figs/commits-per-package-heatmap.png", scale=4)
 fig.show()

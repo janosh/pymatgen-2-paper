@@ -271,7 +271,7 @@ In summary, #pmg provides a framework for materials data handling, feature extra
 
 === Additional Case Studies and Lessons
 *Note to self (Matt): mention additional possible case studies we have _not_ written here*
-There are many other possible case studies we could discuss, which illustrate the impact of #pmg in a variety of different materials modelling sub-fields, such as in low-dimensional materials, surface slicing and analyses, high-throughput materials discovery and automated workflows, magnetic structure enumerations and more.
+There are many other possible case studies we could discuss, which illustrate the impact of #pmg in a variety of different materials modeling sub-fields, such as in low-dimensional materials, surface slicing and analyses, high-throughput materials discovery and automated workflows, magnetic structure enumerations and more.
 // SK: Rough draft something here based on MH's comment
 
 A key lesson we can extract from the success of subfield-specific modeling packages built on #pmg is that the provision of robust functionality for common tasks (such as structure manipulations, oxidation state estimation or input/output to DFT codes) allows the ready extension to more specialized research workflows by domain experts.

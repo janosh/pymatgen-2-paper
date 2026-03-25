@@ -80,8 +80,8 @@ fig.add_bar(
     showlegend=False,
     text=commits_binned.values,
     textposition="outside",
-    textfont=dict(size=14),
-    constraintext="none",  # otherwise font on top of each bar would be auto-resize
+    textfont=dict(size=20),
+    # constraintext="none",  # otherwise font on top of each bar would be auto-resize
 )
 
 # Colorbar using a dummy scatter trace

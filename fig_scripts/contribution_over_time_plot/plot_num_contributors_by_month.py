@@ -21,8 +21,8 @@ ROOT = Path(__file__).resolve().parents[2]
 
 COLORSCALE = "magma"
 PLOT_TITLE_FONTSIZE: float = 24
-XY_AXIS_CBAR_TITLE_FONTSIZE: float = 20
-TICK_LABEL_FONTSIZE: float = 18
+XY_AXIS_CBAR_TITLE_FONTSIZE: float = 24
+TICK_LABEL_FONTSIZE: float = 20
 
 BINNED_PERIOD_MONTH: int = 6
 CSV_PATH: str = "contributor_commits_by_month.csv.gz"
@@ -80,7 +80,8 @@ fig.add_bar(
     showlegend=False,
     text=commits_binned.values,
     textposition="outside",
-    textfont=dict(size=12),
+    textfont=dict(size=14),
+    constraintext="none",  # otherwise font on top of each bar would be auto-resize
 )
 
 # Colorbar using a dummy scatter trace
@@ -124,7 +125,7 @@ fig.layout.yaxis.update(
     gridcolor="rgba(0,0,0,0.2)",
     gridwidth=1.2,
 )
-fig.layout.font.update(size=14)
+fig.layout.font.update(size=22)
 
 fig.write_image(f"{ROOT}/paper/figs/active-contributors-colored.pdf")
 fig.show()

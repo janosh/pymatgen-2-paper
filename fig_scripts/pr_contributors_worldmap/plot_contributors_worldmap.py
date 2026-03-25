@@ -79,10 +79,10 @@ fig.add_choropleth(
     zmin=np.log10(1),
     zmax=np.log10(max_prs),
     colorbar=dict(
-        title=dict(text="PRs", font=dict(size=18)),
+        title=dict(text="PRs", font=dict(size=22)),
         tickvals=np.log10(ticks),
         ticktext=[str(v) for v in ticks],
-        tickfont=dict(size=18),
+        tickfont=dict(size=22),
     ),
     hovertemplate="<b>%{text}</b><br>PRs: %{customdata}<extra></extra>",
 )

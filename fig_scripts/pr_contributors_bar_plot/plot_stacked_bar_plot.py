@@ -91,8 +91,9 @@ fig.update_layout(
     paper_bgcolor="white",
     bargap=0.2,
     title_x=0.5,
+    font=dict(size=17),
 )
-fig.layout.margin.update(t=50, l=0, b=0, r=0)
+fig.layout.margin.update(t=50, l=0, b=80, r=0)
 fig.layout.legend.update(x=0, y=1)
 
 fig.write_image(f"{ROOT}/paper/figs/pr-since-1st.pdf")

@@ -96,7 +96,7 @@ fig.update_layout(
     paper_bgcolor="white",
     bargap=0.2,
     title_x=0.5,
-    font=dict(size=18),
+    font=dict(size=16),
 )
 fig.layout.margin.update(t=50, l=0, b=80, r=0)
 fig.layout.legend.update(x=0, y=1)

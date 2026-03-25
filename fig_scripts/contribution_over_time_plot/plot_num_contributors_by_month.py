@@ -120,9 +120,24 @@ fig.update_layout(
     template="plotly_white",
     margin=dict(t=110),
 )
+tick_years = pd.to_datetime(
+    [
+        "2013-01-01",
+        "2015-01-01",
+        "2017-01-01",
+        "2019-01-01",
+        "2021-01-01",
+        "2023-01-01",
+        "2025-01-01",
+    ]
+)
+
 fig.layout.xaxis.update(
     title=dict(text="Year", font=dict(size=XY_AXIS_CBAR_TITLE_FONTSIZE)),
     tickfont=dict(size=TICK_LABEL_FONTSIZE),
+    tickmode="array",
+    tickvals=tick_years,
+    ticktext=[str(ts.year) for ts in tick_years],
 )
 fig.layout.yaxis.update(
     title=dict(

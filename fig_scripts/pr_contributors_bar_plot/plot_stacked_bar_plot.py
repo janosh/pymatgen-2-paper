@@ -81,7 +81,12 @@ fig.update_layout(
     legend=dict(traceorder="reversed"),
     xaxis_title="Year",
     yaxis_title="Total Number of Pull Requests",
-    xaxis=dict(type="category"),  # ensure discrete years
+    xaxis=dict(
+        type="category",
+        automargin=True,
+        tickmode="array",
+        tickvals=[str(y) for y in df.index if y % 2 == 1],  # 2013, 2015, ...
+    ),
     yaxis=dict(
         gridcolor="lightgray",
         gridwidth=1,
@@ -91,7 +96,7 @@ fig.update_layout(
     paper_bgcolor="white",
     bargap=0.2,
     title_x=0.5,
-    font=dict(size=17),
+    font=dict(size=18),
 )
 fig.layout.margin.update(t=50, l=0, b=80, r=0)
 fig.layout.legend.update(x=0, y=1)

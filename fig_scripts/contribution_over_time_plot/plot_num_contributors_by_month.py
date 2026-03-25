@@ -20,8 +20,8 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 COLORSCALE = "magma"
-PLOT_TITLE_FONTSIZE: float = 24
-XY_AXIS_CBAR_TITLE_FONTSIZE: float = 24
+PLOT_TITLE_FONTSIZE: float = 22
+XY_AXIS_CBAR_TITLE_FONTSIZE: float = 22
 TICK_LABEL_FONTSIZE: float = 20
 
 BINNED_PERIOD_MONTH: int = 6
@@ -80,8 +80,10 @@ fig.add_bar(
     showlegend=False,
     text=commits_binned.values,
     textposition="outside",
-    textfont=dict(size=20),
-    # constraintext="none",  # otherwise font on top of each bar would be auto-resize
+    textfont=dict(size=14),
+    textangle=-30,
+    constraintext="none",
+    cliponaxis=False,
 )
 
 # Colorbar using a dummy scatter trace
@@ -112,7 +114,12 @@ fig.add_scatter(
 
 # title = f"Active Contributors per {BINNED_PERIOD_MONTH}-Month Period"
 # fig.layout.title.update(text=title, x=0.5, font=dict(size=PLOT_TITLE_FONTSIZE))
-fig.layout.update(width=1100, height=600, template="plotly_white")
+fig.update_layout(
+    width=1100,
+    height=600,
+    template="plotly_white",
+    margin=dict(t=110),
+)
 fig.layout.xaxis.update(
     title=dict(text="Year", font=dict(size=XY_AXIS_CBAR_TITLE_FONTSIZE)),
     tickfont=dict(size=TICK_LABEL_FONTSIZE),
@@ -125,7 +132,7 @@ fig.layout.yaxis.update(
     gridcolor="rgba(0,0,0,0.2)",
     gridwidth=1.2,
 )
-fig.layout.font.update(size=22)
+fig.layout.font.update(size=20)
 
 fig.write_image(f"{ROOT}/paper/figs/active-contributors-colored.pdf")
 fig.show()

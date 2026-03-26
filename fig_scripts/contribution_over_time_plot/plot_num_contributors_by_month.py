@@ -24,7 +24,7 @@ PLOT_TITLE_FONTSIZE: float = 22
 XY_AXIS_CBAR_TITLE_FONTSIZE: float = 22
 TICK_LABEL_FONTSIZE: float = 20
 
-BINNED_PERIOD_MONTH: int = 6
+BINNED_PERIOD_MONTH: int = 12
 CSV_PATH: str = "contributor_commits_by_month.csv.gz"
 
 # TODO: `kaleido` doesn't seem to respect width/height
@@ -61,8 +61,8 @@ active_binned = active_binned.iloc[1:-1]
 commits_binned = commits_binned.iloc[1:-1]
 
 # Normalize for colormap (linear scale, no log)
-COLORBAR_MIN: float = 100
-COLORBAR_MAX: float = 1000  # manual cap
+COLORBAR_MIN: float = 400
+COLORBAR_MAX: float = 3000  # manual cap
 
 normed = (commits_binned - COLORBAR_MIN) / (COLORBAR_MAX - COLORBAR_MIN)
 normed = normed.clip(0, 1)  # keep values within [0,1]
@@ -80,14 +80,13 @@ fig.add_bar(
     showlegend=False,
     text=commits_binned.values,
     textposition="outside",
-    textfont=dict(size=14),
-    textangle=-30,
+    textfont=dict(size=20),
     constraintext="none",
     cliponaxis=False,
 )
 
 # Colorbar using a dummy scatter trace
-tick_values_original = [100, 500, 1000]
+tick_values_original = [500, 1000, 2000, 3000]
 
 fig.add_scatter(
     x=[None],

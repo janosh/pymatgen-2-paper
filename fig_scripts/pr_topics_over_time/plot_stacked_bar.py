@@ -85,15 +85,20 @@ fig.update_layout(
     barmode="stack",
     title_x=0.5,  # center title
     title_font=dict(size=20),
-    xaxis_title="Year",
-    yaxis_title="Number of PRs",
+    xaxis_title=dict(
+        text="Year",
+        font=dict(size=18),
+    ),
+    yaxis_title=dict(
+        text="Number of PRs",
+        font=dict(size=18),
+    ),
     xaxis=dict(
-        tickangle=45,
-        tickfont=dict(size=12),
+        tickfont=dict(size=16),
         type="category",  # ensures categorical x-axis
     ),
     yaxis=dict(
-        tickfont=dict(size=12),
+        tickfont=dict(size=16),
         gridcolor="lightgray",
         griddash="dash",  # dashed horizontal gridlines
     ),
@@ -104,10 +109,14 @@ fig.update_layout(
         y=1,  # move outside plot, upper left like mpl
         xanchor="left",
         yanchor="top",
-        font=dict(size=14),
+        font=dict(size=16),
     ),
     plot_bgcolor="white",
     paper_bgcolor="white",
 )
 
-fig.write_image(f"{ROOT}/paper/figs/pr-topics-over-time-stacked-bar.pdf")
+fig.write_image(
+    f"{ROOT}/paper/figs/pr-topics-over-time-stacked-bar.pdf",
+    width=1200,
+    height=600,
+)

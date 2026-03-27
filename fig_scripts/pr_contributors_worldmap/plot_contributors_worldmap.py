@@ -83,6 +83,7 @@ fig.add_choropleth(
         tickvals=np.log10(ticks),
         ticktext=[str(v) for v in ticks],
         tickfont=dict(size=22),
+        len=0.7,  # make colorbar shorter
     ),
     hovertemplate="<b>%{text}</b><br>PRs: %{customdata}<extra></extra>",
 )
@@ -100,6 +101,7 @@ fig.layout.geo.update(
     projection_type="natural earth",
 )
 fig.update_geos(fitbounds="locations", visible=True)
+fig.update_layout(margin=dict(l=10, r=0, t=0, b=0))
 
 fig.write_image(
     f"{ROOT}/paper/figs/pr-contributors-worldmap.pdf", width=1200, height=600, scale=3

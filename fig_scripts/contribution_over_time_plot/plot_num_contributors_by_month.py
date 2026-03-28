@@ -123,7 +123,7 @@ fig.update_layout(
         showgrid=False,
     ),
     legend=dict(
-        x=0.01,
+        x=0.7,
         y=0.99,
         bgcolor="rgba(255,255,255,0.6)",
     ),

@@ -12,6 +12,7 @@ import subprocess
 from pathlib import Path
 
 import pandas as pd
+import plotly
 import plotly.express as px
 import plotly.graph_objects as go
 
@@ -19,12 +20,17 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 COLORSCALE = "magma"
-PLOT_TITLE_FONTSIZE: float = 24
-XY_AXIS_CBAR_TITLE_FONTSIZE: float = 20
-TICK_LABEL_FONTSIZE: float = 18
+PLOT_TITLE_FONTSIZE: float = 22
+XY_AXIS_CBAR_TITLE_FONTSIZE: float = 22
+TICK_LABEL_FONTSIZE: float = 20
 
-BINNED_PERIOD_MONTH: int = 6
+BINNED_PERIOD_MONTH: int = 12
 CSV_PATH: str = "contributor_commits_by_month.csv.gz"
+
+# TODO: `kaleido` doesn't seem to respect width/height
+# https://github.com/plotly/Kaleido/issues/378
+plotly.io.defaults.default_width = None
+plotly.io.defaults.default_height = None
 
 if not os.path.isfile(CSV_PATH):
     print("Data CSV not found. Running script to generate it...")
@@ -55,8 +61,8 @@ active_binned = active_binned.iloc[1:-1]
 commits_binned = commits_binned.iloc[1:-1]
 
 # Normalize for colormap (linear scale, no log)
-COLORBAR_MIN: float = 100
-COLORBAR_MAX: float = 1000  # manual cap
+COLORBAR_MIN: float = 400
+COLORBAR_MAX: float = 3000  # manual cap
 
 normed = (commits_binned - COLORBAR_MIN) / (COLORBAR_MAX - COLORBAR_MIN)
 normed = normed.clip(0, 1)  # keep values within [0,1]
@@ -72,13 +78,10 @@ fig.add_bar(
     customdata=commits_binned.values.reshape(-1, 1),
     hovertemplate="Period: %{x}<br>Contributors: %{y}<br>Total Commits: %{customdata[0]}",
     showlegend=False,
-    text=commits_binned.values,
-    textposition="outside",
-    textfont=dict(size=12),
 )
 
 # Colorbar using a dummy scatter trace
-tick_values_original = [100, 500, 1000]
+tick_values_original = [500, 1000, 2000, 3000]
 
 fig.add_scatter(
     x=[None],
@@ -105,10 +108,30 @@ fig.add_scatter(
 
 # title = f"Active Contributors per {BINNED_PERIOD_MONTH}-Month Period"
 # fig.layout.title.update(text=title, x=0.5, font=dict(size=PLOT_TITLE_FONTSIZE))
-fig.layout.update(width=1100, height=600, template="plotly_white")
+fig.update_layout(
+    width=1100,
+    height=600,
+    template="plotly_white",
+    margin=dict(t=110),
+)
+tick_years = pd.to_datetime(
+    [
+        "2013-01-01",
+        "2015-01-01",
+        "2017-01-01",
+        "2019-01-01",
+        "2021-01-01",
+        "2023-01-01",
+        "2025-01-01",
+    ]
+)
+
 fig.layout.xaxis.update(
     title=dict(text="Year", font=dict(size=XY_AXIS_CBAR_TITLE_FONTSIZE)),
     tickfont=dict(size=TICK_LABEL_FONTSIZE),
+    tickmode="array",
+    tickvals=tick_years,
+    ticktext=[str(ts.year) for ts in tick_years],
 )
 fig.layout.yaxis.update(
     title=dict(
@@ -118,7 +141,7 @@ fig.layout.yaxis.update(
     gridcolor="rgba(0,0,0,0.2)",
     gridwidth=1.2,
 )
-fig.layout.font.update(size=14)
+fig.layout.font.update(size=20)
 
 fig.write_image(f"{ROOT}/paper/figs/active-contributors-colored.pdf")
 fig.show()

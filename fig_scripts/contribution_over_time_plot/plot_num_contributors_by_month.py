@@ -13,13 +13,11 @@ from pathlib import Path
 
 import pandas as pd
 import plotly
-import plotly.express as px
 import plotly.graph_objects as go
 
 ROOT = Path(__file__).resolve().parents[2]
 
 
-COLORSCALE = "magma"
 PLOT_TITLE_FONTSIZE: float = 22
 XY_AXIS_CBAR_TITLE_FONTSIZE: float = 22
 TICK_LABEL_FONTSIZE: float = 20
@@ -56,18 +54,9 @@ total_commits = df_grouped.sum(axis=0)
 active_binned = active_contributors.resample(f"{BINNED_PERIOD_MONTH}ME").sum()
 commits_binned = total_commits.resample(f"{BINNED_PERIOD_MONTH}ME").sum()
 
-# Drop first and last bin
+# Drop first and last bin (data is incomplete)
 active_binned = active_binned.iloc[1:-1]
 commits_binned = commits_binned.iloc[1:-1]
-
-# Normalize for colormap (linear scale, no log)
-COLORBAR_MIN: float = 400
-COLORBAR_MAX: float = 3000  # manual cap
-
-normed = (commits_binned - COLORBAR_MIN) / (COLORBAR_MAX - COLORBAR_MIN)
-normed = normed.clip(0, 1)  # keep values within [0,1]
-
-colors = [px.colors.sample_colorscale(COLORSCALE, val)[0] for val in normed]
 
 fig = go.Figure()
 
@@ -111,6 +100,7 @@ fig.update_layout(
         ),
         tickfont=dict(size=TICK_LABEL_FONTSIZE, color="royalblue"),
         gridcolor="rgba(0,0,0,0.2)",
+        rangemode="tozero",
     ),
     yaxis2=dict(
         title=dict(
@@ -121,6 +111,7 @@ fig.update_layout(
         overlaying="y",
         side="right",
         showgrid=False,
+        rangemode="tozero",
     ),
     legend=dict(
         x=0.7,

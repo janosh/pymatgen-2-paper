@@ -78,11 +78,6 @@ fig.add_bar(
     customdata=commits_binned.values.reshape(-1, 1),
     hovertemplate="Period: %{x}<br>Contributors: %{y}<br>Total Commits: %{customdata[0]}",
     showlegend=False,
-    text=commits_binned.values,
-    textposition="outside",
-    textfont=dict(size=20),
-    constraintext="none",
-    cliponaxis=False,
 )
 
 # Colorbar using a dummy scatter trace

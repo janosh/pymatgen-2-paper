@@ -29,7 +29,7 @@ for pr in data.values():
     ysf: float = pr["years_since_first"]
 
     if ysf < 7 / 365:
-        group = "New (<7 days)"
+        group = "<7 days"
     elif ysf < 1:
         group = "<1 year"
     elif ysf < 3:
@@ -46,7 +46,7 @@ df = pd.DataFrame(binned).T.fillna(0).astype(int)
 df = df.sort_index()  # sort by year
 
 # Ensure consistent column order
-columns = ["New (<7 days)", "<1 year", "1-3 years", "3-6 years", ">6 years"]
+columns = ["<7 days", "<1 year", "1-3 years", "3-6 years", ">6 years"]
 for col in columns:
     if col not in df:
         df[col] = 0

@@ -107,20 +107,20 @@ fig.update_layout(
     yaxis=dict(
         title=dict(
             text="Number of Contributors",
-            font=dict(size=XY_AXIS_CBAR_TITLE_FONTSIZE),
+            font=dict(size=XY_AXIS_CBAR_TITLE_FONTSIZE, color="royalblue"),
         ),
-        tickfont=dict(size=TICK_LABEL_FONTSIZE),
+        tickfont=dict(size=TICK_LABEL_FONTSIZE, color="royalblue"),
         gridcolor="rgba(0,0,0,0.2)",
     ),
     yaxis2=dict(
         title=dict(
             text="Total Commits",
-            font=dict(size=XY_AXIS_CBAR_TITLE_FONTSIZE),
+            font=dict(size=XY_AXIS_CBAR_TITLE_FONTSIZE, color="orangered"),
         ),
-        tickfont=dict(size=TICK_LABEL_FONTSIZE),
-        overlaying="y",  # share same x-axis
-        side="right",  # put on right side
-        showgrid=False,  # avoid double grid clutter
+        tickfont=dict(size=TICK_LABEL_FONTSIZE, color="orangered"),
+        overlaying="y",
+        side="right",
+        showgrid=False,
     ),
     legend=dict(
         x=0.01,

@@ -72,13 +72,13 @@ fig.add_trace(
     )
 )
 
-# Line 2: Total commits (right axis)
+# Line 2: Annual commits (right axis)
 fig.add_trace(
     go.Scatter(
         x=commits_binned.index,
         y=commits_binned.values,
         mode="lines+markers",
-        name="Total Commits",
+        name="Annual Commits",
         yaxis="y2",
         line=dict(width=3, dash="dot"),
     )
@@ -104,7 +104,7 @@ fig.update_layout(
     ),
     yaxis2=dict(
         title=dict(
-            text="Total Commits",
+            text="Annual Commits",
             font=dict(size=XY_AXIS_CBAR_TITLE_FONTSIZE, color="orangered"),
         ),
         tickfont=dict(size=TICK_LABEL_FONTSIZE, color="orangered"),

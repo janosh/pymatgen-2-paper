@@ -53,16 +53,17 @@ END_COMMIT: str = "2026-01-01"
 LAYOUT_SWITCH_DATE: str = "2024-06-01"
 
 # Get pymatgen repo path
-if not (PMG_REPO_PATH := os.environ.get("PMG_REPO_PATH")):
+PMG_REPO_PATH: str = os.environ.get("PMG_REPO_PATH", "")
+if not PMG_REPO_PATH:
     raise RuntimeError("PMG_REPO_PATH environment variable is not set.")
 
 
 # Generate commit per package data
 def run_git_command(args: list[str]) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(  # type: ignore[call-overload]  # ty stub limitation
+    return subprocess.run(
         ["git", "-C", PMG_REPO_PATH, *args],
         capture_output=True,
-        text=True,
+        encoding="utf-8",
         check=True,
     )
 

@@ -10,17 +10,17 @@ def _annotate_parents(tree: ast.AST) -> None:
     """Add `.parent` links so we can walk up the tree."""
     for parent in ast.walk(tree):
         for child in ast.iter_child_nodes(parent):
-            child.parent = parent  # type: ignore[unresolved-attribute]
+            setattr(child, "parent", parent)
 
 
 def _in_type_checking_block(node: ast.AST) -> bool:
     """Check if in an `if TYPE_CHECKING:` block."""
-    while hasattr(node, "parent"):
-        parent = node.parent
+    current = node
+    while (parent := getattr(current, "parent", None)) is not None:
         if isinstance(parent, ast.If):
             if isinstance(parent.test, ast.Name) and parent.test.id == "TYPE_CHECKING":
                 return True
-        node = parent  # type: ignore[assignment]
+        current = parent
     return False
 
 

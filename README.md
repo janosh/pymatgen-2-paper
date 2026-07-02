@@ -56,9 +56,3 @@ second pymatgen paper: "pymatgen: 15 years of community growth, new functionalit
   sources.
 - `citations.pdf` and `citations-by-country.pdf`: citation trends and geographic
   citation distribution for the original pymatgen paper.
-
-## Planning
-
-An initial draft for the publication can be found in the folder paper.
-
-All code and data needed to reproduce the figures in the paper are in the folder "fig_scripts".

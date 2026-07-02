@@ -6,6 +6,6 @@
 
 ## Code and data repository for "pymatgen: 15 years of community growth, new functionality, and future prospects"
 
-An initial draft for the publication can be found in the folder paper. 
+An initial draft for the publication can be found in the folder paper.
 
 All code and data needed to reproduce the figures in the paper are in the folder "fig_scripts".

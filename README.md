@@ -9,7 +9,7 @@ second pymatgen paper: "pymatgen: 15 years of community growth, new functionalit
 
 ## Repository Structure
 
-- `paper/`: manuscript source, references, journal template, and generated
+- `paper/`: source for a draft version of the manuscript, references, journal template, and generated
   figures used in the paper.
 - `paper/figs/`: final figure assets included by the manuscript.
 - `fig_scripts/`: reproducible scripts, notebooks, and cached data used to

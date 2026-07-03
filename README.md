@@ -7,6 +7,11 @@
 This repository contains the manuscript, figures, and analysis scripts for the
 second pymatgen paper: "pymatgen: 15 years of community growth, new functionality, and future prospects"
 
+The README is intended as a high-level guide to the repository. Detailed
+implementation notes, data processing choices, prompts, and intermediate
+analysis steps are kept in the relevant scripts and notebooks so they stay close
+to the code that uses them.
+
 ## Repository Structure
 
 - `paper/`: source for a draft version of the manuscript, references, journal template, and generated
@@ -27,7 +32,7 @@ second pymatgen paper: "pymatgen: 15 years of community growth, new functionalit
 - `per_package_commit_heatmap/`: generates the package-level commit activity heatmap.
 - `citation_by_country/`: maps citation counts by country.
 - `citation_over_year/`: plots citation counts over time.
-- `contribution_over_time_plot/`: aggregates contributor and commit activityover time.
+- `contribution_over_time_plot/`: aggregates contributor and commit activity over time.
 - `pr_contributors_bar_plot/`: groups pull requests by contributor tenure since
   each contributor's first PR.
 - `pr_contributors_worldmap/`: maps pull request contributors by inferred country.

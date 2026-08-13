@@ -20,24 +20,27 @@ ROOT = Path(__file__).resolve().parents[2]
 with open("_topics.json", encoding="utf-8") as f:
     topics_by_year = json.load(f)
 
+# Cutoff at end of 2025-12-31
+topics_by_year.pop("2026", None)
+
 # 2) Theme mapping rules
 THEME_RULES: list[tuple[str, str]] = [
     (
         r"bug fix|bugfix|error|correction|refactor|cleanup|quality",
         "Bug Fixes & Refactoring",
     ),
-    (r"performance|speed|optimization", "Performance"),
+    (r"performance|speed|optimization|algorithms", "Performance"),
     (
         r"test|ci|continuous integration|type annotation|code modern|dependency|compatibility|deprecate|breaking",
         "Testing & Code Quality",
     ),
     (r"doc|readme|tutorial", "Documentation"),
     (
-        r"json|serialize|parse|i/o|io|parser|vasp|fhi-aims|lobster|cp2k|q-?chem|qe|abinit|nwchem|gulp|zeopp|openbabel|jdf",
+        r"json|serialize|parse|i/o|io|parser|vasp|fhi-aims|lobster|cp2k|q-?chem|qe|abinit|nwchem|gulp|zeopp|openbabel|jdf|LAMMPS|API",
         "I/O & Parsing",
     ),
     (
-        r"structure|symmetry|elastic|phonon|nmr|band|magnetic|defect|surface|interface|graph|molecule|analyzer|analysis|connectivity|voronoi|phase diagram|chemical system|periodic table|visualization",
+        r"structure|symmetry|elastic|phonon|nmr|band|magnetic|defect|surface|interface|graph|molecule|analyzer|analysis|connectivity|voronoi|phase diagram|chemical system|periodic table|visualization|Magnetism",
         "Structural & Analysis",
     ),
     (

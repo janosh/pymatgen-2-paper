@@ -5,11 +5,10 @@ repos:
     rev: v0.15.18
     hooks:
       - id: ruff-check
-        args: [--fix, --per-file-ignores, '*.ipynb:E402']
+        args: [--fix, --per-file-ignores, "*.ipynb:E402"]
         exclude: ^fig_scripts/pmg-api-usage-dependent-dependency/api-analyzer/tests/data/
       - id: ruff-format
         exclude: ^fig_scripts/pmg-api-usage-dependent-dependency/api-analyzer/tests/data/
-
 
   - repo: https://github.com/astral-sh/ty-pre-commit
     rev: v0.0.52
@@ -34,7 +33,12 @@ repos:
         stages: [pre-commit, commit-msg]
         exclude_types: [bib, svg, json]
         exclude: pyproject.toml
-        args: [--check-filenames, --ignore-words-list, 'atomate,ElemNet,dscribe,basf,vise,HAppend']
+        args:
+          [
+            --check-filenames,
+            --ignore-words-list,
+            "atomate,ElemNet,dscribe,basf,vise,HAppend",
+          ]
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.49.0
@@ -45,7 +49,7 @@ repos:
         # MD033: no inline HTML
         # MD041: first line in a file should be a top-level heading
         # MD025: single title
-        args: [--disable, MD013, MD024, MD025, MD033, MD041, '--']
+        args: [--disable, MD013, MD024, MD025, MD033, MD041, "--"]
 
   - repo: https://github.com/kynan/nbstripout
     rev: 0.9.1
@@ -68,5 +72,5 @@ repos:
     hooks:
       - id: typos
         types: [text]
-        exclude: ^fig_scripts/.+/.+.csv$
+        exclude: ^fig_scripts/.+/.+\.csv$|^fig_scripts/pr_topics_over_time/_prs\.json$
         exclude_types: [svg, bib]

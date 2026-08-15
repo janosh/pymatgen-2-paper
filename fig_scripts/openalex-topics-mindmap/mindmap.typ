@@ -110,6 +110,6 @@
       content((tick_x, -0.45cm), align(center, text(size: 7pt, tick_label)))
     }
     // Axis label
-    content((0, -0.9cm), align(center, text(size: 8pt, [Citation Counts (log)])))
+    content((0, -0.9cm), align(center, text(size: 8pt, [Citation Counts])))
   })],
 ))

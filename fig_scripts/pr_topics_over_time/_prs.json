@@ -1,4 +1,404 @@
 {
+  "4693": {
+    "title": "Fix `pmg analyze --mag All`",
+    "created_at": "2026-08-01T10:48:23Z",
+    "author": "DanielYang59"
+  },
+  "4689": {
+    "title": "Fix float point compare in TEM test",
+    "created_at": "2026-07-28T16:35:06Z",
+    "author": "DanielYang59"
+  },
+  "4688": {
+    "title": "Use dynamic versioning",
+    "created_at": "2026-07-28T16:05:47Z",
+    "author": "DanielYang59"
+  },
+  "4687": {
+    "title": "Clarify label_index deduplication behavior in CoherentInterfaceBuilde…",
+    "created_at": "2026-07-27T20:11:03Z",
+    "author": "khanaiml"
+  },
+  "4685": {
+    "title": "fix(diffraction): correct interplanar angle for non-orthogonal cells in TEMCalculator",
+    "created_at": "2026-07-16T14:21:49Z",
+    "author": "steps-re"
+  },
+  "4684": {
+    "title": "Diffraction pattern optimizations",
+    "created_at": "2026-07-15T22:40:21Z",
+    "author": "mkphuthi"
+  },
+  "4682": {
+    "title": "fix(magnetism): respect truncate_by_symmetry count in MagneticStructureEnumerator",
+    "created_at": "2026-07-12T01:28:46Z",
+    "author": "steps-re"
+  },
+  "4678": {
+    "title": "vectorise neutron.py + improve tests",
+    "created_at": "2026-06-30T08:29:09Z",
+    "author": "Bud-Macaulay"
+  },
+  "4672": {
+    "title": "Fix typo and docstring in polarization.py (#4644)",
+    "created_at": "2026-06-22T14:30:41Z",
+    "author": "mminotaki"
+  },
+  "4666": {
+    "title": "Fix HeisenbergModel as_dict/from_dict round-trip (#4664)",
+    "created_at": "2026-06-13T15:55:06Z",
+    "author": "vasa-develop"
+  },
+  "4661": {
+    "title": "vectorise get_pattern in xrd module",
+    "created_at": "2026-05-28T06:31:46Z",
+    "author": "Bud-Macaulay"
+  },
+  "4658": {
+    "title": "fix: strip H/O from PourbaixDiagram comp_dict (#4657)",
+    "created_at": "2026-05-19T21:49:05Z",
+    "author": "SAY-5"
+  },
+  "4655": {
+    "title": "Genericise AflowPrototypeMatcher",
+    "created_at": "2026-05-15T15:47:27Z",
+    "author": "CompRhys"
+  },
+  "4649": {
+    "title": "Deprecate lobsterenv __init__  (file and object based ) in favour of __init__ purely based on objects ",
+    "created_at": "2026-04-26T09:56:45Z",
+    "author": "naik-aakash"
+  },
+  "4648": {
+    "title": "Speed up pmg CLI startup with lazy imports",
+    "created_at": "2026-04-25T06:42:51Z",
+    "author": "hheei"
+  },
+  "4647": {
+    "title": "[codex] Fix outer test fixture paths",
+    "created_at": "2026-04-24T16:03:44Z",
+    "author": "hheei"
+  },
+  "4645": {
+    "title": "Constrain NumPy v1 extra and stabilize affected tests",
+    "created_at": "2026-04-23T10:32:58Z",
+    "author": "hheei"
+  },
+  "4635": {
+    "title": "Publish Sphinx objects.inv with GitHub Pages docs",
+    "created_at": "2026-04-16T07:09:06Z",
+    "author": "elinscott"
+  },
+  "4634": {
+    "title": "Possible bug in chemenv",
+    "created_at": "2026-04-16T00:20:45Z",
+    "author": "esoteric-ephemera"
+  },
+  "4633": {
+    "title": "Commit to preserving backwards compatible imports",
+    "created_at": "2026-04-14T18:45:43Z",
+    "author": "esoteric-ephemera"
+  },
+  "4631": {
+    "title": "Add preparation step for Jekyll deployment and include static files",
+    "created_at": "2026-04-10T16:59:33Z",
+    "author": "cogsworth37"
+  },
+  "4629": {
+    "title": "fix: use projected element space for GP equilibrium reaction energy",
+    "created_at": "2026-04-07T07:56:14Z",
+    "author": "shyuep"
+  },
+  "4626": {
+    "title": "Move sphinx generation to CI and remove .html files and sphinx artifa…",
+    "created_at": "2026-04-06T01:41:03Z",
+    "author": "cogsworth37"
+  },
+  "4625": {
+    "title": "Add an partial update method to PPDs ",
+    "created_at": "2026-04-03T22:49:45Z",
+    "author": "CompRhys"
+  },
+  "4619": {
+    "title": "Add Elasticipy to addons documentation",
+    "created_at": "2026-03-25T08:22:51Z",
+    "author": "DorianDepriester"
+  },
+  "4615": {
+    "title": "fix: correctly clear energy_adjustments in clean mode (avoid skipped removals)",
+    "created_at": "2026-03-23T14:48:17Z",
+    "author": "irishmango"
+  },
+  "4614": {
+    "title": "fix: prevent same-composition entries from reappearing in inner hull reduction",
+    "created_at": "2026-03-23T11:52:07Z",
+    "author": "irishmango"
+  },
+  "4613": {
+    "title": "docs: document name parameter in TransformedPDEntry.__init__",
+    "created_at": "2026-03-23T10:29:44Z",
+    "author": "irishmango"
+  },
+  "4612": {
+    "title": "docs: fix incorrect method reference in get_phase_separation_energy docstring",
+    "created_at": "2026-03-22T22:46:19Z",
+    "author": "irishmango"
+  },
+  "4602": {
+    "title": "Add `doped` and `ShakeNBreak` to external tools list",
+    "created_at": "2026-03-03T18:04:11Z",
+    "author": "kavanase"
+  },
+  "4595": {
+    "title": "Major reorganization of pymatgen repo",
+    "created_at": "2026-02-24T07:56:34Z",
+    "author": "shyuep"
+  },
+  "4592": {
+    "title": "refactor(lobster): Rewrite LOBSTER parsers with memory-efficient streaming architecture",
+    "created_at": "2026-02-18T21:39:17Z",
+    "author": "tomdemeyere"
+  },
+  "4591": {
+    "title": "Replace float compare with `==` with `math.isclose/approx` ",
+    "created_at": "2026-02-17T19:22:31Z",
+    "author": "DanielYang59"
+  },
+  "4589": {
+    "title": "Pass `process_entries` arguments to `solid_compat` in `MaterialsProjectAqueousCompatibility`",
+    "created_at": "2026-02-16T19:26:13Z",
+    "author": "lkkmpn"
+  },
+  "4584": {
+    "title": "Fix unstable entries sorting in `PhaseDiagram` causing intermittent CI failure",
+    "created_at": "2026-02-08T18:01:31Z",
+    "author": "DanielYang59"
+  },
+  "4581": {
+    "title": "Add yaml for smoothPES correction",
+    "created_at": "2026-02-04T13:23:17Z",
+    "author": "CompRhys"
+  },
+  "4579": {
+    "title": "Allow for alchemical pseudoatoms in Abinit",
+    "created_at": "2026-01-20T12:28:34Z",
+    "author": "GkAntonius"
+  },
+  "4574": {
+    "title": "Make supercell with `Structure.__mul__/make_supercell` would relabel duplicate sites",
+    "created_at": "2025-12-28T12:32:33Z",
+    "author": "DanielYang59"
+  },
+  "4568": {
+    "title": "Type cleanup to `analysis/phase_diagram`",
+    "created_at": "2025-12-13T18:17:42Z",
+    "author": "DanielYang59"
+  },
+  "4567": {
+    "title": "Symmetry not longer necessary to have first in geometry directive.",
+    "created_at": "2025-12-10T21:25:01Z",
+    "author": "francescalb"
+  },
+  "4565": {
+    "title": "remove `jupyter` from dev dependency group",
+    "created_at": "2025-12-10T12:33:03Z",
+    "author": "DanielYang59"
+  },
+  "4563": {
+    "title": "Drop `python_version<3.14` pin for `numba` and `vtk`",
+    "created_at": "2025-12-09T15:22:50Z",
+    "author": "DanielYang59"
+  },
+  "4556": {
+    "title": "Improve type hints in `io.ase`",
+    "created_at": "2025-11-28T17:50:45Z",
+    "author": "tomdemeyere"
+  },
+  "4555": {
+    "title": "Update MatPESStaticSet docstring: PBE_54 to PBE_64",
+    "created_at": "2025-11-27T16:27:17Z",
+    "author": "ThomasWarford"
+  },
+  "4546": {
+    "title": "Speed/stability improvements to chemenv/coordination_environments",
+    "created_at": "2025-11-16T21:00:11Z",
+    "author": "lutfia95"
+  },
+  "4545": {
+    "title": "Chargemol fixes for VASP POTCAR 64",
+    "created_at": "2025-11-15T00:22:28Z",
+    "author": "esoteric-ephemera"
+  },
+  "4542": {
+    "title": "Fix types for entry processing in phase diagram and compatibility",
+    "created_at": "2025-11-11T20:26:57Z",
+    "author": "janosh"
+  },
+  "4541": {
+    "title": "PatchedPhaseDiagram mimic PhaseDiagram Serialization",
+    "created_at": "2025-11-11T18:09:58Z",
+    "author": "CompRhys"
+  },
+  "4535": {
+    "title": "Minor fixes to typing for pymatgen.io.vasp.outputs.Wavecar and pymatgen.io.wannier90.Unk",
+    "created_at": "2025-11-04T01:36:03Z",
+    "author": "mturiansky"
+  },
+  "4531": {
+    "title": "Deprecate `CifParser` init support of `filename` as `StringIO`",
+    "created_at": "2025-10-30T11:41:32Z",
+    "author": "DanielYang59"
+  },
+  "4530": {
+    "title": "Fix icet SQS transformation after version update",
+    "created_at": "2025-10-29T20:03:58Z",
+    "author": "esoteric-ephemera"
+  },
+  "4527": {
+    "title": "Replace `assert` to check int in `get_el_sp`",
+    "created_at": "2025-10-22T11:50:53Z",
+    "author": "DanielYang59"
+  },
+  "4526": {
+    "title": "`VolumetricData.copy` preserve subclass type",
+    "created_at": "2025-10-20T10:01:18Z",
+    "author": "DanielYang59"
+  },
+  "4525": {
+    "title": "Minor type cleanup of `io.common`",
+    "created_at": "2025-10-18T19:03:23Z",
+    "author": "DanielYang59"
+  },
+  "4522": {
+    "title": "`Incar.proc_val` reuse `incar_parameters.json` to determine types",
+    "created_at": "2025-10-17T19:10:02Z",
+    "author": "DanielYang59"
+  },
+  "4521": {
+    "title": "Add `ISEARCH` parameter to `incar_parameters.json`",
+    "created_at": "2025-10-16T21:08:13Z",
+    "author": "kavanase"
+  },
+  "4520": {
+    "title": "Avoid dict mutation in VaspInputSet.structure setter",
+    "created_at": "2025-10-16T11:04:07Z",
+    "author": "janosh"
+  },
+  "4518": {
+    "title": "Enhance INCAR parsing: handle multi-line string and line continuation with backslash, fix handling of `!` as comment marker",
+    "created_at": "2025-10-11T09:03:32Z",
+    "author": "DanielYang59"
+  },
+  "4516": {
+    "title": "Python 3.14 support",
+    "created_at": "2025-10-09T10:10:01Z",
+    "author": "DanielYang59"
+  },
+  "4515": {
+    "title": "Update periodic table data: \"Common oxidation states\", \"critical temperature\" and \"electrical resistivity\"",
+    "created_at": "2025-10-08T21:57:58Z",
+    "author": "DanielYang59"
+  },
+  "4514": {
+    "title": "Fix `Ion.as_reduced_dict` doesn't reduce charge",
+    "created_at": "2025-10-07T21:14:21Z",
+    "author": "DanielYang59"
+  },
+  "4512": {
+    "title": "Fix missing sdist from PyPI",
+    "created_at": "2025-10-06T11:28:46Z",
+    "author": "DanielYang59"
+  },
+  "4511": {
+    "title": "`PhaseDiagram` plotter only show lowest energy for unstable composition",
+    "created_at": "2025-10-04T12:15:14Z",
+    "author": "DanielYang59"
+  },
+  "4510": {
+    "title": "suppress runtime warning from boltztrap2",
+    "created_at": "2025-10-04T08:55:52Z",
+    "author": "DanielYang59"
+  },
+  "4507": {
+    "title": "Add references/source to periodic table data",
+    "created_at": "2025-09-30T16:08:28Z",
+    "author": "DanielYang59"
+  },
+  "4506": {
+    "title": "Various bug fixes",
+    "created_at": "2025-09-29T20:03:30Z",
+    "author": "esoteric-ephemera"
+  },
+  "4503": {
+    "title": "Replace `print` with logging",
+    "created_at": "2025-09-25T20:33:08Z",
+    "author": "DanielYang59"
+  },
+  "4502": {
+    "title": "Fix: indexing error in Procar._read()",
+    "created_at": "2025-09-22T17:04:16Z",
+    "author": "finnrk"
+  },
+  "4498": {
+    "title": "Allow for setting termination_ftol for film and substrate slabs separately",
+    "created_at": "2025-09-16T14:25:08Z",
+    "author": "jinlhr542"
+  },
+  "4497": {
+    "title": "Enhance `pmg` cli tests, fix `pmg diff` and `pmg view`",
+    "created_at": "2025-09-13T10:00:33Z",
+    "author": "DanielYang59"
+  },
+  "4496": {
+    "title": "Overwrite `__rtruediv__` for `FloatWithUnit`, fix `ArrayWithUnit` loses `unit_type` when unpickled",
+    "created_at": "2025-09-12T09:49:02Z",
+    "author": "DanielYang59"
+  },
+  "4494": {
+    "title": "Re-enable mypy `misc` rule and doc/type cleanup",
+    "created_at": "2025-09-12T09:37:35Z",
+    "author": "DanielYang59"
+  },
+  "4493": {
+    "title": "`Composition.get_wt_fraction` return float instead of `FloatWithUnit` ",
+    "created_at": "2025-09-10T22:04:54Z",
+    "author": "DanielYang59"
+  },
+  "4491": {
+    "title": "Deprecate `projected_magnetisation` with `projected_magnetization` (US spelling)",
+    "created_at": "2025-09-06T16:09:11Z",
+    "author": "DanielYang59"
+  },
+  "4490": {
+    "title": "Replace `linear_assignment` with `scipy` `linear_sum_assignment `",
+    "created_at": "2025-09-01T21:59:56Z",
+    "author": "DanielYang59"
+  },
+  "4487": {
+    "title": "Fix TranslateSitesTransformation",
+    "created_at": "2025-08-25T16:42:40Z",
+    "author": "Rastow"
+  },
+  "4484": {
+    "title": "Fix jdftx.outputs usage of 3.11+ only syntax",
+    "created_at": "2025-08-18T18:24:55Z",
+    "author": "DanielYang59"
+  },
+  "4482": {
+    "title": "Simplify and clean up LobsterNeighbors",
+    "created_at": "2025-08-16T14:11:26Z",
+    "author": "naik-aakash"
+  },
+  "4481": {
+    "title": "Fix icohpcollection & add Missing keyword in Lobsterin",
+    "created_at": "2025-08-16T12:56:55Z",
+    "author": "naik-aakash"
+  },
+  "4479": {
+    "title": "Move JDFTx sets from atomate2 to pymatgen",
+    "created_at": "2025-08-13T18:01:02Z",
+    "author": "cote3804"
+  },
   "4476": {
     "title": "patch ReDOS vulnerability in GaussianInput.from_string",
     "created_at": "2025-08-12T23:53:07Z",
@@ -13,6 +413,11 @@
     "title": "Update analyzer.py",
     "created_at": "2025-07-26T13:25:14Z",
     "author": "boyoungzheng"
+  },
+  "4463": {
+    "title": "Remove dev-facing `ci` optional dependency, update markdown docs",
+    "created_at": "2025-07-26T10:27:13Z",
+    "author": "DanielYang59"
   },
   "4461": {
     "title": "Handle numpy array for selective dynamics in `Structure`",
@@ -39,6 +444,11 @@
     "created_at": "2025-07-04T17:42:06Z",
     "author": "DanielYang59"
   },
+  "4447": {
+    "title": "Fix `has_cobicar` when NcICOBILIST is present",
+    "created_at": "2025-07-03T14:00:34Z",
+    "author": "tomdemeyere"
+  },
   "4446": {
     "title": "Efficiency updates for `__str__()` methods",
     "created_at": "2025-07-03T02:45:00Z",
@@ -48,6 +458,11 @@
     "title": "Better comment handling for CP2K input file",
     "created_at": "2025-06-30T08:29:34Z",
     "author": "DanielYang59"
+  },
+  "4440": {
+    "title": "`JDFTXOutfileSlice.vibrational_modes` and `JDFTXOutfileSlice.vibrational_energy_components`",
+    "created_at": "2025-06-18T20:28:11Z",
+    "author": "benrich37"
   },
   "4438": {
     "title": "Add basic S3 object retrieval to the pymatgen user agent",
@@ -118,6 +533,11 @@
     "title": "speed-up Structure instantiation",
     "created_at": "2025-05-21T15:37:14Z",
     "author": "danielzuegner"
+  },
+  "4414": {
+    "title": "Phase Diagram Serialization Improvement",
+    "created_at": "2025-05-20T19:31:28Z",
+    "author": "felix-adams"
   },
   "4413": {
     "title": "`JDFTXOutputs.bandstructure: BandStructure`",
@@ -665,7 +1085,7 @@
     "author": "DanielYang59"
   },
   "4193": {
-    "title": "Remove unnecessary isotope conversion in `core.periodic_table.get_el_sp`",
+    "title": "Remove unnecesary isotope conversion in `core.periodic_table.get_el_sp`",
     "created_at": "2024-11-23T05:20:49Z",
     "author": "DanielYang59"
   },
@@ -778,6 +1198,11 @@
     "title": "Added new Flag for `AutoOxiStateDecorationTransformation`",
     "created_at": "2024-11-01T22:09:45Z",
     "author": "jmmshn"
+  },
+  "4148": {
+    "title": "Fix consideration of translation symmetry for some (extremely rare) edge cases in LobsterEnv",
+    "created_at": "2024-10-30T08:00:19Z",
+    "author": "JaGeo"
   },
   "4145": {
     "title": "Fixed execution of packmol in relative path.",
@@ -952,7 +1377,7 @@
   "4087": {
     "title": "Enable parsing of \"SCF energy\" and \"Total energy\" from `QCOutput` for Q-chem 6.1.1+",
     "created_at": "2024-09-30T17:39:05Z",
-    "author": "Jaebeom-P"
+    "author": "jaebeom-p"
   },
   "4086": {
     "title": "Fix dict equality check with numpy array",
@@ -1670,7 +2095,7 @@
     "author": "DanielYang59"
   },
   "3798": {
-    "title": "Fix overlaid subplots in `BSPlotterProjected.get_projected_plots_dots()`",
+    "title": "Fix overlayed subplots in `BSPlotterProjected.get_projected_plots_dots()`",
     "created_at": "2024-05-01T18:32:19Z",
     "author": "janosh"
   },
@@ -1770,7 +2195,7 @@
     "author": "DanielYang59"
   },
   "3756": {
-    "title": "Fix OPTIMADE rester URL construction and improve testing",
+    "title": "Fix OPTIMADE rester URL contruction and improve testing",
     "created_at": "2024-04-13T09:58:58Z",
     "author": "ml-evs"
   },
@@ -2045,14 +2470,14 @@
     "author": "DanielYang59"
   },
   "3659": {
-    "title": "Use `np.eye(3)` instead of `[[1, 0, 0], [0, 1, 0], [0, 0, 1]]` for identities",
+    "title": "Use `np.eye(3)` instead of `[[1, 0, 0], [0, 1, 0], [0, 0, 1]]` for identies",
     "created_at": "2024-02-26T12:41:10Z",
     "author": "janosh"
   },
   "3657": {
     "title": "Fix `get_niggli_reduced_lattice` if entering A1 case",
     "created_at": "2024-02-26T09:34:03Z",
-    "author": "packer-jp"
+    "author": "tony998244353"
   },
   "3656": {
     "title": "Deprecate `_parse_atomic_densities` in `BaderAnalysis` and fix `Bader` test setup",
@@ -2545,7 +2970,7 @@
     "author": "janosh"
   },
   "3484": {
-    "title": "Standardize and update VASP input sets",
+    "title": "Standardise and update VASP input sets",
     "created_at": "2023-11-26T22:54:21Z",
     "author": "utf"
   },
@@ -3095,7 +3520,7 @@
     "author": "janosh"
   },
   "3286": {
-    "title": "`np.(arrange->linspace)` in `io/vasp/optics.py` `get_delta`, `get_step` and `epsilon_imag`",
+    "title": "`np.(arange->linspace)` in `io/vasp/optics.py` `get_delta`, `get_setp` and `epsilon_imag`",
     "created_at": "2023-08-31T13:42:11Z",
     "author": "LucasGVerga"
   },
@@ -3835,7 +4260,7 @@
     "author": "mattmcdermott"
   },
   "3031": {
-    "title": "Update `DictSet` to allow direct initialization",
+    "title": "Update `DictSet` to allow direct initialisation",
     "created_at": "2023-06-01T18:04:49Z",
     "author": "kavanase"
   },
@@ -4150,7 +4575,7 @@
     "author": "janosh"
   },
   "2894": {
-    "title": "Breaking: Rename `gen_sl_transform_matrices->gen_sl_transform_matrices`",
+    "title": "Breaking: Rename `gen_sl_transform_matricies->gen_sl_transform_matrices`",
     "created_at": "2023-03-15T14:28:37Z",
     "author": "janosh"
   },
@@ -4170,7 +4595,7 @@
     "author": "janosh"
   },
   "2886": {
-    "title": "MPAqueousCompatibility: compute hydrate correction using reduced rather than full composition",
+    "title": "MPAqueousCompatiblity: compute hydrate correction using reduced rather than full composition",
     "created_at": "2023-03-10T01:25:15Z",
     "author": "rkingsbury"
   },
@@ -4365,7 +4790,7 @@
     "author": "MichaelWolloch"
   },
   "2795": {
-    "title": "added DOSCAR.ALSO.lobster file attribute to Lobsterout, updated tests",
+    "title": "added DOSCAR.LSO.lobster file attribute to Lobsterout, updated tests",
     "created_at": "2023-01-09T11:48:12Z",
     "author": "naik-aakash"
   },
@@ -5485,7 +5910,7 @@
     "author": "janosh"
   },
   "2358": {
-    "title": "Don't perform dict type-check on the MAGMOM flag in io.vasp.sets (fixes downstream Automate issue)",
+    "title": "Don't perform dict type-check on the MAGMOM flag in io.vasp.sets (fixes downstream Atomate issue)",
     "created_at": "2022-01-19T19:46:06Z",
     "author": "Andrew-S-Rosen"
   },
@@ -5745,7 +6170,7 @@
     "author": "kmu"
   },
   "2249": {
-    "title": "Update functionality of composition.chemical_system to match expected behavior",
+    "title": "Update functionality of composition.chemical_system to match expected behaviour",
     "created_at": "2021-09-14T11:26:10Z",
     "author": "CompRhys"
   },
@@ -5810,7 +6235,7 @@
     "author": "JaGeo"
   },
   "2227": {
-    "title": "Fix c mod in neighbors",
+    "title": "Fix c mod in neighobrs",
     "created_at": "2021-08-25T03:08:39Z",
     "author": "chc273"
   },
@@ -6195,7 +6620,7 @@
     "author": "mkhorton"
   },
   "2065": {
-    "title": "Parse projected magnetization from non-collinear calculations",
+    "title": "Parse projected magnetisation from non-collinear calculations",
     "created_at": "2021-02-16T19:15:07Z",
     "author": "utf"
   },
@@ -6350,7 +6775,7 @@
     "author": "rkingsbury"
   },
   "1999": {
-    "title": "improve legibility of 3D phase diagram plot",
+    "title": "imporve legibility of 3D phase diagram plot",
     "created_at": "2020-11-18T19:39:29Z",
     "author": "bayesfactor"
   },
@@ -6475,7 +6900,7 @@
     "author": "rkingsbury"
   },
   "1938": {
-    "title": "[WIP] Implementation  of a robust permutation invariant molecule matcher",
+    "title": "[WIP] Implemenation  of a robust permutation invariant molecule matcher",
     "created_at": "2020-08-21T18:44:04Z",
     "author": "fekad"
   },
@@ -6550,7 +6975,7 @@
     "author": "rkingsbury"
   },
   "1916": {
-    "title": "Remove CPP and use only C in get neighbors optimization",
+    "title": "Remove CPP and use only C in get neighbors optmization",
     "created_at": "2020-07-30T18:04:59Z",
     "author": "chc273"
   },
@@ -6575,7 +7000,7 @@
     "author": "samblau"
   },
   "1904": {
-    "title": "Fix serialization of slabs with list scale_factor",
+    "title": "Fix serialisation of slabs with list scale_factor",
     "created_at": "2020-07-10T16:30:46Z",
     "author": "utf"
   },
@@ -6745,7 +7170,7 @@
     "author": "mamachra"
   },
   "1827": {
-    "title": "[WIP] Edge Case of VoronoiNN() not finding neighbors when called by StructureGraph.with_local_env_strategy()",
+    "title": "[WIP] Edge Case of VoronoiNN() not finding neighbours when called by StructureGraph.with_local_env_strategy()",
     "created_at": "2020-04-14T08:47:48Z",
     "author": "CompRhys"
   },
@@ -7450,7 +7875,7 @@
     "author": "oxana-a"
   },
   "1514": {
-    "title": "Fix reading the SC K-Point set when LEVEL flag is set.",
+    "title": "Fix reading the SC K-Point set when LVEL flag is set.",
     "created_at": "2019-06-27T07:46:45Z",
     "author": "JRSuckert"
   },
@@ -7665,7 +8090,7 @@
     "author": "utf"
   },
   "1440": {
-    "title": "allow the MinimumDistanceNN class to only use the cutoff distance as …",
+    "title": "allow the MimimumDistanceNN class to only use the cutoff distance as …",
     "created_at": "2019-04-10T18:00:46Z",
     "author": "jmmshn"
   },
@@ -8030,7 +8455,7 @@
     "author": "mkhorton"
   },
   "1313": {
-    "title": "fixed the accidental override of get_min_instability",
+    "title": "fixed the accidental overide of get_min_instability",
     "created_at": "2018-11-03T23:02:50Z",
     "author": "jmmshn"
   },
@@ -8130,7 +8555,7 @@
     "author": "fraricci"
   },
   "1274": {
-    "title": "- reduced execution time for test",
+    "title": "- reduced excecution time for test",
     "created_at": "2018-09-13T12:13:55Z",
     "author": "fraricci"
   },
@@ -8390,7 +8815,7 @@
     "author": "CifLord"
   },
   "1190": {
-    "title": "Added a new order parameter (q_sq_face_cap_trig_pris) and unit test",
+    "title": "Added a new order paramter (q_sq_face_cap_trig_pris) and unit test",
     "created_at": "2018-07-02T20:03:09Z",
     "author": "nisse3000"
   },
@@ -8495,7 +8920,7 @@
     "author": "dbroberg"
   },
   "1162": {
-    "title": "QChem updates for Automate",
+    "title": "QChem updates for Atomate",
     "created_at": "2018-06-05T20:48:44Z",
     "author": "samblau"
   },
@@ -9070,7 +9495,7 @@
     "author": "yihanxiao92"
   },
   "1005": {
-    "title": "Additional change on get_environment script",
+    "title": "Addtional change on get_environment script",
     "created_at": "2018-01-22T13:49:43Z",
     "author": "JaGeo"
   },
@@ -9690,7 +10115,7 @@
     "author": "wood-b"
   },
   "817": {
-    "title": "MAINT: Numerical stability for symmetrize + finer control over tolerance",
+    "title": "MAINT: Numerical stability for symmetrise + finer control over tolerance",
     "created_at": "2017-08-29T08:55:39Z",
     "author": "mcocdawc"
   },
@@ -9720,7 +10145,7 @@
     "author": "ucsdlxg"
   },
   "810": {
-    "title": "fix parsing BASE vasprun error",
+    "title": "fix parsing BSE vasprun error",
     "created_at": "2017-08-25T00:27:25Z",
     "author": "zbwang"
   },
@@ -9810,7 +10235,7 @@
     "author": "Tinaatucsd"
   },
   "785": {
-    "title": "add vasp input sets for BASE calc",
+    "title": "add vasp input sets for BSE calc",
     "created_at": "2017-08-18T03:27:33Z",
     "author": "zbwang"
   },
@@ -9875,7 +10300,7 @@
     "author": "bocklund"
   },
   "760": {
-    "title": "ENH: Implemented get_symmetrized_molecule + helper functions; Improved performance of generate_full_symmops",
+    "title": "ENH: Implemented get_symmetrised_molecule + helper functions; Improved performance of generate_full_symmops",
     "created_at": "2017-08-14T14:15:08Z",
     "author": "mcocdawc"
   },
@@ -9885,7 +10310,7 @@
     "author": "shyamd"
   },
   "757": {
-    "title": "MSONable Compatibility",
+    "title": "MSONable Compatability",
     "created_at": "2017-08-10T03:47:13Z",
     "author": "shyamd"
   },
@@ -9990,7 +10415,7 @@
     "author": "montoyjh"
   },
   "727": {
-    "title": "ignore pymatgen[matproj.snl] warning when use python3",
+    "title": "ingore pymatgen[matproj.snl] warning when use python3",
     "created_at": "2017-07-20T07:55:14Z",
     "author": "specter119"
   },
@@ -10160,7 +10585,7 @@
     "author": "mkhorton"
   },
   "672": {
-    "title": "Fix MagneticSymmetryGroup for unicode arguments in Python 2.7",
+    "title": "Fix MagneticSymmteryGroup for unicode arguments in Python 2.7",
     "created_at": "2017-05-17T17:22:22Z",
     "author": "mkhorton"
   },
@@ -10255,7 +10680,7 @@
     "author": "gmatteo"
   },
   "646": {
-    "title": "Fix CONSTRAINT stre bug in QChem Input",
+    "title": "Fix CONTRAINT stre bug in QChem Input",
     "created_at": "2017-04-17T21:37:30Z",
     "author": "xhqu1981"
   },
@@ -10550,7 +10975,7 @@
     "author": "utf"
   },
   "567": {
-    "title": "Enable NPT-AIMED simulation",
+    "title": "Enable NPT-AIMD simulation",
     "created_at": "2017-02-16T00:26:20Z",
     "author": "HanmeiTang"
   },
@@ -10565,7 +10990,7 @@
     "author": "matk86"
   },
   "560": {
-    "title": "Removed 2 bugs from order parameter code and finished unit tests.",
+    "title": "Removed 2 bugs from order paramerter code and finished unit tests.",
     "created_at": "2017-02-07T23:35:00Z",
     "author": "nisse3000"
   },
@@ -10590,7 +11015,7 @@
     "author": "gpetretto"
   },
   "553": {
-    "title": "modified BASE output : modified reg pattern",
+    "title": "modified BSE ouptut : modified reg pattern",
     "created_at": "2017-01-25T10:52:21Z",
     "author": "ndardenne"
   },
@@ -10715,7 +11140,7 @@
     "author": "davidwaroquiers"
   },
   "516": {
-    "title": "Optional possibility to specify that the saddle_point in the NEB sho…",
+    "title": "Optionnal possibility to specify that the saddle_point in the NEB sho…",
     "created_at": "2016-11-22T15:18:23Z",
     "author": "davidwaroquiers"
   },
@@ -10785,7 +11210,7 @@
     "author": "matk86"
   },
   "487": {
-    "title": "Chemenv improvements + NEBAnalysis improvements",
+    "title": "Chemenv improvents + NEBAnalysis improvements",
     "created_at": "2016-09-27T10:21:15Z",
     "author": "davidwaroquiers"
   },
@@ -11240,7 +11665,7 @@
     "author": "saurabh02"
   },
   "336": {
-    "title": "handle bracketed data in attribute data for Element",
+    "title": "handle bracketed data in attribute data for Elememt",
     "created_at": "2016-04-15T20:44:02Z",
     "author": "saurabh02"
   },
@@ -11945,7 +12370,7 @@
     "author": "mbkumar"
   },
   "99": {
-    "title": "Condition InterstitialTransformation testing",
+    "title": "Condition InterstitialTransfromation testing",
     "created_at": "2014-07-02T19:45:51Z",
     "author": "mbkumar"
   },

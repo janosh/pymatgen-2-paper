@@ -27,8 +27,8 @@ CSV_PATH: str = "contributor_commits_by_month.csv.gz"
 
 # TODO: `kaleido` doesn't seem to respect width/height
 # https://github.com/plotly/Kaleido/issues/378
-plotly.io.defaults.default_width = None
-plotly.io.defaults.default_height = None
+plotly.io.defaults.default_width = None  # ty: ignore[invalid-assignment]
+plotly.io.defaults.default_height = None  # ty: ignore[invalid-assignment]
 
 if not os.path.isfile(CSV_PATH):
     print("Data CSV not found. Running script to generate it...")

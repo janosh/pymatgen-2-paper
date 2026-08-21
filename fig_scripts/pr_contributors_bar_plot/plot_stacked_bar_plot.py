@@ -15,6 +15,7 @@ import pandas as pd
 import plotly.express as px
 
 ROOT = Path(__file__).resolve().parents[2]
+DAYS_PER_YEAR = 365.25
 
 
 # Load PR data
@@ -25,21 +26,23 @@ with open("_pr_contributors.json") as f:
 binned = defaultdict(lambda: defaultdict(int))
 
 for pr in data.values():
-    year = datetime.fromisoformat(pr["created_at"].replace("Z", "+00:00")).year
-    ysf: float = pr["years_since_first"]
+    pr_date = datetime.fromisoformat(pr["created_at"].replace("Z", "+00:00"))
+    first_pr_date = datetime.fromisoformat(pr["first_contribution_date"])
+    elapsed_days = (pr_date - first_pr_date).total_seconds() / 86_400
+    elapsed_years = elapsed_days / DAYS_PER_YEAR
 
-    if ysf < 7 / 365:
+    if elapsed_days < 7:
         group = "<7 days"
-    elif ysf < 1:
+    elif elapsed_years < 1:
         group = "<1 year"
-    elif ysf < 3:
+    elif elapsed_years < 3:
         group = "1-3 years"
-    elif ysf < 6:
+    elif elapsed_years < 6:
         group = "3-6 years"
     else:
         group = ">6 years"
 
-    binned[year][group] += 1
+    binned[pr_date.year][group] += 1
 
 # Convert to DataFrame
 df = pd.DataFrame(binned).T.fillna(0).astype(int)

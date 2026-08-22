@@ -2,10 +2,7 @@
 # dependencies = ["pandas", "plotly", "kaleido"]
 # ///
 
-"""
-Plot a X-monthly number of active contributors bar plot,
-with the color of bars showing total number of commits.
-"""
+"""Plot annual numbers of active contributors and commits."""
 
 import os
 import subprocess
@@ -22,7 +19,6 @@ PLOT_TITLE_FONTSIZE: float = 22
 XY_AXIS_CBAR_TITLE_FONTSIZE: float = 22
 TICK_LABEL_FONTSIZE: float = 20
 
-BINNED_PERIOD_MONTH: int = 12
 CSV_PATH: str = "contributor_commits_by_month.csv.gz"
 
 # TODO: `kaleido` doesn't seem to respect width/height
@@ -44,27 +40,20 @@ df_grouped = df.groupby("contributor_id").sum(numeric_only=True)
 # Convert columns to datetime
 df_grouped.columns = pd.to_datetime(df_grouped.columns, format="%Y-%m")
 
-# Count active contributors
-active_contributors = (df_grouped > 0).sum(axis=0)
-
-# Total number of commits per month
-total_commits = df_grouped.sum(axis=0)
-
-# Resample into X-month bins
-active_binned = active_contributors.resample(f"{BINNED_PERIOD_MONTH}ME").sum()
-commits_binned = total_commits.resample(f"{BINNED_PERIOD_MONTH}ME").sum()
-
-# Drop first and last bin (data is incomplete)
-active_binned = active_binned.iloc[1:-1]
-commits_binned = commits_binned.iloc[1:-1]
+# Sum each contributor's commits by calendar year, then count contributors with
+# at least one commit in each year. This counts each contributor once per year.
+annual_by_contributor = df_grouped.T.groupby(df_grouped.columns.year).sum().T
+active_annual = (annual_by_contributor > 0).sum(axis=0)
+commits_annual = annual_by_contributor.sum(axis=0)
+years = pd.to_datetime(active_annual.index.astype(str), format="%Y")
 
 fig = go.Figure()
 
 # Line 1: Active contributors (left axis)
 fig.add_trace(
     go.Scatter(
-        x=active_binned.index,
-        y=active_binned.values,
+        x=years,
+        y=active_annual.values,
         mode="lines+markers",
         name="Active Contributors",
         yaxis="y",
@@ -75,8 +64,8 @@ fig.add_trace(
 # Line 2: Annual commits (right axis)
 fig.add_trace(
     go.Scatter(
-        x=commits_binned.index,
-        y=commits_binned.values,
+        x=years,
+        y=commits_annual.values,
         mode="lines+markers",
         name="Annual Commits",
         yaxis="y2",
@@ -115,7 +104,8 @@ fig.update_layout(
     ),
     legend=dict(
         x=0.7,
-        y=0.99,
+        y=1.0,
+        yanchor="bottom",
         bgcolor="rgba(255,255,255,0.6)",
     ),
 )

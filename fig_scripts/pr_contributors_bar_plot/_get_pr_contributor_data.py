@@ -8,7 +8,6 @@
 
 import json
 import os
-import re
 import time
 from datetime import datetime
 
@@ -21,12 +20,6 @@ DATAFILE: str = "_pr_contributors.json"
 if not GITHUB_TOKEN:
     raise RuntimeError("Set GITHUB_TOKEN environment variable.")
 
-
-# List of usernames to skip
-SKIP_USER_PATTERNS = [
-    r".*\[bot\]$",
-]
-compiled_skip_patterns = [re.compile(p) for p in SKIP_USER_PATTERNS]
 
 HEADERS = {
     "Authorization": f"token {GITHUB_TOKEN}",
@@ -112,8 +105,8 @@ def main() -> None:
         created_at = pr["created_at"]
         pr_date = datetime.fromisoformat(created_at.replace("Z", "+00:00"))
 
-        # Skip users matching patterns
-        if any(pat.match(user) for pat in compiled_skip_patterns):
+        # Skip GitHub bot accounts
+        if user.lower().endswith("[bot]"):
             print(f"⏭️ Skipping user: {user}")
             continue
 

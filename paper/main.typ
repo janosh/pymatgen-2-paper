@@ -226,10 +226,10 @@ Analysis of local coordination environments has also been of critical importance
 These insights help identify structural motifs that lead to similar performance, e.g., frameworks which favor ionic mobility.
 #pmg aids in analysis of electronic charge densities and electronic bonding by interfacing with LOBSTER @nelson_lobster_2020.
 #pmg makes possible analysis of local atomic coordination environments using the ChemEnv @waroquiers_chemenv_2020 and CrystalNN @zimmermann_crystalnn_2020 methods, among others.
-CrystalNN can be further used to generate structural embeddings similar to the feature vectors of MLIPs, which in turn allow for rapid estimates of structural similarity @zimmermann_fingerprint_2020 and automatic generation of human-readable descriptions of materials with the `robocrys` package @ganose_robocrys_2019.
+CrystalNN can be further used to generate structural embeddings similar to the feature vectors of MLIPs, which in turn allow for rapid estimates of structural similarity @zimmermann_crystalnn_2020 and automatic generation of human-readable descriptions of materials with the `robocrys` package @ganose_robocrys_2019.
 Local coordination environment analysis from ChemEnv, CrystalNN similarity estimates, and CrystalNN-based generated descriptions of materials are now standard analysis products of the Materials Project's build pipelines, and are currently distributed as part of its core data.
 
-Other extensions to #pmg which can be separately installed under the `io` and `analysis` namespaces include, but are not limited to: validation of VASP @kresse_ultrasoft_1999 calculations for compatibility with the Materials Project @horton_accelerated_2025 via `pymatgen-io-validation`; orchestration and parsing of FHI-aims @blum_fhiaims_2009, Quantum Espresso @giannozzi_qe_2017, and FLEUR @wortmann_fleur_2023 electronic structure calculations via `pymatgen-io-aims`, `pymatgen-io-espresso`, and `pymatgen-io-fleur`, respectively; orchestration of classical molecular dynamics calculations with OpenMM @eastman_openmm_2023 via `pymatgen-io-openmm`; orchestration of insertion defect electronic structure calculations with `pymatgen-analysis-defects` @shen_pmgdefects_2024.
+Other extensions to #pmg which can be separately installed under the `io` and `analysis` namespaces include, but are not limited to: validation of VASP @kresse_ultrasoft_1999 calculations for compatibility with the Materials Project @horton_accelerated_2025 via `pymatgen-io-validation`; orchestration and parsing of FHI-aims @blum_fhiaims_2009, Quantum Espresso @giannozzi_qe_2017, and FLEUR @wortmann_fleur_2023 electronic structure calculations via `pymatgen-io-aims`, `pymatgen-io-espresso`, and `pymatgen-io-fleur`, respectively; orchestration of classical molecular dynamics calculations with OpenMM @eastman_openmm_2023 via `pymatgen-io-openmm`; orchestration of insertion defect electronic structure calculations with `pymatgen-analysis-defects` @shen_pymatgen-analysis-defects_2024.
 A more complete list of extensions to #pmg is maintained in the add-ons section of the documentation.
 
 // Recent additions to #pmg to include:
@@ -249,18 +249,20 @@ As illustrated in @fig:pr-topics and @fig:commits-heatmap, the development activ
       columns: (1fr, 2fr),
       gutter: 1em,
       subfigure(
-        pad(x: -1em, image("figs/pr-topics-over-time-stacked-bar.pdf")),
+        image("figs/pr-topics-over-time-stacked-bar.pdf"),
         caption: [Pull request topics over time in the pymatgen repository.],
-        dy: 12%,
+        dy: 2.4em,
         label: <fig:pr-topics>,
       ),
       subfigure(
-        pad(x: -1em, image("figs/commits-per-package-heatmap.png")),
+        image("figs/commits-per-package-heatmap.png"),
         caption: [Monthly commits per pymatgen subpackage (heatmap).],
+        dy: 1.5em,
         label: <fig:commits-heatmap>,
       ),
     ),
     caption: [Development activity in the pymatgen repository over time.],
+    gap: 3em,  // room for the placed subfigure captions
   ) <fig:development-activity>
 ]
 
@@ -296,7 +298,7 @@ Lesson learned: For mature infrastructure libraries, backward compatibility is a
 
 == Test Coverage and Code Quality
 
-As shown in @fig:pmg-code-structure, #pmg achieves approximately 79% test coverage across its 150,000+ lines of code, though coverage varies significantly by module. Core functionality (`core`, `io`, `entries`) maintains >90% coverage, while specialized modules like visualization (`vis`) and certain analysis tools (`boltztrap`) have lower coverage (\<20%). This heterogeneity reflects genuine trade-offs: some modules require licensed external executables (VASP, Gaussian) for meaningful testing, others involve long-running operations, and visualization code requires rendering backends that complicate headless CI. Testing resources have been strategically focused on core modules serving the largest user bases.
+As shown in @fig:pmg-code-structure, #pmg achieves approximately 79% test coverage across its 154,000 lines of code, though coverage varies significantly by module. Core functionality (`core`, `phonon`, `symmetry`, `entries`) maintains $>=$ 87% coverage, while visualization (`vis`), the command-line interface (`cli`) and wrappers around external executables (`command_line`) have notably lower coverage ($<=$ 34%). This heterogeneity reflects genuine trade-offs: some modules require licensed external executables (VASP, Gaussian) for meaningful testing, others involve long-running operations, and visualization code requires rendering backends that complicate headless CI. Testing resources have been strategically focused on core modules serving the largest user bases.
 
 Continuous integration via GitHub Actions runs the `pytest` test suite on every pull request across multiple Python versions. Coverage is tracked via `coverage.py` and reported to Codecov. The Python ecosystem's rapid migration of developer tools to Rust—including #link("https://docs.astral.sh/ruff")[`ruff`] (linting and formatting), #link("https://github.com/astral-sh/ty")[`ty`] (type checking), and #link("https://docs.astral.sh/uv")[`uv`] (package management)—has dramatically accelerated #pmg's CI pipelines and local development workflows. In particular, static type analysis with tools like `mypy` and the much faster Rust-native `ty` catches subtle bugs at development time that would otherwise only surface during testing or production. `ty` is fast enough to run in tight feedback loops with LLM coding agents, catching type errors in seconds rather than minutes even in large codebases like #pmg — enabling rapid iteration toward correct code without waiting for slow test suites. Pre-commit hooks enforce these checks locally. However, the test suite's ~45 minute execution time (despite `pytest-split` parallelization across 4 runners) creates friction for contributors, and improving test efficiency remains an ongoing priority.
 
@@ -329,7 +331,7 @@ As a core component of the base layer of the computational materials science inf
 #place(top + center, float: true, scope: "parent")[
   #figure(
     pad(right: -2em, image("figs/py-pkg-treemap-pymatgen-coverage.pdf")),
-    caption: [#pmg code structure and test coverage. The size of each module represents lines of code, while colors indicate test coverage percentage.],
+    caption: [#pmg code structure and test coverage. The size of each module represents lines of code, while colors indicate test coverage percentage. Small modules are aggregated into `other` cells for readability.],
   ) <fig:pmg-code-structure>
 ]
 
@@ -345,7 +347,7 @@ As a core component of the base layer of the computational materials science inf
 
 #place(top + center, float: true, scope: "parent")[
   #figure(
-    pad(x: -3em, top: -2em, bottom: -5em, image("figs/pr-contributors-worldmap.pdf")),
+    pad(x: -3em, image("figs/pr-contributors-worldmap.pdf")),
     caption: [Geographic distribution of #pmg pull request contributors. Note caveats; pulled from GitHub profiles],
   ) <fig:contributors-worldmap>
 ]

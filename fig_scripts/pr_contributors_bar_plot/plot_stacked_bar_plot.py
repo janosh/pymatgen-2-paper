@@ -79,22 +79,24 @@ fig = px.bar(
 
 fig.update_layout(
     barmode="stack",
-    legend_title_text="Year Since First PR",
-    legend=dict(traceorder="reversed"),
-    xaxis_title="Year",
-    yaxis_title="Total Number of Pull Requests",
-    xaxis=dict(type="category"),  # ensure discrete years
+    font=dict(size=16),
+    xaxis=dict(
+        title="Year",
+        type="category",  # ensure discrete years
+        tickvals=[str(year) for year in df.index if year % 2 == 1],  # 2013, 2015, ...
+    ),
     yaxis=dict(
+        title="Total Number of Pull Requests",
         gridcolor="lightgray",
         gridwidth=1,
         griddash="dash",
     ),
+    # legend inside the plot, upper left where bars are short
+    legend=dict(title="Time since first PR", traceorder="reversed", x=0.01, y=1),
+    margin=dict(l=0, r=0, t=10, b=70),  # b: room for x-axis title
     plot_bgcolor="white",
     paper_bgcolor="white",
     bargap=0.2,
-    title_x=0.5,
 )
-fig.layout.margin.update(t=50, l=0, b=0, r=0)
-fig.layout.legend.update(x=0, y=1)
 
 fig.write_image(f"{ROOT}/paper/figs/pr-since-1st.pdf")

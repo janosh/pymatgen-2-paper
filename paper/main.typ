@@ -249,18 +249,20 @@ As illustrated in @fig:pr-topics and @fig:commits-heatmap, the development activ
       columns: (1fr, 2fr),
       gutter: 1em,
       subfigure(
-        pad(x: -1em, image("figs/pr-topics-over-time-stacked-bar.pdf")),
+        image("figs/pr-topics-over-time-stacked-bar.pdf"),
         caption: [Pull request topics over time in the pymatgen repository.],
-        dy: 12%,
+        dy: 2.4em,
         label: <fig:pr-topics>,
       ),
       subfigure(
-        pad(x: -1em, image("figs/commits-per-package-heatmap.png")),
+        image("figs/commits-per-package-heatmap.png"),
         caption: [Monthly commits per pymatgen subpackage (heatmap).],
+        dy: 1.5em,
         label: <fig:commits-heatmap>,
       ),
     ),
     caption: [Development activity in the pymatgen repository over time.],
+    gap: 3em,  // room for the placed subfigure captions
   ) <fig:development-activity>
 ]
 

@@ -86,40 +86,23 @@ fig = px.bar(
 
 fig.update_layout(
     barmode="stack",
-    title_x=0.5,  # center title
-    title_font=dict(size=20),
-    xaxis_title=dict(
-        text="Year",
-        font=dict(size=18),
-    ),
-    yaxis_title=dict(
-        text="Number of PRs",
-        font=dict(size=18),
-    ),
+    font=dict(size=22),
     xaxis=dict(
-        tickfont=dict(size=16),
+        title="Year",
         type="category",  # ensures categorical x-axis
+        tickvals=[
+            str(year) for year in counts.index if year % 2 == 1
+        ],  # 2013, 2015, ...
     ),
-    yaxis=dict(
-        tickfont=dict(size=16),
-        gridcolor="lightgray",
-        griddash="dash",  # dashed horizontal gridlines
-    ),
-    legend=dict(
-        title="Theme",
-        traceorder="reversed",
-        x=1.02,
-        y=1,  # move outside plot, upper left like mpl
-        xanchor="left",
-        yanchor="top",
-        font=dict(size=16),
-    ),
+    yaxis=dict(title="Number of PRs", gridcolor="lightgray", griddash="dash"),
+    # legend inside the plot, upper left where bars are short
+    legend=dict(title="Theme", traceorder="reversed", x=0.01, y=1),
+    margin=dict(l=0, r=0, t=10, b=0),
     plot_bgcolor="white",
     paper_bgcolor="white",
 )
 
+# 1:2 width ratio with the commit heatmap (1400x600) in the paper's subfigure grid
 fig.write_image(
-    f"{ROOT}/paper/figs/pr-topics-over-time-stacked-bar.pdf",
-    width=1200,
-    height=600,
+    f"{ROOT}/paper/figs/pr-topics-over-time-stacked-bar.pdf", width=700, height=600
 )

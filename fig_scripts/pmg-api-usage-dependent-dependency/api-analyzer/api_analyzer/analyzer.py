@@ -10,7 +10,7 @@ def _annotate_parents(tree: ast.AST) -> None:
     """Add `.parent` links so we can walk up the tree."""
     for parent in ast.walk(tree):
         for child in ast.iter_child_nodes(parent):
-            setattr(child, "parent", parent)
+            child.parent = parent  # ty: ignore[unresolved-attribute]
 
 
 def _in_type_checking_block(node: ast.AST) -> bool:

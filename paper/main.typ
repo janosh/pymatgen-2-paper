@@ -347,7 +347,7 @@ As a core component of the base layer of the computational materials science inf
 
 #place(top + center, float: true, scope: "parent")[
   #figure(
-    pad(x: -3em, top: -2em, bottom: -5em, image("figs/pr-contributors-worldmap.pdf")),
+    pad(x: -3em, image("figs/pr-contributors-worldmap.pdf")),
     caption: [Geographic distribution of #pmg pull request contributors. Note caveats; pulled from GitHub profiles],
   ) <fig:contributors-worldmap>
 ]

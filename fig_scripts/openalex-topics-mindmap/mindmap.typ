@@ -1,3 +1,4 @@
+// Compile with: typst compile mindmap.typ ../../paper/figs/mindmap.pdf
 #import "@preview/cetz:0.4.1": canvas, draw
 #import draw: circle, content, line, on-layer
 
@@ -7,15 +8,16 @@
 #set text(weight: "bold")
 
 // Per-level style: 0 = root, 1 = topics, 2 = subtopics
+// Font size scales with hierarchy: root 2x, topics 1.5x the subtopic size
 #let NODE_STYLE = (
-  "0": (text-size: 14pt, radius_multi: 9.0),
-  "1": (text-size: 9pt, radius_multi: 8.0),
-  "2": (text-size: 7pt, radius_multi: 7.0),
+  "0": (text-size: 24pt, radius_multi: 6.5),
+  "1": (text-size: 18pt, radius_multi: 7.0),
+  "2": (text-size: 12pt, radius_multi: 7.0),
 )
 
 // Layout params
-#let r1 = 4               // topic stroke length
-#let r2 = 3               // subtopic stroke length
+#let r1 = 8               // topic stroke length
+#let r2 = 5.5             // subtopic stroke length
 #let sub-step = 40deg     // children step
 #let start-angle = 0deg   // root "clockwise from=0"
 
@@ -86,11 +88,8 @@
 })
 
 #v(5pt)
-#align(center, box(
-  width: 12cm,
-  height: auto,
-  [#canvas({
-    let (cbar_width, cbar_height) = (12cm, 0.4cm)
+#align(center, box([#canvas({
+    let (cbar_width, cbar_height) = (16cm, 0.8cm)
 
     // Color bar rectangle
     content(
@@ -106,10 +105,10 @@
     let num_ticks = tick_labels.len() - 1
     for (tick_idx, tick_label) in tick_labels.enumerate() {
       let tick_x = -cbar_width / 2 + (cbar_width * tick_idx / num_ticks)
-      line((tick_x, -0.15cm), (tick_x, -0.25cm), stroke: 0.7pt)
-      content((tick_x, -0.45cm), align(center, text(size: 7pt, tick_label)))
+      line((tick_x, -0.2cm), (tick_x, -0.4cm), stroke: 1pt)
+      content((tick_x, -0.75cm), align(center, text(size: 14pt, tick_label)))
     }
     // Axis label
-    content((0, -0.9cm), align(center, text(size: 8pt, [Citation Counts])))
+    content((0, -1.5cm), align(center, text(size: 14pt, [Citation Counts])))
   })],
 ))

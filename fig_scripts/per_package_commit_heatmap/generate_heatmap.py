@@ -17,9 +17,9 @@ import pandas as pd
 import plotly.graph_objects as go
 
 COLORSCALE: str = "viridis"
-TICK_LABEL_FONTSIZE: int = 18
+TICK_LABEL_FONTSIZE: int = 22
 PLOT_TITLE_FONTSIZE: int = 24
-XY_AXIS_CBAR_TITLE_FONTSIZE: int = 20
+XY_AXIS_CBAR_TITLE_FONTSIZE: int = 24
 
 PACKAGES: dict[str, str] = {
     # NOTE: for a file the `.py` suffix is necessary (e.g. `core/structure.py`)
@@ -52,14 +52,15 @@ END_COMMIT: str = "2026-01-01"
 # commit: 9100860d7d938560610bcfadd04923b53756548e
 LAYOUT_SWITCH_DATE: str = "2024-06-01"
 
-# Get pymatgen repo path
+CSV_CACHE: str = "_monthly_commits_per_package.csv"
+
+# Set PMG_REPO_PATH to a local pymatgen clone to regenerate the commit counts,
+# otherwise the committed CSV cache is plotted as-is.
 PMG_REPO_PATH: str = os.environ.get("PMG_REPO_PATH", "")
-if not PMG_REPO_PATH:
-    raise RuntimeError("PMG_REPO_PATH environment variable is not set.")
 
 
-# Generate commit per package data
 def run_git_cmd(args: list[str]) -> subprocess.CompletedProcess[str]:
+    """Run a git command inside the pymatgen repo and return the completed process."""
     return subprocess.run(
         ["git", "-C", PMG_REPO_PATH, *args],
         capture_output=True,
@@ -69,12 +70,14 @@ def run_git_cmd(args: list[str]) -> subprocess.CompletedProcess[str]:
 
 
 def get_git_dates(path_prefix: str, since: str, until: str) -> list[str]:
+    """Dates (YYYY-MM-DD) of all non-merge commits touching path_prefix in [since, until]."""
     flags = "log --no-merges --format=%ad --date=short".split()
     cmd = [*flags, "--since", since, "--until", until, "--", path_prefix]
     return run_git_cmd(cmd).stdout.strip().splitlines()
 
 
 def get_monthly_commits_per_package() -> pd.DataFrame:
+    """Monthly commit counts per package (columns) indexed by YYYY-MM strings."""
     run_git_cmd(["checkout", "master"])
 
     package_series = {}
@@ -93,21 +96,20 @@ def get_monthly_commits_per_package() -> pd.DataFrame:
         # Count commits per month
         dates = pd.to_datetime(all_dates, format="%Y-%m-%d")
         monthly = dates.to_series().dt.to_period("M").value_counts().sort_index()
-        monthly.index = monthly.index.to_timestamp()
+        monthly.index = monthly.index.strftime("%Y-%m")
         package_series[package] = monthly
 
-    return pd.concat(package_series, axis=1).fillna(0).astype(int)
+    df_git = pd.concat(package_series, axis=1).fillna(0).astype(int)
+    return df_git.rename_axis("time")
 
 
-df_git = get_monthly_commits_per_package()
-
-# Format index as YYYY-MM string
-df_git.index = df_git.index.to_period("M").astype(str)  # ty: ignore[unresolved-attribute]  # DatetimeIndex at runtime
-df_git.index.name = "time"
-
-filename: str = "_monthly_commits_per_package.csv"
-df_git.to_csv(filename)
-print(f"A copy of the data is saved to {filename}")
+if PMG_REPO_PATH:
+    df_git = get_monthly_commits_per_package()
+    df_git.to_csv(CSV_CACHE)
+    print(f"A copy of the data is saved to {CSV_CACHE}")
+else:
+    print(f"PMG_REPO_PATH not set, plotting cached {CSV_CACHE}")
+    df_git = pd.read_csv(CSV_CACHE, index_col="time")
 
 df_git.index = pd.to_datetime(df_git.index, format="%Y-%m")
 
@@ -198,7 +200,9 @@ fig.layout.yaxis.update(
     showgrid=False,
     ticksuffix=" ",  # hack to add more spacing between tick labels and plot
 )
-fig.layout.update(height=500, width=1400, plot_bgcolor="lightgrey")
+fig.layout.update(
+    height=600, width=1400, plot_bgcolor="lightgrey", margin=dict(l=0, r=0, t=10, b=0)
+)
 
-fig.write_image("../../paper/figs/commits-per-package-heatmap.png")
+fig.write_image("../../paper/figs/commits-per-package-heatmap.png", scale=4)
 fig.show()

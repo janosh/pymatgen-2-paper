@@ -55,6 +55,10 @@ trace.texttemplate = "%{label}<br>%{value:,}<br>%{text}"
 trace.textfont.size = 12 * FONT_SCALE  # plotly shrinks to fit, this is the max
 fig.layout.font.size = 12 * FONT_SCALE  # colorbar
 fig.layout.margin = {"l": 0, "r": 0, "b": 0, "t": 0}
+# the colorbar defaults to the full figure height, so with zero top/bottom margin its
+# outermost tick labels (0 and 100) stick out past the canvas and get clipped. Shrink it
+# by half a label at each end, keeping the treemap itself full-bleed.
+fig.layout.coloraxis.colorbar.update(len=0.94, y=0.5, yanchor="middle")
 
 # Print top-level subpackage coverage so the numbers in the paper text can be checked
 for cell_id, value, cov in zip(

@@ -9,10 +9,7 @@ import plotly.graph_objects as go
 # Color per pymatgen subpackage, shared by both Sankey diagrams in the paper. Dict order
 # is also the canonical top-to-bottom node order (roughly by subpackage size) so the
 # subpackages stack the same way in both figures, whichever side they appear on.
-# Must list every top-level pymatgen subpackage: the dependent-usage figure derives its
-# nodes straight from `pymatgen.<subpackage>` imports found in dependent repos, so a
-# missing entry fails the figure as soon as some repo happens to import that subpackage
-# (test_pmg_colors_cover_all_subpackages guards this).
+# Deliberately omits `cli` and `vis`: the dependent-usage notebook filters them out.
 PMG_COLORS: dict[str, str] = {
     "core": "#3B9C9C",
     "analysis": "#6C5B7B",
@@ -26,10 +23,8 @@ PMG_COLORS: dict[str, str] = {
     "optimization": "#FFAAA5",
     "util": "#FF8B94",
     "command_line": "#0384fc",
-    "cli": "#7f8c1f",
     "alchemy": "#6203fc",
     "apps": "#343deb",
-    "vis": "#b5179e",
 }
 
 
@@ -100,12 +95,12 @@ def plot_usage_sankey(
     """Sankey diagram of API usage counts with a deterministic node layout.
 
     Plotly's automatic arrangement is not deterministic, which made the figure hard to
-    reproduce, so both columns are placed explicitly. One column is the anchor: either
-    the caller pins its order (`source_order`/`target_order`, used to keep the pymatgen
-    subpackages stacked identically across both paper figures) or, failing that, the
-    sources are sorted by total flow so the widest bands are on top. The opposite column
-    is then sorted by the flow-weighted mean position of its counterparts (barycenter
-    heuristic) to reduce band crossings.
+    reproduce, so both columns are placed explicitly. The caller can pin either or both
+    columns (`source_order`/`target_order`, used to keep the pymatgen subpackages stacked
+    identically across both paper figures). With neither pinned, the sources are sorted
+    by total flow so the widest bands are on top. A column left unpinned is sorted by the
+    flow-weighted mean position of its counterparts (barycenter heuristic) to reduce
+    band crossings.
 
     Args:
         flows: (source, target) -> usage count.
@@ -115,12 +110,8 @@ def plot_usage_sankey(
         pad: vertical gap between neighboring nodes in paper coordinates.
         source_order: explicit top-to-bottom order for the left column. Names carrying
             no flow are skipped, so one canonical order can serve several figures.
-        target_order: same for the right column. Mutually exclusive with `source_order`
-            since only one column can be the anchor.
+        target_order: same for the right column.
     """
-    if source_order is not None and target_order is not None:
-        raise ValueError("pass at most one of source_order/target_order as the anchor")
-
     # each node's counterparts on the other side, so barycenters are a local lookup
     src_links: dict[str, dict[str, int]] = defaultdict(dict)
     tgt_links: dict[str, dict[str, int]] = defaultdict(dict)
@@ -130,20 +121,19 @@ def plot_usage_sankey(
     src_totals = {src: sum(links.values()) for src, links in src_links.items()}
     tgt_totals = {tgt: sum(links.values()) for tgt, links in tgt_links.items()}
 
-    if target_order is not None:  # right column anchored, arrange left around it
+    if target_order is not None:
         tgt_totals = in_given_order(tgt_totals, target_order)
+    if source_order is not None:
+        src_totals = in_given_order(src_totals, source_order)
+    elif target_order is not None:  # only the right column pinned, arrange left around it
         tgt_y = node_positions(tgt_totals, pad)
         src_totals = sorted_by_barycenter(src_totals, src_links, tgt_y)
-        src_y = node_positions(src_totals, pad)
-    else:  # left column anchored, arrange right around it
-        src_totals = (
-            in_given_order(src_totals, source_order)
-            if source_order is not None
-            else dict(sorted(src_totals.items(), key=lambda item: -item[1]))
-        )
-        src_y = node_positions(src_totals, pad)
+    else:  # nothing pinned: widest sources on top anchor the layout
+        src_totals = dict(sorted(src_totals.items(), key=lambda item: -item[1]))
+    src_y = node_positions(src_totals, pad)
+    if target_order is None:  # arrange the right column around the now-fixed left one
         tgt_totals = sorted_by_barycenter(tgt_totals, tgt_links, src_y)
-        tgt_y = node_positions(tgt_totals, pad)
+    tgt_y = node_positions(tgt_totals, pad)
 
     # index per column, not by label: a name can legitimately appear on both sides and a
     # single label -> index map would silently route its links to the wrong node

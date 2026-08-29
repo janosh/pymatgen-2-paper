@@ -83,6 +83,21 @@ def test_unpinned_side_is_arranged_around_the_pinned_one():
     assert node_labels(fig, "source") == ["scipy", "numpy"]
 
 
+def test_both_sides_pinned_ignore_barycenter():
+    """Pinning both columns keeps e.g. dependencies sorted by usage next to the pmg order."""
+    fig = plot_usage_sankey(
+        DEP_FLOWS,
+        source_colors="#8FB9A8",
+        target_colors=PMG_COLORS,
+        color_links_by="target",
+        # barycenter alone would put scipy above numpy, see previous test
+        source_order=["numpy", "scipy"],
+        target_order=["symmetry", "core", "io"],
+    )
+    assert node_labels(fig, "source") == ["numpy", "scipy"]
+    assert node_labels(fig, "target") == ["symmetry", "core", "io"]
+
+
 @pytest.mark.parametrize(
     ("source_order", "target_order", "match"),
     [
@@ -91,10 +106,10 @@ def test_unpinned_side_is_arranged_around_the_pinned_one():
             ["core", "symmetry"],
             r"nodes missing from explicit node order: \['io'\]",
         ),
-        (
-            ["numpy", "scipy"],
-            list(PMG_COLORS),
-            "pass at most one of source_order/target_order",
+        (  # source_order omits scipy, which carries flow
+            ["numpy"],
+            None,
+            r"nodes missing from explicit node order: \['scipy'\]",
         ),
     ],
 )

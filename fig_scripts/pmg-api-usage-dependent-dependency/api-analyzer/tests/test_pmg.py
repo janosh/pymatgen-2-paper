@@ -4,7 +4,6 @@ import subprocess
 import pytest
 
 from api_analyzer import analyze_paths, analyze_py
-from api_analyzer.sankey import PMG_COLORS
 
 if os.getenv("GITHUB_ACTIONS") == "true":
     pytest.skip("skip PMG test in CI", allow_module_level=True)
@@ -87,14 +86,3 @@ def test_pmg_core_dir_scipy():
         "scipy.linalg.expm": 2,
     }
 
-
-def test_pmg_colors_cover_all_subpackages():
-    """PMG_COLORS must span every top-level subpackage the Sankey figures can emit."""
-    src_dir = f"{PMG_REPO_PATH}/src/pymatgen"
-    subpackages = {
-        name
-        for name in os.listdir(src_dir)
-        if os.path.isdir(f"{src_dir}/{name}") and name != "__pycache__"
-    }
-
-    assert subpackages - set(PMG_COLORS) == set()

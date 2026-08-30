@@ -125,9 +125,7 @@ def plot_usage_sankey(
         tgt_totals = in_given_order(tgt_totals, target_order)
     if source_order is not None:
         src_totals = in_given_order(src_totals, source_order)
-    elif (
-        target_order is not None
-    ):  # only the right column pinned, arrange left around it
+    elif target_order is not None:  # only right column pinned, arrange left around it
         tgt_y = node_positions(tgt_totals, pad)
         src_totals = sorted_by_barycenter(src_totals, src_links, tgt_y)
     else:  # nothing pinned: widest sources on top anchor the layout

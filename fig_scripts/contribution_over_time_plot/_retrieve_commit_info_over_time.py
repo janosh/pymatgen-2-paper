@@ -70,7 +70,7 @@ for line in git_log_output.strip().split("\n"):
         if len(parts) == 5:
             _, commit_hash, name, email, date_str = parts
             try:
-                date = datetime.strptime(date_str, "%Y-%m-%d")
+                date = datetime.fromisoformat(date_str)  # --date=short is YYYY-MM-DD
                 current_commit = {
                     "commit": commit_hash,
                     "name": name.strip(),

@@ -103,7 +103,7 @@ def main() -> None:
 
         user = pr["user"]["login"]
         created_at = pr["created_at"]
-        pr_date = datetime.fromisoformat(created_at.replace("Z", "+00:00"))
+        pr_date = datetime.fromisoformat(created_at)
 
         # Skip GitHub bot accounts
         if user.lower().endswith("[bot]"):
@@ -114,7 +114,7 @@ def main() -> None:
             first_pr_iso = get_first_pr_date(REPO, user)
             if not first_pr_iso:
                 continue
-            first_date = datetime.fromisoformat(first_pr_iso.replace("Z", "+00:00"))
+            first_date = datetime.fromisoformat(first_pr_iso)
             first_pr_dates[user] = first_date
             time.sleep(2)  # avoid triggering 403 again
         else:

@@ -1,7 +1,7 @@
 from pathlib import Path
-from api_analyzer import analyze_py, analyze_notebook, analyze_paths
 
 import pytest
+from api_analyzer import analyze_notebook, analyze_paths, analyze_py
 
 TEST_DIR = Path(__file__).parent / "data"
 

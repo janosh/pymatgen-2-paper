@@ -200,9 +200,7 @@ def analyze_paths(
         if p.name.startswith("."):
             return True
         # skip if any parent directory matches an excluded subdir
-        if any(parent.name in exclude_set for parent in p.parents):
-            return True
-        return False
+        return any(parent.name in exclude_set for parent in p.parents)
 
     for path in resolved_paths:
         if not path.is_dir():
@@ -221,7 +219,8 @@ def analyze_paths(
             elif file.suffix == ".ipynb":
                 try:
                     aliases, usage = analyze_notebook(file, package)
-                except Exception as e:
+                # malformed JSON, bad encoding or an unexpected notebook structure
+                except (ValueError, TypeError, AttributeError) as e:
                     print(f"⚠️ Skipping {file} (error: {e})")
                     continue
             else:

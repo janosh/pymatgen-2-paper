@@ -28,10 +28,11 @@ plotly.io.defaults.default_height = None  # ty: ignore[invalid-assignment]
 
 if not os.path.isfile(CSV_PATH):
     print("Data CSV not found. Running script to generate it...")
-    result = subprocess.run(
+    subprocess.run(
         ["uv", "run", "_retrieve_commit_info_over_time.py"],
         capture_output=True,
         text=True,
+        check=True,
     )
 
 df = pd.read_csv("contributor_commits_by_month.csv.gz", compression="gzip")

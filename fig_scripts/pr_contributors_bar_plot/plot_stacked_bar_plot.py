@@ -26,7 +26,7 @@ with open("_pr_contributors.json") as f:
 binned = defaultdict(lambda: defaultdict(int))
 
 for pr in data.values():
-    pr_date = datetime.fromisoformat(pr["created_at"].replace("Z", "+00:00"))
+    pr_date = datetime.fromisoformat(pr["created_at"])
     first_pr_date = datetime.fromisoformat(pr["first_contribution_date"])
     elapsed_days = (pr_date - first_pr_date).total_seconds() / 86_400
     elapsed_years = elapsed_days / DAYS_PER_YEAR

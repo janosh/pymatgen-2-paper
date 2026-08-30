@@ -71,7 +71,7 @@ def run_git_cmd(args: list[str]) -> subprocess.CompletedProcess[str]:
 
 def get_git_dates(path_prefix: str, since: str, until: str) -> list[str]:
     """Dates (YYYY-MM-DD) of all non-merge commits touching path_prefix in [since, until]."""
-    flags = "log --no-merges --format=%ad --date=short".split()
+    flags = ["log", "--no-merges", "--format=%ad", "--date=short"]
     cmd = [*flags, "--since", since, "--until", until, "--", path_prefix]
     return run_git_cmd(cmd).stdout.strip().splitlines()
 

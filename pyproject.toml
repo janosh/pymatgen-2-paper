@@ -27,6 +27,9 @@ build-backend = "uv_build"
 module-name = "api_analyzer"
 module-root = "fig_scripts/pmg-api-usage-dependent-dependency/api-analyzer"
 
+[tool.ruff.lint]
+ignore = ["C408"]
+
 [tool.ty.src]
 # malformed api_analyzer test fixtures (also ruff-excluded) + exploratory notebooks
 exclude = ["**/api-analyzer/tests/data/**", "**/*.ipynb"]

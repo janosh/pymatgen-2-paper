@@ -2,7 +2,6 @@ import os
 import subprocess
 
 import pytest
-
 from api_analyzer import analyze_paths, analyze_py
 
 if os.getenv("GITHUB_ACTIONS") == "true":
@@ -85,4 +84,3 @@ def test_pmg_core_dir_scipy():
         "scipy.spatial.Voronoi": 1,
         "scipy.linalg.expm": 2,
     }
-

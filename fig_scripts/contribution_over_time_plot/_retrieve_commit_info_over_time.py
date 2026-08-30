@@ -44,7 +44,7 @@ class CommitRow(TypedDict):
 CUTOFF_DATE = "2026-01-01"
 PMG_REPO_PATH = os.environ.get("PMG_REPO_PATH")
 if PMG_REPO_PATH is None or not os.path.isdir(PMG_REPO_PATH):
-    raise EnvironmentError("PMG_REPO_PATH is not set or is invalid.")
+    raise OSError("PMG_REPO_PATH is not set or is invalid.")
 
 subprocess.run(["git", "-C", PMG_REPO_PATH, "checkout", "master"], check=True)
 print("Extracting git commit metadata and line changes...")

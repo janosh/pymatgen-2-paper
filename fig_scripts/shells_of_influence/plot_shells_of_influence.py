@@ -12,7 +12,6 @@ from typing import TypedDict
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle, Rectangle
 
-
 ROOT = Path(__file__).resolve().parents[2]
 
 

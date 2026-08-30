@@ -131,7 +131,7 @@ fig = go.Figure()
 max_citation = df["citations"].max()
 rounded_max = 10 ** math.ceil(math.log10(max_citation))  # e.g., 9500 → 10000
 
-powers_of_10 = [10**i for i in range(0, int(math.log10(rounded_max)) + 1)]
+powers_of_10 = [10**i for i in range(int(math.log10(rounded_max)) + 1)]
 tick_vals = np.log10(powers_of_10)
 tick_text = [str(v) if v < 1000 else f"{v // 1000}k" for v in powers_of_10]
 

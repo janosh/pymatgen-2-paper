@@ -1,5 +1,4 @@
 import pytest
-
 from api_analyzer.sankey import PMG_COLORS, plot_usage_sankey
 
 # Same subpackages on both sides, but with flow totals that would sort them differently:

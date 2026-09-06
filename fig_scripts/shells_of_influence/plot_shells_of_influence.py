@@ -44,7 +44,7 @@ FIGURE_DATA: dict[str, SectionData] = {
         "title": "Contributors",
         "cards": [
             ("284", "total\ncontributors"),
-            ("~150", "pull requests\nper year"),
+            ("~205", "pull requests\nper year"),
         ],
     },
     "ecosystem": {

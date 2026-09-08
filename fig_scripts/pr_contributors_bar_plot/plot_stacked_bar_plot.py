@@ -1,102 +1,55 @@
-# /// script
-# requires-python = ">=3.12"
-# dependencies = [
-#     "plotly",
-#     "pandas",
-#     "kaleido",
-# ]
-# ///
-import json
-from collections import defaultdict
-from datetime import datetime
-from pathlib import Path
+"""Plot merged PRs by contributor tenure using the topic chart's PR population."""
+
+from collections import Counter
 
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 
-ROOT = Path(__file__).resolve().parents[2]
-DAYS_PER_YEAR = 365.25
+from fig_scripts.pr_data import ROOT, PaperPR, annual_counts, load_prs, tenure_group
+
+GROUPS = ["<7 days", "7 days–<1 year", "1–<3 years", "3–<6 years", "≥6 years"]
 
 
-# Load PR data
-with open("_pr_contributors.json") as f:
-    data = json.load(f)
+def make_figure(records: dict[str, PaperPR]) -> go.Figure:
+    """Group all included PRs by merger year and tenure at merger."""
+    grouped = Counter(
+        (int(record["merged_at"][:4]), tenure_group(record))
+        for record in records.values()
+    )
+    counts = pd.DataFrame(
+        [
+            {"year": year, "tenure": group, "count": count}
+            for (year, group), count in sorted(grouped.items())
+        ]
+    )
+    if counts.groupby("year")["count"].sum().to_dict() != dict(annual_counts(records)):
+        raise ValueError("Tenure counts do not reconcile with the PR population")
+    figure = px.bar(
+        counts,
+        x="year",
+        y="count",
+        color="tenure",
+        category_orders={"tenure": GROUPS},
+        color_discrete_sequence=["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"],
+        labels={
+            "year": "Year merged",
+            "count": "Number of merged PRs",
+            "tenure": "Time since first PR",
+        },
+    )
+    figure.update_layout(
+        barmode="stack",
+        font=dict(size=18),
+        xaxis=dict(tickmode="array", tickvals=list(range(2013, 2026, 2))),
+        yaxis=dict(gridcolor="lightgray", griddash="dash"),
+        legend=dict(x=0.01, y=1, traceorder="reversed"),
+        margin=dict(l=0, r=0, t=10, b=0),
+        plot_bgcolor="white",
+        paper_bgcolor="white",
+    )
+    return figure
 
-# Bin PRs by year
-binned = defaultdict(lambda: defaultdict(int))
 
-for pr in data.values():
-    pr_date = datetime.fromisoformat(pr["created_at"])
-    first_pr_date = datetime.fromisoformat(pr["first_contribution_date"])
-    elapsed_days = (pr_date - first_pr_date).total_seconds() / 86_400
-    elapsed_years = elapsed_days / DAYS_PER_YEAR
-
-    if elapsed_days < 7:
-        group = "<7 days"
-    elif elapsed_years < 1:
-        group = "<1 year"
-    elif elapsed_years < 3:
-        group = "1-3 years"
-    elif elapsed_years < 6:
-        group = "3-6 years"
-    else:
-        group = ">6 years"
-
-    binned[pr_date.year][group] += 1
-
-# Convert to DataFrame
-df = pd.DataFrame(binned).T.fillna(0).astype(int)
-df = df.sort_index()  # sort by year
-
-# Ensure consistent column order
-columns = ["<7 days", "<1 year", "1-3 years", "3-6 years", ">6 years"]
-for col in columns:
-    if col not in df:
-        df[col] = 0
-df = df[columns]
-
-# Plot
-colors = [
-    "#1f77b4",  # blue
-    "#ff7f0e",  # orange
-    "#2ca02c",  # green
-    "#d62728",  # red
-    "#9467bd",  # purple
-]
-
-fig = px.bar(
-    df,
-    x=df.index.astype(str),
-    y=columns,
-    # title="Pull Requests by Year",
-    labels={
-        "x": "Year",
-        "value": "Total Number of Pull Requests",
-        "variable": "Year Since First PR",
-    },
-    color_discrete_sequence=colors,
-)
-
-fig.update_layout(
-    barmode="stack",
-    font=dict(size=16),
-    xaxis=dict(
-        title="Year",
-        type="category",  # ensure discrete years
-        tickvals=[str(year) for year in df.index if year % 2 == 1],  # 2013, 2015, ...
-    ),
-    yaxis=dict(
-        title="Total Number of Pull Requests",
-        gridcolor="lightgray",
-        gridwidth=1,
-        griddash="dash",
-    ),
-    # legend inside the plot, upper left where bars are short
-    legend=dict(title="Time since first PR", traceorder="reversed", x=0.01, y=1),
-    margin=dict(l=0, r=0, t=10, b=70),  # b: room for x-axis title
-    plot_bgcolor="white",
-    paper_bgcolor="white",
-    bargap=0.2,
-)
-
-fig.write_image(f"{ROOT}/paper/figs/pr-since-1st.pdf")
+if __name__ == "__main__":
+    make_figure(load_prs()).write_image(f"{ROOT}/paper/figs/pr-since-1st.pdf")

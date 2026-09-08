@@ -49,7 +49,7 @@
 
 #figure(
   image("figs/mindmap.pdf"),
-  caption: [#pmg functionality grouped into research topics, colored by number of papers in each topic citing #pmg.],
+  caption: [Selected research topics of works citing the original #pmg paper, obtained from OpenAlex primary-topic counts and grouped into five thematic branches with LLM assistance. Up to four topics are displayed per branch. Node colors and the color bar share a logarithmic scale; branch counts sum their displayed children.],
 ) <fig:mindmap>
 
 Since 2011, #pmg has enabled both individual and high-throughput computational materials science efforts @ong_python_2013. It started as a central code in the Materials Project @jain_commentary_2013 and nowadays provides many tools for setup and analysis of materials simulations, along with interfaces to various materials science codes. #pmg stands out for its exceptionally broad range of analysis capabilities across elemental, compositional, crystallographic, and material property levels. The library has grown significantly through community efforts, adapting to expanding needs in the fields of materials informatics @butler_machine_2018 and computational materials science. Due to its broad capabilities, #pmg is used in diverse research areas spanning from battery materials to machine learning applications, as shown in @fig:mindmap.
@@ -250,18 +250,18 @@ As illustrated in @fig:pr-topics and @fig:commits-heatmap, the development activ
       gutter: 1em,
       subfigure(
         image("figs/pr-topics-over-time-stacked-bar.pdf"),
-        caption: [Pull request topics over time in the pymatgen repository.],
+        caption: [Merged non-bot pull requests by year and title-based theme.],
         dy: 2.4em,
         label: <fig:pr-topics>,
       ),
       subfigure(
         image("figs/commits-per-package-heatmap.png"),
-        caption: [Monthly commits per pymatgen subpackage (heatmap).],
+        caption: [Commits per six-month period by pymatgen subpackage.],
         dy: 1.5em,
         label: <fig:commits-heatmap>,
       ),
     ),
-    caption: [Development activity in the pymatgen repository over time.],
+    caption: [Development activity in the pymatgen repository. (a) All 2,494 non-bot pull requests merged through December 31, 2025, assigned exactly once by ordered keyword rules; unmatched titles are retained as Other / unclassified. Themes are approximate title-based categories. (b) Commits aggregated into six-month periods by subpackage.],
     gap: 3em,  // room for the placed subfigure captions
   ) <fig:development-activity>
 ]
@@ -298,7 +298,7 @@ Lesson learned: For mature infrastructure libraries, backward compatibility is a
 
 == Test Coverage and Code Quality
 
-As shown in @fig:pmg-code-structure, #pmg achieves approximately 79% test coverage across its 154,000 lines of code, though coverage varies significantly by module. Core functionality (`core`, `phonon`, `symmetry`, `entries`) maintains $>=$ 87% coverage, while visualization (`vis`), the command-line interface (`cli`) and wrappers around external executables (`command_line`) have notably lower coverage ($<=$ 34%). This heterogeneity reflects genuine trade-offs: some modules require licensed external executables (VASP, Gaussian) for meaningful testing, others involve long-running operations, and visualization code requires rendering backends that complicate headless CI. Testing resources have been strategically focused on core modules serving the largest user bases.
+As shown in @fig:pmg-code-structure, the July 31, 2025 coverage report records 60,242 covered statements out of 76,389 executable Python statements (78.9%), though coverage varies significantly by module. Coverage is 90.2% for `core`, 85.8% for `entries`, and 83.6% for `io`, while visualization (`vis`) has 13.9% coverage. Both cell areas and coverage percentages are derived from this report, with package coverage calculated as the number of covered statements divided by the number of executable statements. This heterogeneity reflects genuine trade-offs: some modules require licensed external executables (VASP, Gaussian) for meaningful testing, others involve long-running operations, and visualization code requires rendering backends that complicate headless CI. Testing resources have been strategically focused on core modules serving the largest user bases.
 
 Continuous integration via GitHub Actions runs the `pytest` test suite on every pull request across multiple Python versions. Coverage is tracked via `coverage.py` and reported to Codecov. The Python ecosystem's rapid migration of developer tools to Rust—including #link("https://docs.astral.sh/ruff")[`ruff`] (linting and formatting), #link("https://github.com/astral-sh/ty")[`ty`] (type checking), and #link("https://docs.astral.sh/uv")[`uv`] (package management)—has dramatically accelerated #pmg's CI pipelines and local development workflows. In particular, static type analysis with tools like `mypy` and the much faster Rust-native `ty` catches subtle bugs at development time that would otherwise only surface during testing or production. `ty` is fast enough to run in tight feedback loops with LLM coding agents, catching type errors in seconds rather than minutes even in large codebases like #pmg — enabling rapid iteration toward correct code without waiting for slow test suites. Pre-commit hooks enforce these checks locally. However, the test suite's ~45 minute execution time (despite `pytest-split` parallelization across 4 runners) creates friction for contributors, and improving test efficiency remains an ongoing priority.
 
@@ -331,13 +331,13 @@ As a core component of the base layer of the computational materials science inf
 #place(top + center, float: true, scope: "parent")[
   #figure(
     pad(right: -2em, image("figs/py-pkg-treemap-pymatgen-coverage.pdf")),
-    caption: [#pmg code structure and test coverage. The size of each module represents lines of code, while colors indicate test coverage percentage. Small modules are aggregated into `other` cells for readability.],
+    caption: [#pmg Python code structure and line coverage in the July 31, 2025 coverage.py report. Cell area represents executable statements and color represents the fraction covered by tests. Parent percentages use summed covered and executable statements. Modules are grouped to at most three path components, with groups below 1,500 statements combined into `other` cells and subpackages below 5,000 statements shown as single cells.],
   ) <fig:pmg-code-structure>
 ]
 
 #figure(
   image("figs/pr-since-1st.pdf"),
-  caption: [Pull requests per contributor since their first contribution.],
+  caption: [Annual merged non-bot pull requests grouped by contributor tenure at merger, measured from the author's first PR submission, including unmerged submissions. Years denote merger dates; all 2,494 PRs merged through December 31, 2025 are included, matching @fig:pr-topics. Tenure bins are disjoint, with one year defined as 365.25 days.],
 ) <fig:pr-since-1st>
 
 #figure(

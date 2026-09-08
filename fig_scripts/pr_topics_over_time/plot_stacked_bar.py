@@ -1,108 +1,54 @@
-# /// script
-# requires-python = ">=3.12"
-# dependencies = [
-#     "kaleido",
-#     "pandas",
-#     "plotly",
-# ]
-# ///
-import json
-import re
-from pathlib import Path
+"""Plot exact annual counts from the shared, per-PR topic assignments."""
+
+from collections import Counter
 
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 
-ROOT = Path(__file__).resolve().parents[2]
-
-
-# 1) Load data
-with open("_topics.json", encoding="utf-8") as f:
-    topics_by_year = json.load(f)
-
-# Cutoff at end of 2025-12-31
-topics_by_year.pop("2026", None)
-
-# 2) Theme mapping rules
-THEME_RULES: list[tuple[str, str]] = [
-    (
-        r"bug fix|bugfix|error|correction|refactor|cleanup|quality",
-        "Bug Fixes & Refactoring",
-    ),
-    (r"performance|speed|optimization|algorithms", "Performance"),
-    (
-        r"test|ci|continuous integration|type annotation|code modern|dependency|compatibility|deprecate|breaking",
-        "Testing & Code Quality",
-    ),
-    (r"doc|readme|tutorial", "Documentation"),
-    (
-        r"json|serialize|parse|i/o|io|parser|vasp|fhi-aims|lobster|cp2k|q-?chem|qe|abinit|nwchem|gulp|zeopp|openbabel|jdf|LAMMPS|API",
-        "I/O & Parsing",
-    ),
-    (
-        r"structure|symmetry|elastic|phonon|nmr|band|magnetic|defect|surface|interface|graph|molecule|analyzer|analysis|connectivity|voronoi|phase diagram|chemical system|periodic table|visualization|Magnetism",
-        "Structural & Analysis",
-    ),
-    (
-        r"new features|new modules",
-        "Misc. New Features",
-    ),
-]
+from fig_scripts.pr_data import ROOT, THEMES, PaperPR, annual_counts, load_prs
 
 
-def map_theme(topic: str) -> str:
-    for pat, theme in THEME_RULES:
-        if re.search(pat.lower(), topic.lower()):
-            return theme
+def make_figure(records: dict[str, PaperPR]) -> go.Figure:
+    """Count each PR once, including Other, and check every annual total."""
+    counts = Counter(
+        (int(record["merged_at"][:4]), record["theme"]) for record in records.values()
+    )
+    rows = [
+        {"year": year, "theme": theme, "count": counts[year, theme]}
+        for year in sorted(annual_counts(records))
+        for theme in THEMES
+    ]
+    frame = pd.DataFrame(rows)
+    if frame.groupby("year")["count"].sum().to_dict() != dict(annual_counts(records)):
+        raise ValueError("Topic counts do not reconcile with the PR population")
+    figure = px.bar(
+        frame,
+        x="year",
+        y="count",
+        color="theme",
+        category_orders={"theme": THEMES},
+        color_discrete_sequence=[*px.colors.qualitative.D3[:6], "#999999"],
+        labels={
+            "year": "Year merged",
+            "count": "Number of merged PRs",
+            "theme": "Theme",
+        },
+    )
+    figure.update_layout(
+        barmode="stack",
+        font=dict(size=20),
+        legend=dict(orientation="h", y=1.03, yanchor="bottom", x=0, title_text=""),
+        xaxis=dict(tickmode="array", tickvals=list(range(2013, 2026, 2))),
+        yaxis=dict(gridcolor="lightgray", griddash="dash"),
+        margin=dict(l=0, r=0, t=130, b=0),
+        plot_bgcolor="white",
+        paper_bgcolor="white",
+    )
+    return figure
 
-    print(f"Cannot find a theme for {topic=}")
-    return "Other"
 
-
-# 3) Build dataframe of counts
-rows: list[dict[str, str | int]] = []
-for year, topics in topics_by_year.items():
-    for topic in topics:
-        if match := re.search(r"\((\d+)\)\s*$", topic):
-            row = {"year": int(year), "theme": map_theme(topic), "count": int(match[1])}
-            rows.append(row)
-        else:
-            raise ValueError(f"Cannot extract count from {topic=}")
-
-df = pd.DataFrame(rows)
-counts = df.groupby(["year", "theme"])["count"].sum().unstack(fill_value=0).sort_index()
-
-# 4) Stacked bar plot with counts
-colors = px.colors.qualitative.D3
-
-fig = px.bar(
-    counts,
-    x=counts.index.astype(str),
-    y=counts.columns,
-    # title="PR Topics by Theme",
-    labels={"value": "Number of PRs", "x": "Year", "variable": "Theme"},
-    color_discrete_sequence=colors[: len(counts.columns)],
-)
-
-fig.update_layout(
-    barmode="stack",
-    font=dict(size=22),
-    xaxis=dict(
-        title="Year",
-        type="category",  # ensures categorical x-axis
-        tickvals=[
-            str(year) for year in counts.index if year % 2 == 1
-        ],  # 2013, 2015, ...
-    ),
-    yaxis=dict(title="Number of PRs", gridcolor="lightgray", griddash="dash"),
-    # legend inside the plot, upper left where bars are short
-    legend=dict(title="Theme", traceorder="reversed", x=0.01, y=1),
-    margin=dict(l=0, r=0, t=10, b=0),
-    plot_bgcolor="white",
-    paper_bgcolor="white",
-)
-
-# 1:2 width ratio with the commit heatmap (1400x600) in the paper's subfigure grid
-fig.write_image(
-    f"{ROOT}/paper/figs/pr-topics-over-time-stacked-bar.pdf", width=700, height=600
-)
+if __name__ == "__main__":
+    make_figure(load_prs()).write_image(
+        f"{ROOT}/paper/figs/pr-topics-over-time-stacked-bar.pdf", width=800, height=650
+    )

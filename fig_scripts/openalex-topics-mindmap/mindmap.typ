@@ -4,6 +4,16 @@
 
 #let data = yaml("_llm_summarized_topics.yml")
 
+// Nodes and legend share the same logarithmic scale, including parent sums.
+#let count-max = calc.max(..data.branches.map(branch => branch.children.map(child => child.value).sum()))
+#let count-gradient = gradient.linear(..color.map.viridis)
+#let count-position(value) = {
+  assert(value >= 1 and value <= count-max, message: "Citation count outside color scale: " + str(value))
+  calc.log(value) / calc.log(count-max)
+}
+#let count-color(value) = count-gradient.sample(count-position(value) * 100%)
+#let count-text-color(value) = if count-position(value) < 0.5 { white } else { black }
+
 #set page(width: auto, height: auto, margin: 8pt)
 #set text(weight: "bold")
 
@@ -61,8 +71,9 @@
   // topics
   for (topic_idx, branch) in data.branches.enumerate() {
     let ang = start-angle - topic_idx * angle-step
-    let parent-col = rgb(branch.color)
-    let parent-text-col = rgb(branch.text_color) // from YAML
+    let parent-value = branch.children.map(child => child.value).sum()
+    let parent-col = count-color(parent-value)
+    let parent-text-col = count-text-color(parent-value)
     let sub-start = (if branch.start_angle_deg == none { 45 } else { branch.start_angle_deg }) * 1deg
 
     let pos = (calc.cos(ang) * r1, calc.sin(ang) * r1)
@@ -79,8 +90,8 @@
         pos.at(0) + calc.cos(sub-ang) * r2,
         pos.at(1) + calc.sin(sub-ang) * r2,
       )
-      let child-col = rgb(child.color)
-      let child-text-col = rgb(child.text_color) // from YAML
+      let child-col = count-color(child.value)
+      let child-text-col = count-text-color(child.value)
       node(sub-pos, child.title, color: child-col, text-color: child-text-col, level: "2")
       connect(pos, sub-pos, child-col)
     }
@@ -95,18 +106,17 @@
     content(
       (0, 0),
       frame: "rect",
-      fill: gradient.linear(..color.map.viridis),
+      fill: count-gradient,
       stroke: 0.5pt + rgb("#222222"),
       align(center, box(width: cbar_width, height: cbar_height)),
     )
 
-    // Ticks and labels (log scale: 1, 10, 100, 1000)
-    let tick_labels = ("1", "10", "100", "1000")
-    let num_ticks = tick_labels.len() - 1
-    for (tick_idx, tick_label) in tick_labels.enumerate() {
-      let tick_x = -cbar_width / 2 + (cbar_width * tick_idx / num_ticks)
+    // Powers of ten occupy the same positions used to color the nodes.
+    for exponent in range(int(calc.floor(calc.log(count-max))) + 1) {
+      let tick-value = calc.pow(10, exponent)
+      let tick_x = -cbar_width / 2 + cbar_width * count-position(tick-value)
       line((tick_x, -0.2cm), (tick_x, -0.4cm), stroke: 1pt)
-      content((tick_x, -0.75cm), align(center, text(size: 14pt, tick_label)))
+      content((tick_x, -0.75cm), align(center, text(size: 14pt, str(tick-value))))
     }
     // Axis label
     content((0, -1.5cm), align(center, text(size: 14pt, [Citation Counts])))

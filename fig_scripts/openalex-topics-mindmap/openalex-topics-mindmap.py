@@ -7,7 +7,7 @@
 # - You would need to get `OPENAI_API_KEY` to use OpenAI API, see https://openai.com/api/.
 
 # /// script
-# dependencies = ["requests", "openai", "pyyaml", "pymatviz", "plotly"]
+# dependencies = ["requests", "openai", "pyyaml"]
 # ///
 
 
@@ -15,11 +15,9 @@ import re
 import subprocess
 from collections import Counter
 
-import plotly.colors
 import requests
 import yaml
 from openai import OpenAI
-from pymatviz.utils.plotting import pick_max_contrast_color
 
 # %%
 NUM_OF_MAIN_TOPICS: int = 5
@@ -140,55 +138,24 @@ ordered_main = list(mindmap_dict.items())
 if len(ordered_main) != NUM_OF_MAIN_TOPICS:
     raise ValueError(f"Unexpected number of topics, expect {NUM_OF_MAIN_TOPICS}")
 
-# --- Collect all child values for global min/max ---
-all_values = [count for _, subs in ordered_main for _, count in subs]
-vmin, vmax = min(all_values), max(all_values)
-
-# --- Choose colormap & normalizer ---
-# Use viridis-like colors for consistency with Typst colorbar
-viridis_colors = ["#440154", "#31688e", "#1f9e89", "#35b779", "#b0dd2f", "#fde725"]
-
-
-def value_to_hex(val: float) -> str:
-    """Map a numeric value to a hex color using Plotly's sample_colorscale."""
-    # Normalize value to [0, 1] range
-    normalized = (val - vmin) / (vmax - vmin)
-    # Sample the colorscale at the normalized position
-    color = plotly.colors.sample_colorscale(
-        viridis_colors, normalized, colortype="hex"
-    )[0]
-    return color
-
-
-def with_text_color(hex_color: str) -> tuple[str, str]:
-    """Return (fill_color, max-contrast text color) for the given fill."""
-    return hex_color, str(pick_max_contrast_color(hex_color))
-
+# Colors are derived from counts in Typst using the same scale as the legend.
 
 # --- Build YAML data ---
 branches = []
-for i, (main_title, subtopics) in enumerate(ordered_main):
+for topic_idx, (main_title, subtopics) in enumerate(ordered_main):
     children = []
     for sub_title, count in subtopics:
-        fill, text_col = with_text_color(value_to_hex(count))
         children.append(
             {
                 "title": sub_title,
                 "value": int(count),
-                "color": fill,
-                "text_color": text_col,
             }
         )
-    # Parent color from sum of children
-    parent_val = sum(c["value"] for c in children)
-    parent_fill, parent_text = with_text_color(value_to_hex(parent_val))
     branches.append(
         {
             # remove topic_x header (LLM sometimes ignore this request)
             "title": main_title.split(":", maxsplit=2)[1].strip(),
-            "color": parent_fill,
-            "text_color": parent_text,
-            "start_angle_deg": START_ANGLES[i],
+            "start_angle_deg": START_ANGLES[topic_idx],
             "children": children,
         }
     )

@@ -1,13 +1,17 @@
-name: Tests API analyzer
+name: Tests
 
 on:
     push:
         branches: [main, develop]
         paths:
-            - "fig_scripts/pmg-api-usage-dependent-dependency/api-analyzer/**"
+            - "fig_scripts/**"
+            - "tests/**"
+            - ".github/workflows/test.yml"
     pull_request:
         paths:
-            - "fig_scripts/pmg-api-usage-dependent-dependency/api-analyzer/**"
+            - "fig_scripts/**"
+            - "tests/**"
+            - ".github/workflows/test.yml"
 
 jobs:
     test:
@@ -29,3 +33,6 @@ jobs:
               run: |
                   uv sync
                   uv run --isolated pytest --noconftest tests
+
+            - name: Test figure data
+              run: uv run --no-project --with pytest --with pandas --with plotly python -m pytest tests

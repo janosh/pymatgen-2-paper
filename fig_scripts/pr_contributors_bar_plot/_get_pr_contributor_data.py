@@ -1,142 +1,39 @@
-# /// script
-# requires-python = ">=3.12"
-# dependencies = [
-#     "requests",
-# ]
-# ///
-"""Get all merged PRs and calculate time since first contribution for each."""
+"""Refresh the shared PR snapshot with authenticated, paginated GitHub CLI reads."""
 
+import argparse
 import json
-import os
-import time
-from datetime import datetime
+import subprocess
 
-import requests
-
-GITHUB_TOKEN: str = os.getenv("GITHUB_TOKEN", "")
-REPO: str = "materialsproject/pymatgen"
-DATAFILE: str = "_pr_contributors.json"
-
-if not GITHUB_TOKEN:
-    raise RuntimeError("Set GITHUB_TOKEN environment variable.")
-
-
-HEADERS = {
-    "Authorization": f"token {GITHUB_TOKEN}",
-    "Accept": "application/vnd.github.v3+json",
-}
-
-
-def get_merged_prs(repo: str) -> list[dict]:
-    """Fetch all merged PRs from the given GitHub repo, paginated until empty."""
-    prs = []
-    page = 1
-    while True:
-        url = f"https://api.github.com/repos/{repo}/pulls"
-        params = {
-            "state": "closed",
-            "per_page": 100,
-            "page": page,
-        }
-        response = requests.get(url, headers=HEADERS, params=params)
-        response.raise_for_status()
-        page_prs = response.json()
-
-        merged = [pr for pr in page_prs if pr.get("merged_at")]
-        if not merged:
-            print(f"🛑 No more merged PRs after page {page}")
-            break
-
-        prs.extend(merged)
-        print(f"📦 Loaded page {page}: {len(merged)} merged PRs")
-        page += 1
-        time.sleep(0.3)  # polite delay
-
-    return prs
-
-
-def get_first_pr_date(repo: str, username: str) -> str | None:
-    """Return ISO datetime string of user's first PR in the repo."""
-    url = "https://api.github.com/search/issues"
-    params = {
-        "q": f"repo:{repo} is:pr author:{username}",
-        "sort": "created",
-        "order": "asc",
-        "per_page": 1,
-    }
-    response = requests.get(url, headers=HEADERS, params=params)
-    if response.status_code == 403:
-        print(f"⚠️ Rate limited while querying {username}. Sleeping for 60 seconds...")
-        time.sleep(60)
-        return get_first_pr_date(repo, username)
-
-    if response.status_code == 422:
-        print(f"⚠️ Skipping {username} — user might have changed username")
-        return None
-
-    response.raise_for_status()
-    items = response.json().get("items", [])
-    if items:
-        return items[0]["created_at"]
-    return None
+from fig_scripts.pr_data import PR_FILE, RawPR, annual_counts, prepare_prs
 
 
 def main() -> None:
-    prs = get_merged_prs(REPO)
-    print(f"✅ Total merged PRs fetched: {len(prs)}")
-
-    if os.path.exists(DATAFILE):
-        with open(DATAFILE) as f:
-            existing_data = {int(k): v for k, v in json.load(f).items()}
+    """Fetch all PR states so first-submission dates include unmerged PRs."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--input", help="Read a previously fetched JSONL response")
+    args = parser.parse_args()
+    if args.input:
+        with open(args.input, encoding="utf-8") as stream:
+            response = stream.read()
     else:
-        existing_data = {}
-
-    first_pr_dates: dict[str, datetime] = {
-        v["author"]: datetime.fromisoformat(v["first_contribution_date"])
-        for v in existing_data.values()
-    }
-
-    for pr in prs:
-        pr_number = pr["number"]
-        if pr_number in existing_data:
-            continue  # skip already processed PR
-
-        user = pr["user"]["login"]
-        created_at = pr["created_at"]
-        pr_date = datetime.fromisoformat(created_at)
-
-        # Skip GitHub bot accounts
-        if user.lower().endswith("[bot]"):
-            print(f"⏭️ Skipping user: {user}")
-            continue
-
-        if user not in first_pr_dates:
-            first_pr_iso = get_first_pr_date(REPO, user)
-            if not first_pr_iso:
-                continue
-            first_date = datetime.fromisoformat(first_pr_iso)
-            first_pr_dates[user] = first_date
-            time.sleep(2)  # avoid triggering 403 again
-        else:
-            first_date = first_pr_dates[user]
-
-        years_since = (pr_date - first_date).days / 365.25
-        print(
-            f"PR #{pr_number:5} by {user:20} | {pr_date.date()} | {years_since:.2f} years since first PR"
+        response = subprocess.check_output(
+            [
+                "gh",
+                "api",
+                "repos/materialsproject/pymatgen/pulls?state=all&per_page=100",
+                "--paginate",
+                "--jq",
+                ".[] | {number,title,created_at,merged_at,author:.user.login,author_type:.user.type}",
+            ],
+            text=True,
         )
-
-        existing_data[pr_number] = {
-            "author": user,
-            "title": pr["title"],
-            "created_at": created_at,
-            "first_contribution_date": first_date.isoformat(),
-            "years_since_first": round(years_since, 2),
-        }
-
-        with open(DATAFILE, "w") as f:
-            json.dump(existing_data, f, indent=2, sort_keys=True)
-
-    print("✅ Finished.")
+    raw_records: list[RawPR] = [json.loads(line) for line in response.splitlines()]
+    records = prepare_prs(raw_records)
+    with open(PR_FILE, "w", encoding="utf-8") as stream:
+        json.dump(records, stream, indent=2, ensure_ascii=False)
+        stream.write("\n")
+    print(f"Saved {len(records)} merged non-bot PRs through 2025 to {PR_FILE}")
+    print(dict(sorted(annual_counts(records).items())))
 
 
 if __name__ == "__main__":

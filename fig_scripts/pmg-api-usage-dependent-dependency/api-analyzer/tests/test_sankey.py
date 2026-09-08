@@ -1,5 +1,6 @@
 import pytest
 from api_analyzer.sankey import PMG_COLORS, plot_usage_sankey
+from plotly.graph_objects import Figure
 
 # Same subpackages on both sides, but with flow totals that would sort them differently:
 # on the dependency side `io` dominates, on the dependent side `core` does.
@@ -17,7 +18,7 @@ DEPENDENT_FLOWS: dict[tuple[str, str], int] = {  # (pmg subpackage, dependent) -
 }
 
 
-def node_labels(fig, side: str) -> list[str]:
+def node_labels(fig: Figure, side: str) -> list[str]:
     """Top-to-bottom labels of one column, read back off the placed nodes."""
     node = fig.data[0].node
     xs = sorted({round(x, 3) for x in node.x})
@@ -28,73 +29,73 @@ def node_labels(fig, side: str) -> list[str]:
     return [lbl for _y, lbl in sorted(placed)]
 
 
-def test_pmg_subpackages_stack_identically_on_either_side():
-    """Pinning the pmg column keeps its order consistent across both paper figures."""
+@pytest.mark.parametrize(
+    ("pmg_order", "expected_dependency", "expected_dependent"),
+    [
+        pytest.param(
+            list(PMG_COLORS),
+            ["core", "io", "symmetry"],
+            ["core", "io", "symmetry"],
+            id="canonical-order-skips-absent-subpackages",
+        ),
+        pytest.param(
+            None,
+            ["io", "core", "symmetry"],
+            ["core", "symmetry", "io"],
+            id="unpinned-flow-and-barycenter-order",
+        ),
+    ],
+)
+def test_pmg_subpackage_order(
+    pmg_order: list[str] | None,
+    expected_dependency: list[str],
+    expected_dependent: list[str],
+) -> None:
+    """Pinning aligns the pmg columns; free ordering follows each figure's flows."""
     dep_fig = plot_usage_sankey(
         DEP_FLOWS,
         source_colors="#8FB9A8",
         target_colors=PMG_COLORS,
         color_links_by="target",
-        target_order=list(PMG_COLORS),
+        target_order=pmg_order,
     )
     dependent_fig = plot_usage_sankey(
         DEPENDENT_FLOWS,
         source_colors=PMG_COLORS,
         target_colors="#F7B267",
         color_links_by="source",
-        source_order=list(PMG_COLORS),
+        source_order=pmg_order,
     )
-    # canonical order restricted to subpackages present, absent ones silently skipped
-    assert node_labels(dep_fig, "target") == ["core", "io", "symmetry"]
-    assert node_labels(dependent_fig, "source") == ["core", "io", "symmetry"]
+    assert node_labels(dep_fig, "target") == expected_dependency
+    assert node_labels(dependent_fig, "source") == expected_dependent
 
 
-def test_unpinned_sides_still_sort_by_flow_and_barycenter():
-    """Without an explicit order the pmg column follows flow size, i.e. issue #79."""
-    dep_fig = plot_usage_sankey(
-        DEP_FLOWS,
-        source_colors="#8FB9A8",
-        target_colors=PMG_COLORS,
-        color_links_by="target",
-    )
-    dependent_fig = plot_usage_sankey(
-        DEPENDENT_FLOWS,
-        source_colors=PMG_COLORS,
-        target_colors="#F7B267",
-        color_links_by="source",
-    )
-    # the two columns disagree, which is what the pinned order above fixes
-    assert node_labels(dep_fig, "target") == ["io", "core", "symmetry"]
-    assert node_labels(dependent_fig, "source") == ["core", "symmetry", "io"]
-
-
-def test_unpinned_side_is_arranged_around_the_pinned_one():
-    """The free column still uses the barycenter heuristic to limit crossings."""
+@pytest.mark.parametrize(
+    ("source_order", "expected_source"),
+    [
+        pytest.param(None, ["scipy", "numpy"], id="free-source-uses-barycenter"),
+        pytest.param(
+            ["numpy", "scipy"],
+            ["numpy", "scipy"],
+            id="pinned-source-overrides-barycenter",
+        ),
+    ],
+)
+def test_source_order_with_pinned_target(
+    source_order: list[str] | None, expected_source: list[str]
+) -> None:
+    """The free column follows the pinned column unless explicitly ordered itself."""
     fig = plot_usage_sankey(
         DEP_FLOWS,
         source_colors="#8FB9A8",
         target_colors=PMG_COLORS,
         color_links_by="target",
+        source_order=source_order,
         target_order=["symmetry", "core", "io"],  # deliberately not the flow order
     )
     assert node_labels(fig, "target") == ["symmetry", "core", "io"]
-    # scipy leans on symmetry (top), numpy on io (bottom), so scipy sorts above numpy
-    assert node_labels(fig, "source") == ["scipy", "numpy"]
-
-
-def test_both_sides_pinned_ignore_barycenter():
-    """Pinning both columns keeps e.g. dependencies sorted by usage next to the pmg order."""
-    fig = plot_usage_sankey(
-        DEP_FLOWS,
-        source_colors="#8FB9A8",
-        target_colors=PMG_COLORS,
-        color_links_by="target",
-        # barycenter alone would put scipy above numpy, see previous test
-        source_order=["numpy", "scipy"],
-        target_order=["symmetry", "core", "io"],
-    )
-    assert node_labels(fig, "source") == ["numpy", "scipy"]
-    assert node_labels(fig, "target") == ["symmetry", "core", "io"]
+    # scipy leans on symmetry (top), numpy on io (bottom); free ordering puts scipy first
+    assert node_labels(fig, "source") == expected_source
 
 
 @pytest.mark.parametrize(
@@ -114,7 +115,8 @@ def test_both_sides_pinned_ignore_barycenter():
 )
 def test_invalid_node_order(
     source_order: list[str] | None, target_order: list[str] | None, match: str
-):
+) -> None:
+    """Explicit orders must include every node carrying flow on either side."""
     with pytest.raises(ValueError, match=match):
         plot_usage_sankey(
             DEP_FLOWS,
@@ -126,7 +128,7 @@ def test_invalid_node_order(
         )
 
 
-def test_name_on_both_sides_keeps_its_links_apart():
+def test_name_on_both_sides_keeps_its_links_apart() -> None:
     """A name used as both source and target must not merge into one node."""
     flows = {("core", "alpha"): 100, ("beta", "core"): 50, ("beta", "alpha"): 10}
     fig = plot_usage_sankey(
@@ -149,7 +151,10 @@ def test_name_on_both_sides_keeps_its_links_apart():
         ({(f"s{idx}", "t"): 10 for idx in range(40)}, 0.03, r"need 1\.17 of the 0-1"),
     ],
 )
-def test_layout_rejects_impossible_node_counts(flows, pad: float, match: str):
+def test_layout_rejects_impossible_node_counts(
+    flows: dict[tuple[str, str], int], pad: float, match: str
+) -> None:
+    """Empty flows and excessive padding fail before placing invalid nodes."""
     with pytest.raises(ValueError, match=match):
         plot_usage_sankey(
             flows,

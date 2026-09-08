@@ -35,4 +35,4 @@ jobs:
                   uv run --isolated pytest --noconftest tests
 
             - name: Test figure data
-              run: uv run --no-project --with pytest --with pandas --with plotly python -m pytest tests
+              run: uv run --no-project --with pytest --with pandas --with plotly --with pyyaml python -m pytest tests

@@ -3,6 +3,7 @@
 import json
 import os
 import re
+from bisect import bisect_right
 from collections import Counter
 from datetime import datetime
 from typing import TypedDict
@@ -11,6 +12,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PR_FILE = f"{ROOT}/fig_scripts/pr_topics_over_time/_prs.json"
 CUTOFF = "2026-01-01T00:00:00Z"
 OTHER = "Other / unclassified"
+TENURE_GROUPS = ["<7 days", "7 days–<1 year", "1–<3 years", "3–<6 years", "≥6 years"]
 
 # First match wins: explicit maintenance tasks take priority over scientific domains.
 THEME_RULES = {
@@ -114,11 +116,5 @@ def tenure_group(record: PaperPR) -> str:
         datetime.fromisoformat(record["merged_at"])
         - datetime.fromisoformat(record["first_pr_at"])
     ).total_seconds() / 86_400
-    for threshold, label in zip(
-        [7, 365.25, 3 * 365.25, 6 * 365.25],
-        ["<7 days", "7 days–<1 year", "1–<3 years", "3–<6 years"],
-        strict=True,
-    ):
-        if elapsed_days < threshold:
-            return label
-    return "≥6 years"
+    group_idx = bisect_right((7, 365.25, 3 * 365.25, 6 * 365.25), elapsed_days)
+    return TENURE_GROUPS[group_idx]

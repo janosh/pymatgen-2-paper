@@ -6,9 +6,14 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
-from fig_scripts.pr_data import ROOT, PaperPR, annual_counts, load_prs, tenure_group
-
-GROUPS = ["<7 days", "7 days–<1 year", "1–<3 years", "3–<6 years", "≥6 years"]
+from fig_scripts.pr_data import (
+    ROOT,
+    TENURE_GROUPS,
+    PaperPR,
+    annual_counts,
+    load_prs,
+    tenure_group,
+)
 
 
 def make_figure(records: dict[str, PaperPR]) -> go.Figure:
@@ -30,7 +35,7 @@ def make_figure(records: dict[str, PaperPR]) -> go.Figure:
         x="year",
         y="count",
         color="tenure",
-        category_orders={"tenure": GROUPS},
+        category_orders={"tenure": TENURE_GROUPS},
         color_discrete_sequence=["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"],
         labels={
             "year": "Year merged",

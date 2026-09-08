@@ -46,7 +46,6 @@ PMG_REPO_PATH = os.environ.get("PMG_REPO_PATH")
 if PMG_REPO_PATH is None or not os.path.isdir(PMG_REPO_PATH):
     raise OSError("PMG_REPO_PATH is not set or is invalid.")
 
-subprocess.run(["git", "-C", PMG_REPO_PATH, "checkout", "master"], check=True)
 print("Extracting git commit metadata and line changes...")
 git_log_output = subprocess.check_output(
     [
@@ -54,6 +53,7 @@ git_log_output = subprocess.check_output(
         "-C",
         PMG_REPO_PATH,
         "log",
+        "master",
         f"--until={CUTOFF_DATE}",
         "--numstat",
         "--pretty=format:--COMMIT--|%H|%an|%ae|%ad",
@@ -66,6 +66,9 @@ current_commit: CommitRow | None = None
 
 for line in git_log_output.strip().split("\n"):
     if line.startswith("--COMMIT--|"):
+        if current_commit is not None:
+            rows.append(current_commit)
+        current_commit = None
         parts = line.split("|")
         if len(parts) == 5:
             _, commit_hash, name, email, date_str = parts
@@ -90,9 +93,10 @@ for line in git_log_output.strip().split("\n"):
                 current_commit["lines_removed"] += int(removed)
         except ValueError:
             continue
-    elif not line.strip() and current_commit:
-        rows.append(current_commit)
-        current_commit = None
+
+# A commit ends at the next header or EOF, not at a formatting separator.
+if current_commit is not None:
+    rows.append(current_commit)
 
 # Convert to DataFrame
 df = pd.DataFrame(rows)

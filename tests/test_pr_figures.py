@@ -112,16 +112,14 @@ def test_both_charts_reconcile_with_github_snapshot() -> None:
     assert sum(expected.values()) == len(records) == 2494
     for pr_id, record in records.items():
         assert record["theme"] == classify_pr(record["title"]), pr_id
-    for make_figure in [topic_figure, tenure_figure]:
-        figure = make_figure(records)
+    topics = topic_figure(records)
+    for figure in [topics, tenure_figure(records)]:
         plotted: Counter[int] = Counter()
         for trace in figure.data:
             for year, count in zip(trace.x, trace.y, strict=True):
                 plotted[int(year)] += int(count)
         assert plotted == expected
-    other_trace = next(
-        trace for trace in topic_figure(records).data if trace.name == OTHER
-    )
+    other_trace = next(trace for trace in topics.data if trace.name == OTHER)
     assert (
         sum(other_trace.y)
         == sum(record["theme"] == OTHER for record in records.values())

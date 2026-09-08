@@ -14,13 +14,14 @@ def make_figure(records: dict[str, PaperPR]) -> go.Figure:
     counts = Counter(
         (int(record["merged_at"][:4]), record["theme"]) for record in records.values()
     )
+    totals = annual_counts(records)
     rows = [
         {"year": year, "theme": theme, "count": counts[year, theme]}
-        for year in sorted(annual_counts(records))
+        for year in sorted(totals)
         for theme in THEMES
     ]
     frame = pd.DataFrame(rows)
-    if frame.groupby("year")["count"].sum().to_dict() != dict(annual_counts(records)):
+    if frame.groupby("year")["count"].sum().to_dict() != totals:
         raise ValueError("Topic counts do not reconcile with the PR population")
     figure = px.bar(
         frame,

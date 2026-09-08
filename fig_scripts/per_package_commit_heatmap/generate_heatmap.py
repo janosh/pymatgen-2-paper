@@ -71,15 +71,13 @@ def run_git_cmd(args: list[str]) -> subprocess.CompletedProcess[str]:
 
 def get_git_dates(path_prefix: str, since: str, until: str) -> list[str]:
     """Dates (YYYY-MM-DD) of all non-merge commits touching path_prefix in [since, until]."""
-    flags = ["log", "--no-merges", "--format=%ad", "--date=short"]
+    flags = ["log", "master", "--no-merges", "--format=%ad", "--date=short"]
     cmd = [*flags, "--since", since, "--until", until, "--", path_prefix]
     return run_git_cmd(cmd).stdout.strip().splitlines()
 
 
 def get_monthly_commits_per_package() -> pd.DataFrame:
     """Monthly commit counts per package (columns) indexed by YYYY-MM strings."""
-    run_git_cmd(["checkout", "master"])
-
     package_series = {}
 
     for package in PACKAGES:

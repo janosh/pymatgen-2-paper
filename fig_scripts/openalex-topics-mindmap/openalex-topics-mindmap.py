@@ -56,11 +56,11 @@ The following research topics are from papers that cite pymatgen, with each numb
 Please organize them into {NUM_OF_MAIN_TOPICS} thematic branches that represent broader areas of materials research (e.g., batteries, machine learning, catalysis, ...), for each (sub)topic try to be as concise as possible (ideally within 5 words). Also please avoid duplicates (or very similar) (sub)topics.
 
 Return output in a plain text tree structure (with indentation) without any header or metadata, e.g.:
-    Topic_0:
+    Materials informatics:
         subtopic_0 (count_0)
         subtopic_1 (count_1)
 
-    Topic_1:
+    Energy storage:
         subtopic_0 (count_0)
 
 Topics to work on today:
@@ -143,18 +143,12 @@ if len(ordered_main) != NUM_OF_MAIN_TOPICS:
 # --- Build YAML data ---
 branches = []
 for topic_idx, (main_title, subtopics) in enumerate(ordered_main):
-    children = []
-    for sub_title, count in subtopics:
-        children.append(
-            {
-                "title": sub_title,
-                "value": int(count),
-            }
-        )
+    children = [
+        {"title": sub_title, "value": int(count)} for sub_title, count in subtopics
+    ]
     branches.append(
         {
-            # remove topic_x header (LLM sometimes ignore this request)
-            "title": main_title.split(":", maxsplit=2)[1].strip(),
+            "title": main_title,
             "start_angle_deg": START_ANGLES[topic_idx],
             "children": children,
         }

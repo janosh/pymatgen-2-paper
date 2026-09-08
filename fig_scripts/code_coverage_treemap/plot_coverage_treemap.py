@@ -74,24 +74,18 @@ def coverage_nodes(files: dict[str, FileCoverage]) -> dict[str, tuple[int, int]]
 def make_figure(nodes: dict[str, tuple[int, int]]) -> go.Figure:
     """Use summed executable statements for areas and summed coverage for colors."""
     node_ids = sorted(nodes)
+    counts = [nodes[node_id] for node_id in node_ids]
+    percentages = [100 * covered / statements for statements, covered in counts]
     fig = go.Figure()
     fig.add_treemap(
         ids=node_ids,
         labels=[node_id.split("/")[-1] for node_id in node_ids],
         parents=[node_id.rpartition("/")[0] for node_id in node_ids],
-        values=[nodes[node_id][0] for node_id in node_ids],
+        values=[statements for statements, _ in counts],
         branchvalues="total",
-        marker={
-            "colors": [
-                100 * nodes[node_id][1] / nodes[node_id][0] for node_id in node_ids
-            ],
-            "coloraxis": "coloraxis",
-        },
-        customdata=[nodes[node_id][1] for node_id in node_ids],
-        text=[
-            f"{100 * nodes[node_id][1] / nodes[node_id][0]:.0f}% cov"
-            for node_id in node_ids
-        ],
+        marker={"colors": percentages, "coloraxis": "coloraxis"},
+        customdata=[covered for _, covered in counts],
+        text=[f"{percentage:.0f}% cov" for percentage in percentages],
         texttemplate="%{label}<br>%{value:,}<br>%{text}",
         hovertemplate="%{id}<br>%{customdata:,} / %{value:,} covered statements<br>%{text}<extra></extra>",
         textfont_size=16,

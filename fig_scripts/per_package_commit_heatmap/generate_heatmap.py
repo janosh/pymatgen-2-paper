@@ -39,6 +39,7 @@ PACKAGES: dict[str, str] = {
 }
 
 BIN_MONTHS: int = 6  # bin width in months
+PLOT_START_DATE: str = "2012-01-01"
 
 ROW_SORTING: Literal["total_num_of_commits", "chronology", "alphabetical"] = (
     "total_num_of_commits"
@@ -110,9 +111,18 @@ else:
     df_git = pd.read_csv(CSV_CACHE, index_col="time")
 
 df_git.index = pd.to_datetime(df_git.index, format="%Y-%m")
+df_git = df_git.loc[df_git.index >= PLOT_START_DATE]
 
-# Resample into X-month bins
-df_binned = df_git.copy().resample(f"{BIN_MONTHS}ME").sum().rename_axis("time_binned")
+# Aggregate into calendar half-years (January–June and July–December). Explicit
+# bin-end dates avoid anchoring the bins to the first observation.
+if BIN_MONTHS != 6:
+    raise ValueError(f"Calendar-period binning only supports {BIN_MONTHS=}")
+bin_end_months = np.where(df_git.index.month <= 6, 6, 12)
+bin_ends = pd.DatetimeIndex(
+    pd.to_datetime({"year": df_git.index.year, "month": bin_end_months, "day": 1})
+    + pd.offsets.MonthEnd(0)
+)
+df_binned = df_git.groupby(bin_ends).sum().rename_axis("time_binned")
 
 # Transpose to (package vs time)
 heatmap_data = df_binned.T
@@ -186,8 +196,15 @@ fig.add_heatmap(
 
 # title = f"Commits per Package (log scale, every {BIN_MONTHS} months)"
 # fig.layout.title.update(text=title, x=0.5, font=dict(size=PLOT_TITLE_FONTSIZE))
+year_tick_vals = heatmap_data.columns[::4].tolist()
+if heatmap_data.columns[-1] not in year_tick_vals:
+    year_tick_vals.append(heatmap_data.columns[-1])
 fig.layout.xaxis.update(
     title=dict(text="Year", font=dict(size=XY_AXIS_CBAR_TITLE_FONTSIZE)),
+    type="category",
+    tickmode="array",
+    tickvals=year_tick_vals,
+    ticktext=[date[:4] for date in year_tick_vals],
     tickfont=dict(size=TICK_LABEL_FONTSIZE),
     showgrid=False,
 )

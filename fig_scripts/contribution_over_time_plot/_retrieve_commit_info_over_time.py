@@ -109,7 +109,7 @@ contributor_id_map: dict[tuple[str, str], str] = {}
 next_id = 1
 ids: list[str] = []
 
-for name, email in zip(df["name"], df["email"]):
+for name, email in zip(df["name"], df["email"], strict=True):
     key: tuple[str, str] | None = None
     for existing_key in contributor_id_map:
         if name == existing_key[0] or email == existing_key[1]:

@@ -2,26 +2,30 @@ default_install_hook_types: [pre-commit, commit-msg]
 
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.16.6
+    rev: v0.16.8
     hooks:
       - id: ruff-check
-        args: [--fix, --per-file-ignores, "*.ipynb:E402"]
-        exclude: ^fig_scripts/pmg-api-usage-dependent-dependency/api-analyzer/tests/data/
+        args: [--fix]
       - id: ruff-format
-        exclude: ^fig_scripts/pmg-api-usage-dependent-dependency/api-analyzer/tests/data/
 
   - repo: https://github.com/astral-sh/ty-pre-commit
-    rev: v0.0.79
+    rev: v0.0.83
     hooks:
       - id: ty
-        args: [--isolated] # don't create/update uv.lock or the local .venv
-        env: { UV_FROZEN: "0" } # prek-only: override global UV_FROZEN=1 which would require a uv.lock
+        # Isolate dependency resolution from local environments and user uv indexes.
+        args: [--isolated, --no-config]
+        env: { UV_FROZEN: "0", UV_NO_SYNC: "0" }
 
   - repo: builtin
     hooks:
       - id: check-case-conflict
+      - id: check-json
+      - id: check-merge-conflict
+        args: [--assume-in-merge]
       - id: check-symlinks
+      - id: check-toml
       - id: check-yaml
+      - id: detect-private-key
       - id: end-of-file-fixer
       - id: mixed-line-ending
       - id: trailing-whitespace
@@ -45,11 +49,9 @@ repos:
     hooks:
       - id: markdownlint
         # MD013: line too long
-        # MD024: Multiple headings with the same content
         # MD033: no inline HTML
         # MD041: first line in a file should be a top-level heading
-        # MD025: single title
-        args: [--disable, MD013, MD024, MD025, MD033, MD041, "--"]
+        args: [--disable, MD013, MD033, MD041, "--"]
 
   - repo: https://github.com/kynan/nbstripout
     rev: 0.9.1
@@ -68,7 +70,7 @@ repos:
         types: [file]
 
   - repo: https://github.com/crate-ci/typos
-    rev: v1.50.1
+    rev: v1.50.2
     hooks:
       - id: typos
         types: [text]

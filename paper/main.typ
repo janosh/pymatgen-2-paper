@@ -261,7 +261,7 @@ As illustrated in @fig:pr-topics and @fig:commits-heatmap, the development activ
         label: <fig:commits-heatmap>,
       ),
     ),
-    caption: [Development activity in the pymatgen repository. (a) All 2,494 non-bot pull requests merged through December 31, 2025, assigned exactly once by ordered keyword rules; unmatched titles are retained as Other / unclassified. Themes are approximate title-based categories. (b) Commits aggregated into six-month periods by subpackage.],
+    caption: [Development activity in the pymatgen repository. (a) All 2,494 non-bot pull requests merged through December 31, 2025, assigned exactly once by ordered keyword rules; unmatched titles are retained as Other / unclassified. Themes are approximate title-based categories. (b) Commits by subpackage in calendar half-years (January–June and July–December), from 2012 through 2025.],
     gap: 3em,  // room for the placed subfigure captions
   ) <fig:development-activity>
 ]

@@ -56,7 +56,7 @@ def test_statement_weighting_and_zero_coverage() -> None:
 def test_invalid_coverage_counts(statements: int, covered: int) -> None:
     """Reject inconsistent reports rather than painting misleading percentages."""
     with pytest.raises(
-        ValueError, match="Invalid coverage counts for src/pymatgen/core.py"
+        ValueError, match=r"Invalid coverage counts for src/pymatgen/core\.py"
     ):
         coverage_nodes({"src/pymatgen/core.py": file_coverage(statements, covered)})
 

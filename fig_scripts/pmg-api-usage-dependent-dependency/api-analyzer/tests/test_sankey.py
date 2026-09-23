@@ -24,7 +24,9 @@ def node_labels(fig: Figure, side: str) -> list[str]:
     xs = sorted({round(x, 3) for x in node.x})
     keep = xs[0] if side == "source" else xs[-1]
     placed = [
-        (y, lbl) for x, y, lbl in zip(node.x, node.y, node.label) if round(x, 3) == keep
+        (y, lbl)
+        for x, y, lbl in zip(node.x, node.y, node.label, strict=True)
+        if round(x, 3) == keep
     ]
     return [lbl for _y, lbl in sorted(placed)]
 

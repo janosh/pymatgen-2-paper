@@ -49,29 +49,52 @@ def test_commit_records_end_at_headers_or_eof(
         assert frame[months].sum().tolist() == expected, metric
 
 
-def test_heatmap_reads_master_without_checkout(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+@pytest.mark.parametrize("source", ["git", "cache"])
+def test_heatmap_calendar_bins_without_checkout(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, source: str
 ) -> None:
-    """Read the intended revision explicitly for both historical source layouts."""
+    """Keep empty calendar half-years and exclude dates outside 2012–2025."""
     commands: list[list[str]] = []
     images: list[str] = []
+    dates = [
+        "2011-12-31",
+        "2012-03-01",
+        "2012-06-30",
+        "2012-07-01",
+        "2012-12-31",
+        "2013-07-01",
+        "2025-12-31",
+        "2026-01-01",
+    ]
 
     def read_dates(
         command: list[str], **kwargs: object
     ) -> subprocess.CompletedProcess[str]:
         """Reject commands that could alter the supplied working tree."""
         commands.append(command)
-        assert command[:5] == ["git", "-C", str(tmp_path), "log", "master"]
-        return subprocess.CompletedProcess(
-            command, 0, stdout="2025-01-02\n2025-06-03\n"
+        assert command[:5] == ["git", "-C", str(tmp_path), "log", "main"]
+        flat_layout = command[-1].startswith("pymatgen/")
+        assert command[command.index("--since") + 1] == (
+            "2012-01-01T00:00:00Z" if flat_layout else "2024-06-01T00:00:00Z"
         )
+        assert command[command.index("--until") + 1] == (
+            "2024-06-01T00:00:00Z" if flat_layout else "2026-01-01T00:00:00Z"
+        )
+        output = "\n".join(dates[:6] if flat_layout else dates[6:])
+        return subprocess.CompletedProcess(command, 0, stdout=output)
 
     def save_image(figure: go.Figure, filename: str, **kwargs: object) -> None:
         """Record image export without rendering or changing the paper asset."""
         images.append(os.path.basename(filename))
 
     monkeypatch.chdir(tmp_path)
-    monkeypatch.setenv("PMG_REPO_PATH", str(tmp_path))
+    if source == "git":
+        monkeypatch.setenv("PMG_REPO_PATH", str(tmp_path))
+    else:
+        monkeypatch.delenv("PMG_REPO_PATH", raising=False)
+        pd.DataFrame(
+            {"analysis": 1}, index=pd.Index([date[:7] for date in dates], name="time")
+        ).to_csv(tmp_path / "_monthly_commits_per_package.csv")
     monkeypatch.setattr(subprocess, "run", read_dates)
     monkeypatch.setattr(go.Figure, "write_image", save_image)
     monkeypatch.setattr(go.Figure, "show", lambda *args, **kwargs: None)
@@ -79,5 +102,28 @@ def test_heatmap_reads_master_without_checkout(
         f"{ROOT}/fig_scripts/per_package_commit_heatmap/generate_heatmap.py",
         run_name="__main__",
     )
-    assert len(commands) == 2 * len(namespace["PACKAGES"])
+    assert len(commands) == (2 * len(namespace["PACKAGES"]) if source == "git" else 0)
     assert images == ["commits-per-package-heatmap.png"]
+    binned = namespace["df_binned"]
+    expected = [2, 2, 0, 1, *([0] * 23), 1]
+    for package in binned:
+        assert binned[package].sum() == sum(expected)
+        assert binned[package].tolist() == expected
+    assert binned.index.strftime("%Y-%m-%d").tolist() == [
+        f"{year}-{month_day}"
+        for year in range(2012, 2026)
+        for month_day in ["06-30", "12-31"]
+    ]
+    figure = namespace["fig"]
+    assert list(figure.data[0].x) == binned.index.strftime("%Y-%m").tolist()
+    assert figure.layout.xaxis.type == "category"
+    assert list(figure.layout.xaxis.ticktext) == [
+        "2012",
+        "2014",
+        "2016",
+        "2018",
+        "2020",
+        "2022",
+        "2024",
+        "2025",
+    ]

@@ -18,7 +18,6 @@ import plotly.graph_objects as go
 
 COLORSCALE: str = "viridis"
 TICK_LABEL_FONTSIZE: int = 22
-PLOT_TITLE_FONTSIZE: int = 24
 XY_AXIS_CBAR_TITLE_FONTSIZE: int = 24
 
 PACKAGES: dict[str, str] = {
@@ -38,16 +37,12 @@ PACKAGES: dict[str, str] = {
     "entries": "entries",
 }
 
-BIN_MONTHS: int = 6  # bin width in months
 PLOT_START_DATE: str = "2012-01-01"
+PLOT_END_DATE: str = "2026-01-01"  # exclusive
 
 ROW_SORTING: Literal["total_num_of_commits", "chronology", "alphabetical"] = (
     "total_num_of_commits"
 )
-
-# Start/end identifiers (can be dates or commit hashes)
-START_COMMIT: str = "fa7f41d8bd769a04cca1f78242ebf072664c871d"
-END_COMMIT: str = "2026-01-01"
 
 # When pymatgen changed from flat to src layout
 # commit: 9100860d7d938560610bcfadd04923b53756548e
@@ -72,8 +67,16 @@ def run_git_cmd(args: list[str]) -> subprocess.CompletedProcess[str]:
 
 def get_git_dates(path_prefix: str, since: str, until: str) -> list[str]:
     """Dates (YYYY-MM-DD) of all non-merge commits touching path_prefix in [since, until]."""
-    flags = ["log", "master", "--no-merges", "--format=%ad", "--date=short"]
-    cmd = [*flags, "--since", since, "--until", until, "--", path_prefix]
+    flags = ["log", "main", "--no-merges", "--format=%ad", "--date=short"]
+    cmd = [
+        *flags,
+        "--since",
+        f"{since}T00:00:00Z",
+        "--until",
+        f"{until}T00:00:00Z",
+        "--",
+        path_prefix,
+    ]
     return run_git_cmd(cmd).stdout.strip().splitlines()
 
 
@@ -86,11 +89,11 @@ def get_monthly_commits_per_package() -> pd.DataFrame:
 
         # Flat layout (before June 2024)
         flat_path = f"pymatgen/{package}"
-        all_dates.extend(get_git_dates(flat_path, START_COMMIT, LAYOUT_SWITCH_DATE))
+        all_dates.extend(get_git_dates(flat_path, PLOT_START_DATE, LAYOUT_SWITCH_DATE))
 
         # Src layout (from June 2024 onward)
         src_path = f"src/pymatgen/{package}"
-        all_dates.extend(get_git_dates(src_path, LAYOUT_SWITCH_DATE, END_COMMIT))
+        all_dates.extend(get_git_dates(src_path, LAYOUT_SWITCH_DATE, PLOT_END_DATE))
 
         # Count commits per month
         dates = pd.to_datetime(all_dates, format="%Y-%m-%d")
@@ -111,18 +114,15 @@ else:
     df_git = pd.read_csv(CSV_CACHE, index_col="time")
 
 df_git.index = pd.to_datetime(df_git.index, format="%Y-%m")
-df_git = df_git.loc[df_git.index >= PLOT_START_DATE]
 
-# Aggregate into calendar half-years (January–June and July–December). Explicit
-# bin-end dates avoid anchoring the bins to the first observation.
-if BIN_MONTHS != 6:
-    raise ValueError(f"Calendar-period binning only supports {BIN_MONTHS=}")
-bin_end_months = np.where(df_git.index.month <= 6, 6, 12)
-bin_ends = pd.DatetimeIndex(
-    pd.to_datetime({"year": df_git.index.year, "month": bin_end_months, "day": 1})
-    + pd.offsets.MonthEnd(0)
+# A complete monthly grid enforces the plotting window and retains empty periods.
+# Anchor half-years in January, then label them by their June/December end dates.
+calendar_months = pd.date_range(
+    PLOT_START_DATE, PLOT_END_DATE, freq="MS", inclusive="left"
 )
-df_binned = df_git.groupby(bin_ends).sum().rename_axis("time_binned")
+df_git = df_git.reindex(calendar_months, fill_value=0)
+df_binned = df_git.resample("6MS").sum().rename_axis("time_binned")
+df_binned.index += pd.offsets.MonthEnd(6)
 
 # Transpose to (package vs time)
 heatmap_data = df_binned.T
@@ -194,8 +194,6 @@ fig.add_heatmap(
     connectgaps=False,
 )
 
-# title = f"Commits per Package (log scale, every {BIN_MONTHS} months)"
-# fig.layout.title.update(text=title, x=0.5, font=dict(size=PLOT_TITLE_FONTSIZE))
 year_tick_vals = heatmap_data.columns[::4].tolist()
 if heatmap_data.columns[-1] not in year_tick_vals:
     year_tick_vals.append(heatmap_data.columns[-1])

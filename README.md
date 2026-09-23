@@ -47,8 +47,7 @@ to the code that uses them.
   dependent packages.
 - `pr-topics-over-time-stacked-bar.pdf`: annual pull requests in the pymatgen
   repository, categorized by theme.
-- `commits-per-package-heatmap.png`: pymatgen package-level commit activity over
-  time, aggregated into 6-month periods.
+- `commits-per-package-heatmap.png`: pymatgen package-level commit activity from 2012 through 2025, aggregated into calendar half-years (January–June and July–December).
 - `py-pkg-treemap-pymatgen-coverage.pdf`: pymatgen Python code structure and test coverage, with module size representing executable statements and color representing line coverage percentage from the same coverage.py report.
 - `pr-since-1st.pdf`: annual pymatgen pull requests grouped by contributor
   tenure since first pull request.

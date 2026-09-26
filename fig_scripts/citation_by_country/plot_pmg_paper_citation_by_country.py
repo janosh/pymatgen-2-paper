@@ -1,5 +1,5 @@
 # /// script
-# dependencies = ["geopandas", "numpy", "pandas", "plotly", "pycountry", "requests", "kaleido"]
+# dependencies = ["numpy", "pandas", "plotly", "pycountry", "requests", "kaleido"]
 # ///
 
 
@@ -14,11 +14,8 @@ import gzip
 import json
 import math
 import os
-import tempfile
-import zipfile
 from collections import Counter
 
-import geopandas as gpd
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
@@ -33,23 +30,14 @@ CACHE_FILE: str = "_citation_country_counts.json.gz"
 # cutoff date for collecting citation data from OpenAlex
 CUTOFF_DATE: str = "2026-01-01"
 
-SHOW_LABEL: bool = False
-LABEL_THRESHOLD: int = 100  # Only show labels for countries above this
 
-
-def get_citing_countries(work_id: str, cutoff_date: str | None = None) -> Counter:
-    PER_PAGE = 200
-    countries_counter = Counter()
+def get_citing_countries() -> Counter[str]:
+    """Count institution countries over all authorships of works citing WORK_ID."""
+    countries_counter: Counter[str] = Counter()
+    filter_str = f"cites:{WORK_ID},from_publication_date:<{CUTOFF_DATE}"
     cursor = "*"
-
-    # Build filter string
-    filters = [f"cites:{work_id}"]
-    if cutoff_date:
-        filters.append(f"from_publication_date:<{cutoff_date}")
-    filter_str = ",".join(filters)
-
     while cursor:
-        url = f"{BASE_URL}?filter={filter_str}&per-page={PER_PAGE}&cursor={cursor}"
+        url = f"{BASE_URL}?filter={filter_str}&per-page=200&cursor={cursor}"
         response = requests.get(url, timeout=5)
         response.raise_for_status()
         data = response.json()
@@ -66,75 +54,41 @@ def get_citing_countries(work_id: str, cutoff_date: str | None = None) -> Counte
     return countries_counter
 
 
-def load_or_fetch_countries(
-    work_id: str,
-    cache_file: str = CACHE_FILE,
-) -> Counter:
-    if os.path.exists(cache_file):
+def load_or_fetch_countries() -> Counter[str]:
+    """Read cached country counts, fetching and caching them from OpenAlex if absent."""
+    if os.path.isfile(CACHE_FILE):
         print("Loading cached data...")
-        with gzip.open(cache_file, "rt", encoding="utf-8") as f:
-            return Counter(json.load(f))
+        with gzip.open(CACHE_FILE, "rt", encoding="utf-8") as file:
+            return Counter(json.load(file))
 
     print("Fetching citation data... (expect ~30 sec)")
-    country_counts = get_citing_countries(work_id, CUTOFF_DATE)
-    with gzip.open(cache_file, "wt", encoding="utf-8") as f:
-        json.dump(dict(country_counts), f, separators=(",", ":"))  # no pretty-print
+    country_counts = get_citing_countries()
+    with gzip.open(CACHE_FILE, "wt", encoding="utf-8") as file:
+        json.dump(dict(country_counts), file, separators=(",", ":"))  # no pretty-print
     return country_counts
 
 
-# Collect data
-country_counts = load_or_fetch_countries(WORK_ID)
-
-
-# Convert to DataFrame
-def convert_iso2_to_iso3(iso2_code: str) -> str:
+def lookup_country(iso2_code: str) -> pycountry.db.Country:
     """Plotly choropleth requires ISO alpha-3 codes, e.g. USA instead of US."""
     country = pycountry.countries.get(alpha_2=iso2_code)
     if country is None:
         raise ValueError(f"unknown ISO alpha-2 code: {iso2_code!r}")
-    return country.alpha_3
+    return country
 
 
-def iso3_to_country_name(code3: str) -> str:
-    """Map an ISO alpha-3 code to its country name."""
-    country = pycountry.countries.get(alpha_3=code3)
-    if country is None:
-        raise ValueError(f"unknown ISO alpha-3 code: {code3!r}")
-    return country.name
-
-
+country_counts = load_or_fetch_countries()
 df = pd.DataFrame(country_counts.items(), columns=["country_code_2", "citations"])
 df["log_citations"] = np.log10(df["citations"].replace(0, np.nan))
-df["iso_alpha"] = df["country_code_2"].map(convert_iso2_to_iso3)
-df = df.dropna(subset=["iso_alpha"])
-df["country_name"] = df["iso_alpha"].map(iso3_to_country_name)
-
-# Get country area using GeoPandas
-with tempfile.TemporaryDirectory() as tmpdir:
-    with zipfile.ZipFile("_110m_cultural.zip", "r") as z:
-        z.extractall(tmpdir)
-
-    full_shp_path = os.path.join(tmpdir, "ne_110m_admin_0_countries.shp")
-
-    # Load with geopandas
-    gdf = gpd.read_file(full_shp_path).to_crs("ESRI:54009")
-
-gdf["area_km2"] = gdf.geometry.area / 1e6
-df = df.merge(
-    gdf[["ISO_A3", "area_km2"]], left_on="iso_alpha", right_on="ISO_A3", how="left"
-)
-
-# Plot
-fig = go.Figure()
+countries = df["country_code_2"].map(lookup_country)
+df["iso_alpha"] = [country.alpha_3 for country in countries]
+df["country_name"] = [country.name for country in countries]
 
 # Choropleth base map with log color scaling
-max_citation = df["citations"].max()
-rounded_max = 10 ** math.ceil(math.log10(max_citation))  # e.g., 9500 → 10000
-
-powers_of_10 = [10**i for i in range(int(math.log10(rounded_max)) + 1)]
-tick_vals = np.log10(powers_of_10)
+max_exponent = math.ceil(math.log10(df["citations"].max()))  # e.g., 9500 → 10^4
+powers_of_10 = [10**exponent for exponent in range(max_exponent + 1)]
 tick_text = [str(v) if v < 1000 else f"{v // 1000}k" for v in powers_of_10]
 
+fig = go.Figure()
 fig.add_choropleth(
     locations=df["iso_alpha"],
     z=df["log_citations"],
@@ -145,33 +99,16 @@ fig.add_choropleth(
             text="Citations",
             font=dict(size=18),
         ),
-        tickvals=tick_vals,
+        tickvals=np.log10(powers_of_10),
         ticktext=tick_text,
         tickfont=dict(size=18),
     ),
     hovertemplate="<b>%{text}</b><br>Citations: %{customdata}<extra></extra>",
     customdata=df["citations"],  # citation count in hover
     zmin=np.log10(1),
-    zmax=np.log10(rounded_max),
+    zmax=np.log10(10**max_exponent),
 )
 
-# Labels on top (scaled by area if available)
-df_labels = df[(df["citations"] >= LABEL_THRESHOLD) & df["area_km2"].notna()].copy()
-df_labels["font_size"] = np.clip(np.log10(df_labels["area_km2"]) * 2, 6, 14)
-
-# Plot one label per trace
-if SHOW_LABEL:
-    for _, row in df_labels.iterrows():
-        fig.add_scattergeo(
-            locations=[row["iso_alpha"]],
-            text=[row["citations"]],
-            mode="text",
-            textfont=dict(size=row["font_size"], color="black"),
-            showlegend=False,
-        )
-
-# fig_title = "Citations by Country for 1ˢᵗ pymatgen Paper"
-# fig.layout.title.update(text=fig_title, font=dict(size=28), x=0.5, xanchor="center")
 fig.layout.geo.update(
     showframe=True, showcoastlines=False, projection_type="natural earth"
 )

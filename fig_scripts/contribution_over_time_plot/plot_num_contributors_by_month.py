@@ -15,7 +15,6 @@ import plotly.graph_objects as go
 ROOT = Path(__file__).resolve().parents[2]
 
 
-PLOT_TITLE_FONTSIZE: float = 22
 XY_AXIS_CBAR_TITLE_FONTSIZE: float = 22
 TICK_LABEL_FONTSIZE: float = 20
 
@@ -35,7 +34,7 @@ if not os.path.isfile(CSV_PATH):
         check=True,
     )
 
-df = pd.read_csv("contributor_commits_by_month.csv.gz", compression="gzip")
+df = pd.read_csv(CSV_PATH, compression="gzip")
 df_grouped = df.groupby("contributor_id").sum(numeric_only=True)
 
 # Convert columns to datetime
@@ -51,27 +50,23 @@ years = pd.to_datetime(active_annual.index.astype(str), format="%Y")
 fig = go.Figure()
 
 # Line 1: Active contributors (left axis)
-fig.add_trace(
-    go.Scatter(
-        x=years,
-        y=active_annual.values,
-        mode="lines+markers",
-        name="Active Contributors",
-        yaxis="y",
-        line=dict(width=3),
-    )
+fig.add_scatter(
+    x=years,
+    y=active_annual.values,
+    mode="lines+markers",
+    name="Active Contributors",
+    yaxis="y",
+    line=dict(width=3),
 )
 
 # Line 2: Annual commits (right axis)
-fig.add_trace(
-    go.Scatter(
-        x=years,
-        y=commits_annual.values,
-        mode="lines+markers",
-        name="Annual Commits",
-        yaxis="y2",
-        line=dict(width=3, dash="dot"),
-    )
+fig.add_scatter(
+    x=years,
+    y=commits_annual.values,
+    mode="lines+markers",
+    name="Annual Commits",
+    yaxis="y2",
+    line=dict(width=3, dash="dot"),
 )
 
 fig.update_layout(

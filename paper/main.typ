@@ -256,7 +256,7 @@ As illustrated in @fig:pr-topics and @fig:commits-heatmap, the development activ
       ),
       subfigure(
         image("figs/commits-per-package-heatmap.png"),
-        caption: [Commits per six-month period by pymatgen subpackage.],
+        caption: [Commits per calendar half-year by pymatgen subpackage.],
         dy: 1.5em,
         label: <fig:commits-heatmap>,
       ),

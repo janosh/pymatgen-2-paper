@@ -76,10 +76,18 @@ def make_figure(nodes: dict[str, tuple[int, int]]) -> go.Figure:
     node_ids = sorted(nodes)
     counts = [nodes[node_id] for node_id in node_ids]
     percentages = [100 * covered / statements for statements, covered in counts]
+    # Plotly renders parent headers as a single line, so put their coverage in the label
+    parent_ids = {node_id.rpartition("/")[0] for node_id in node_ids}
+    labels = [
+        f"{node_id.split('/')[-1]} ({percentage:.0f}% cov)"
+        if node_id in parent_ids
+        else node_id.split("/")[-1]
+        for node_id, percentage in zip(node_ids, percentages, strict=True)
+    ]
     fig = go.Figure()
     fig.add_treemap(
         ids=node_ids,
-        labels=[node_id.split("/")[-1] for node_id in node_ids],
+        labels=labels,
         parents=[node_id.rpartition("/")[0] for node_id in node_ids],
         values=[statements for statements, _ in counts],
         branchvalues="total",

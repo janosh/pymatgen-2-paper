@@ -37,6 +37,12 @@ def test_statement_weighting_and_zero_coverage() -> None:
     root_idx = list(trace.ids).index("pymatgen")
     assert trace.values[root_idx] == 11215
     assert trace.text[root_idx] == "86% cov"
+    # Parent headers render one line, so their coverage must live in the label.
+    labels = dict(zip(trace.ids, trace.labels, strict=True))
+    assert labels["pymatgen"] == "pymatgen (86% cov)"
+    assert labels["pymatgen/core"] == "core (90% cov)"
+    assert labels["pymatgen/io"] == "io"  # collapsed into a leaf
+    assert labels["pymatgen/core/other"] == "other"
     # One division and multiplication in f64; 1e-13 percentage points is conservative.
     assert trace.marker.colors[root_idx] == pytest.approx(
         100 * 9605 / 11215, rel=0, abs=1e-13

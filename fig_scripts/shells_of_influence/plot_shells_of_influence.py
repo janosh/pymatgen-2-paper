@@ -37,13 +37,13 @@ FIGURE_DATA: dict[str, SectionData] = {
     "stewardship": {
         "eyebrow": "STEWARDSHIP",
         "title": "Core\nmaintainers",
-        "cards": [("2", "total")],
+        "cards": [("2–3", "lead")],
     },
     "community": {
         "eyebrow": "COMMUNITY DEVELOPMENT",
         "title": "Contributors",
         "cards": [
-            ("284", "total\ncontributors"),
+            ("276", "pull request\ncontributors"),
             ("~205", "pull requests\nper year"),
         ],
     },

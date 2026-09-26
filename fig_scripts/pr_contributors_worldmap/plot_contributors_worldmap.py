@@ -10,6 +10,8 @@
 # ]
 # ///
 
+"""Plot merged PRs per contributor country as a log-scaled world map."""
+
 from pathlib import Path
 
 import numpy as np
@@ -22,21 +24,17 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def country_to_iso3(name: str) -> str:
-    try:
-        return pycountry.countries.lookup(name).alpha_3
-    except LookupError:
-        # Manually correct some country names
-        MANUAL_COUNTRY_NAME: dict[str, str] = {"Russia": "Russian Federation"}
-        name = MANUAL_COUNTRY_NAME[name]
-        return pycountry.countries.lookup(name).alpha_3
+    """Map a country name to its ISO alpha-3 code, correcting names pycountry lacks."""
+    manual_country_names = {"Russia": "Russian Federation"}
+    return pycountry.countries.lookup(manual_country_names.get(name, name)).alpha_3
 
 
 # Load PR info
 pr_info = pd.read_csv("pr_info.csv")
 
 # Load username to country mapping
-with open("user_to_country.yaml", encoding="utf-8") as f:
-    country_data = yaml.safe_load(f)
+with open("user_to_country.yaml", encoding="utf-8") as file:
+    country_data = yaml.safe_load(file)
 
 username_to_country: dict[str, str] = {}
 for source in ("manual", "from_pmg_doc", "from_github"):
@@ -59,10 +57,7 @@ country_counts = df.groupby("country", as_index=False)["pr_count"].sum()
 country_counts["iso3"] = country_counts["country"].apply(country_to_iso3)
 
 # Compute log-scaled values
-country_counts["prs"] = country_counts["pr_count"]
-country_counts["log_prs"] = country_counts["prs"].clip(lower=1).map(np.log10)
-
-max_prs: int = country_counts["prs"].max()
+country_counts["log_prs"] = country_counts["pr_count"].clip(lower=1).map(np.log10)
 
 ticks = [1, 10, 100, 1000]
 
@@ -74,10 +69,10 @@ fig.add_choropleth(
     locationmode="ISO-3",
     z=country_counts["log_prs"],
     text=country_counts["country"],
-    customdata=country_counts["prs"],
+    customdata=country_counts["pr_count"],
     colorscale="temps",
     zmin=np.log10(1),
-    zmax=np.log10(max_prs),
+    zmax=np.log10(country_counts["pr_count"].max()),
     colorbar=dict(
         title="PRs",
         tickvals=np.log10(ticks),
@@ -86,13 +81,6 @@ fig.add_choropleth(
     ),
     hovertemplate="<b>%{text}</b><br>PRs: %{customdata}<extra></extra>",
 )
-
-# fig.layout.title.update(
-#     text="Merged PRs per Country (log scale)",
-#     font=dict(size=28),
-#     x=0.5,
-#     xanchor="center",
-# )
 
 fig.layout.geo.update(
     showframe=True,

@@ -1,3 +1,5 @@
+from typing import Any
+
 import pytest
 from api_analyzer.sankey import PMG_COLORS, plot_usage_sankey
 from plotly.graph_objects import Figure
@@ -100,36 +102,6 @@ def test_source_order_with_pinned_target(
     assert node_labels(fig, "source") == expected_source
 
 
-@pytest.mark.parametrize(
-    ("source_order", "target_order", "match"),
-    [
-        (  # target_order omits io, which carries flow
-            None,
-            ["core", "symmetry"],
-            r"nodes missing from explicit node order: \['io'\]",
-        ),
-        (  # source_order omits scipy, which carries flow
-            ["numpy"],
-            None,
-            r"nodes missing from explicit node order: \['scipy'\]",
-        ),
-    ],
-)
-def test_invalid_node_order(
-    source_order: list[str] | None, target_order: list[str] | None, match: str
-) -> None:
-    """Explicit orders must include every node carrying flow on either side."""
-    with pytest.raises(ValueError, match=match):
-        plot_usage_sankey(
-            DEP_FLOWS,
-            source_colors="#8FB9A8",
-            target_colors=PMG_COLORS,
-            color_links_by="target",
-            source_order=source_order,
-            target_order=target_order,
-        )
-
-
 def test_name_on_both_sides_keeps_its_links_apart() -> None:
     """A name used as both source and target must not merge into one node."""
     flows = {("core", "alpha"): 100, ("beta", "core"): 50, ("beta", "alpha"): 10}
@@ -146,22 +118,28 @@ def test_name_on_both_sides_keeps_its_links_apart() -> None:
 
 
 @pytest.mark.parametrize(
-    ("flows", "pad", "match"),
+    ("flows", "kwargs", "match"),
     [
-        ({}, 0.03, "no nodes to place"),
+        (
+            DEP_FLOWS,
+            {"target_order": ["core", "symmetry"]},
+            r"missing .* order: \['io'\]",
+        ),
+        (DEP_FLOWS, {"source_order": ["numpy"]}, r"missing .* order: \['scipy'\]"),
+        ({}, {}, "no nodes to place"),
         # 40 sources at pad=0.03 need 1.17 of the 0-1 axis for gaps alone
-        ({(f"s{idx}", "t"): 10 for idx in range(40)}, 0.03, r"need 1\.17 of the 0-1"),
+        ({(f"s{idx}", "t"): 10 for idx in range(40)}, {}, r"need 1\.17 of the 0-1"),
     ],
 )
-def test_layout_rejects_impossible_node_counts(
-    flows: dict[tuple[str, str], int], pad: float, match: str
+def test_invalid_layout(
+    flows: dict[tuple[str, str], int], kwargs: dict[str, Any], match: str
 ) -> None:
-    """Empty flows and excessive padding fail before placing invalid nodes."""
+    """Orders omitting flow-carrying nodes, empty flows and excess padding raise."""
     with pytest.raises(ValueError, match=match):
         plot_usage_sankey(
             flows,
             source_colors="#111111",
             target_colors="#222222",
             color_links_by="source",
-            pad=pad,
+            **kwargs,
         )

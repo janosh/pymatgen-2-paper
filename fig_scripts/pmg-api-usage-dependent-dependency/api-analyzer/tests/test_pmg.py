@@ -1,5 +1,6 @@
 import os
 import subprocess
+from collections.abc import Iterator
 
 import pytest
 from api_analyzer import analyze_paths, analyze_py
@@ -17,7 +18,8 @@ if not os.path.isdir(PMG_REPO_PATH):
 
 
 @pytest.fixture(scope="module", autouse=True)
-def checkout_pmg_commit():
+def checkout_pmg_commit() -> Iterator[None]:
+    """Check out the pinned pymatgen commit for the module, then restore HEAD."""
     orig = subprocess.check_output(
         ["git", "-C", PMG_REPO_PATH, "rev-parse", "HEAD"], text=True
     ).strip()
@@ -40,7 +42,8 @@ def checkout_pmg_commit():
     )
 
 
-def test_pmg_py_numpy():
+def test_pmg_py_numpy() -> None:
+    """Counts numpy calls in a large pymatgen module."""
     aliases, usage = analyze_py(
         f"{PMG_REPO_PATH}/src/pymatgen/core/structure.py", package="numpy"
     )
@@ -51,7 +54,8 @@ def test_pmg_py_numpy():
     assert len(usage) == 37
 
 
-def test_pmg_py_scipy():
+def test_pmg_py_scipy() -> None:
+    """Resolves `from scipy... import` aliases and their calls."""
     aliases, usage = analyze_py(
         f"{PMG_REPO_PATH}/src/pymatgen/core/surface.py", package="scipy"
     )
@@ -69,7 +73,8 @@ def test_pmg_py_scipy():
     }
 
 
-def test_pmg_core_dir_scipy():
+def test_pmg_core_dir_scipy() -> None:
+    """Merges scipy usage across a pymatgen package directory."""
     aliases, usage = analyze_paths(
         f"{PMG_REPO_PATH}/src/pymatgen/core", package="scipy"
     )

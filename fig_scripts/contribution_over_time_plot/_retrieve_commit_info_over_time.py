@@ -64,26 +64,28 @@ git_log_output = subprocess.check_output(
 rows: list[CommitRow] = []
 current_commit: CommitRow | None = None
 
+# Rows are appended on their header line and their numstat lines are summed in place,
+# so a commit ends at the next header or EOF, not at a formatting separator.
 for line in git_log_output.strip().split("\n"):
     if line.startswith("--COMMIT--|"):
-        if current_commit is not None:
-            rows.append(current_commit)
         current_commit = None
         parts = line.split("|")
-        if len(parts) == 5:
-            _, commit_hash, name, email, date_str = parts
-            try:
-                date = datetime.fromisoformat(date_str)  # --date=short is YYYY-MM-DD
-                current_commit = {
-                    "commit": commit_hash,
-                    "name": name.strip(),
-                    "email": email.strip().lower(),
-                    "date": date,
-                    "lines_added": 0,
-                    "lines_removed": 0,
-                }
-            except ValueError:
-                current_commit = None
+        if len(parts) != 5:
+            continue
+        _, commit_hash, name, email, date_str = parts
+        try:
+            date = datetime.fromisoformat(date_str)  # --date=short is YYYY-MM-DD
+        except ValueError:
+            continue
+        current_commit = {
+            "commit": commit_hash,
+            "name": name.strip(),
+            "email": email.strip().lower(),
+            "date": date,
+            "lines_added": 0,
+            "lines_removed": 0,
+        }
+        rows.append(current_commit)
     elif current_commit and line.strip():
         try:
             added, removed, _ = line.split("\t")
@@ -93,10 +95,6 @@ for line in git_log_output.strip().split("\n"):
                 current_commit["lines_removed"] += int(removed)
         except ValueError:
             continue
-
-# A commit ends at the next header or EOF, not at a formatting separator.
-if current_commit is not None:
-    rows.append(current_commit)
 
 # Convert to DataFrame
 df = pd.DataFrame(rows)
@@ -123,32 +121,12 @@ for name, email in zip(df["name"], df["email"], strict=True):
 
 df["contributor_id"] = ids
 
-# Group for commits per user/month
-commit_counts = (
-    df.groupby(["contributor_id", "name", "email", "month"])
-    .size()
-    .unstack(fill_value=0)
-)
-commit_counts.columns = [d.strftime("%Y-%m") for d in commit_counts.columns]
-commit_counts = commit_counts.reset_index()
-
-# Group for lines changed per user/month
-lines_changed = (
-    df.groupby(["contributor_id", "name", "email", "month"])["lines_changed"]
-    .sum()
-    .unstack(fill_value=0)
-)
-lines_changed.columns = [d.strftime("%Y-%m") for d in lines_changed.columns]
-lines_changed = lines_changed.reset_index()
-
-# Save both CSVs
-commit_counts.to_csv(
-    "contributor_commits_by_month.csv.gz", index=False, compression="gzip"
-)
-lines_changed.to_csv(
-    "contributor_lines_changed_by_month.csv.gz", index=False, compression="gzip"
-)
-
+# Commits and lines changed per user/month, one gzipped CSV each
+grouped = df.groupby(["contributor_id", "name", "email", "month"])["lines_changed"]
 print("✅ CSV files saved:")
-print("  - contributor_commits_by_month.csv.gz")
-print("  - contributor_lines_changed_by_month.csv.gz")
+for metric, counts in [("commits", grouped.size()), ("lines_changed", grouped.sum())]:
+    table = counts.unstack(fill_value=0)
+    table.columns = [month.strftime("%Y-%m") for month in table.columns]
+    filename = f"contributor_{metric}_by_month.csv.gz"
+    table.reset_index().to_csv(filename, index=False, compression="gzip")
+    print(f"  - {filename}")

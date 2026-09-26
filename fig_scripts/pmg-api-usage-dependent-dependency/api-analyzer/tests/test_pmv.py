@@ -1,5 +1,6 @@
 import os
 import subprocess
+from collections.abc import Iterator
 
 import pytest
 from api_analyzer import analyze_notebook, analyze_paths, analyze_py
@@ -17,7 +18,8 @@ if not os.path.isdir(PMV_REPO_PATH):
 
 
 @pytest.fixture(scope="module", autouse=True)
-def checkout_pmv_commit():
+def checkout_pmv_commit() -> Iterator[None]:
+    """Check out the pinned pymatviz commit for the module, then restore HEAD."""
     orig = subprocess.check_output(
         ["git", "-C", PMV_REPO_PATH, "rev-parse", "HEAD"], text=True
     ).strip()
@@ -40,12 +42,9 @@ def checkout_pmv_commit():
     )
 
 
-def test_pmv_py():
-    """
-    NOTE:
-        1. `local_env` is lazily imported, ensure it's captured.
-        2. `core.Structure` is type checking only, should not be captured.
-    """
+def test_pmv_py() -> None:
+    """Lazy imports are captured, `if TYPE_CHECKING:` imports are not."""
+    # `local_env` is lazily imported, `core.Structure` is type checking only
     aliases, usage = analyze_py(
         f"{PMV_REPO_PATH}/pymatviz/chem_env.py", package="pymatgen"
     )
@@ -55,7 +54,8 @@ def test_pmv_py():
     assert usage["pymatgen.analysis.local_env.CrystalNN"] >= 1
 
 
-def test_pmv_ipynb():
+def test_pmv_ipynb() -> None:
+    """Aliases and calls are collected from a real notebook."""
     aliases, usage = analyze_notebook(
         f"{PMV_REPO_PATH}/examples/widgets/jupyter_demo.ipynb", package="pymatgen"
     )
@@ -67,27 +67,33 @@ def test_pmv_ipynb():
     assert usage["pymatgen.core.Lattice.cubic"] == 2
 
 
-def test_pmv_src():
-    aliases, usage = analyze_paths(f"{PMV_REPO_PATH}/pymatviz", package="pymatgen")
-    assert {
-        "pymatgen.core.Structure",
-        "pymatgen.analysis.chemenv.coordination_environments.coordination_geometries",
-    }.issubset(aliases.values())
+@pytest.mark.parametrize(
+    ("subdir", "expected_aliases", "expected_call"),
+    [
+        (
+            "pymatviz",
+            {
+                "pymatgen.core.Structure",
+                "pymatgen.analysis.chemenv.coordination_environments.coordination_geometries",
+            },
+            "pymatgen.core.Structure.from_sites",
+        ),
+        (
+            "examples",
+            {"pymatgen.core.Composition", "pymatgen.io.vasp.sets.MPStaticSet"},
+            "pymatgen.core.Element.from_Z",
+        ),
+    ],
+)
+def test_pmv_dir(subdir: str, expected_aliases: set[str], expected_call: str) -> None:
+    """Directory analysis finds known aliases and calls in pymatviz source/examples."""
+    aliases, usage = analyze_paths(f"{PMV_REPO_PATH}/{subdir}", package="pymatgen")
+    assert expected_aliases.issubset(aliases.values())
+    assert usage[expected_call] >= 1
 
-    assert usage["pymatgen.core.Structure.from_sites"] >= 1
 
-
-def test_pmv_examples():
-    aliases, usage = analyze_paths(f"{PMV_REPO_PATH}/examples", package="pymatgen")
-    assert {
-        "pymatgen.core.Composition",
-        "pymatgen.io.vasp.sets.MPStaticSet",
-    }.issubset(aliases.values())
-
-    assert usage["pymatgen.core.Element.from_Z"] >= 1
-
-
-def test_pmv_exclude():
+def test_pmv_exclude() -> None:
+    """Excluding every dir with pymatgen usage leaves nothing."""
     aliases, usage = analyze_paths(
         f"{PMV_REPO_PATH}",
         package="pymatgen",

@@ -1,13 +1,3 @@
-from .analyzer import (
-    ApiAnalyzerPy,
-    analyze_notebook,
-    analyze_paths,
-    analyze_py,
-)
-
-__all__ = [
-    "ApiAnalyzerPy",
-    "analyze_notebook",
-    "analyze_paths",
-    "analyze_py",
-]
+from .analyzer import analyze_notebook as analyze_notebook
+from .analyzer import analyze_paths as analyze_paths
+from .analyzer import analyze_py as analyze_py

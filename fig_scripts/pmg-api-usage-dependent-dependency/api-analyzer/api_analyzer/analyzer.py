@@ -1,30 +1,8 @@
 import ast
 import json
 import warnings
-from collections import defaultdict
+from collections import Counter
 from pathlib import Path
-from tempfile import NamedTemporaryFile
-
-
-def _annotate_parents(tree: ast.AST) -> None:
-    """Add `.parent` links so we can walk up the tree."""
-    for parent in ast.walk(tree):
-        for child in ast.iter_child_nodes(parent):
-            child.parent = parent  # ty: ignore[unresolved-attribute]
-
-
-def _in_type_checking_block(node: ast.AST) -> bool:
-    """Check if in an `if TYPE_CHECKING:` block."""
-    parent = getattr(node, "parent", None)
-    while parent is not None:
-        if (
-            isinstance(parent, ast.If)
-            and isinstance(parent.test, ast.Name)
-            and parent.test.id == "TYPE_CHECKING"
-        ):
-            return True
-        parent = getattr(parent, "parent", None)
-    return False
 
 
 class ApiAnalyzerPy(ast.NodeVisitor):
@@ -36,132 +14,118 @@ class ApiAnalyzerPy(ast.NodeVisitor):
         # alias map: local name → full path
         self.aliases: dict[str, str] = {}
         # usage counts
-        self.usage: dict[str, int] = defaultdict(int)
+        self.usage: Counter[str] = Counter()
+        # whether the visited node is nested in an `if TYPE_CHECKING:` block
+        self.in_type_checking = False
 
-    def visit_Import(self, node) -> None:
-        if _in_type_checking_block(node):
+    def visit_If(self, node: ast.If) -> None:
+        """Skip imports nested anywhere in an `if TYPE_CHECKING:` block."""
+        outer = self.in_type_checking
+        self.in_type_checking = outer or (
+            isinstance(node.test, ast.Name) and node.test.id == "TYPE_CHECKING"
+        )
+        self.generic_visit(node)
+        self.in_type_checking = outer
+
+    def visit_Import(self, node: ast.Import) -> None:
+        """Record `import pkg.mod [as name]` aliases."""
+        if self.in_type_checking:
             return
         for alias in node.names:
             if alias.name.startswith(self.package):
                 asname = alias.asname or alias.name.split(".")[-1]
                 self.aliases[asname] = alias.name
 
-    def visit_ImportFrom(self, node) -> None:
-        if _in_type_checking_block(node):
+    def visit_ImportFrom(self, node: ast.ImportFrom) -> None:
+        """Record `from pkg.mod import name [as alias]` aliases."""
+        if self.in_type_checking:
             return
         if node.module and node.module.startswith(self.package):
             for alias in node.names:
                 asname = alias.asname or alias.name
                 self.aliases[asname] = f"{node.module}.{alias.name}"
 
-    def visit_Call(self, node) -> None:
+    def visit_Call(self, node: ast.Call) -> None:
         """Track function/method calls."""
-        if isinstance(node.func, ast.Attribute):
-            base = node.func.value
-            if isinstance(base, ast.Name) and base.id in self.aliases:
-                full = f"{self.aliases[base.id]}.{node.func.attr}"
-                self.usage[full] += 1
-        elif isinstance(node.func, ast.Name):
-            if node.func.id in self.aliases:
-                full = self.aliases[node.func.id]
-                self.usage[full] += 1
+        func = node.func
+        if (
+            isinstance(func, ast.Attribute)
+            and isinstance(func.value, ast.Name)
+            and func.value.id in self.aliases
+        ):
+            self.usage[f"{self.aliases[func.value.id]}.{func.attr}"] += 1
+        elif isinstance(func, ast.Name) and func.id in self.aliases:
+            self.usage[self.aliases[func.id]] += 1
         self.generic_visit(node)
 
 
-def analyze_py(
-    path: str | Path, package: str, ipynb_name: str | None = None
+def analyze_source(
+    text: str, package: str, label: str | Path
 ) -> tuple[dict[str, str], dict[str, int]]:
-    """
-    Analyze a Python file for package API usage.
+    """Analyze Python source code for package API usage.
+
+    Args:
+        text: Python source code.
+        package: Package name to track (e.g., "numpy").
+        label: File name reported if the source fails to parse.
 
     Returns:
-        aliases (dict): Mapping of local names → full package paths.
-        usage (dict): Mapping of package API calls → count.
-        ipynb_name (str): Used for tracking original name for ipynb file.
+        aliases: Mapping of local names → full package paths.
+        usage: Mapping of package API calls → count.
     """
-    path = Path(path)
-
-    if path.suffix != ".py":
-        raise ValueError(f"cannot analyze non-py file: {path}")
-
-    text = path.read_text(encoding="utf-8")
-
     with warnings.catch_warnings():
         warnings.filterwarnings(
             "ignore",
-            message="invalid escape sequence",  # from ipynb
+            # from analyzed foreign code, text differs across Python versions:
+            # "invalid escape sequence '\\W'" (<=3.13) vs '"\\W" is an invalid ...'
+            message=r".*invalid escape sequence",
             category=SyntaxWarning,
         )
         try:
             tree = ast.parse(text)
         except SyntaxError as e:
-            path = ipynb_name or path  # overwrite with original ipynb name
-            print(f"⚠️  Skipping {path} (AST parse error: {e})")
+            print(f"⚠️  Skipping {label} (AST parse error: {e})")
             return {}, {}
-
-    _annotate_parents(tree)
 
     analyzer = ApiAnalyzerPy(package)
     analyzer.visit(tree)
     return analyzer.aliases, dict(analyzer.usage)
 
 
+def analyze_py(path: str | Path, package: str) -> tuple[dict[str, str], dict[str, int]]:
+    """Analyze a Python (.py) file for package API usage, see `analyze_source`."""
+    path = Path(path)
+    if path.suffix != ".py":
+        raise ValueError(f"cannot analyze non-py file: {path}")
+    return analyze_source(path.read_text(encoding="utf-8"), package, path)
+
+
 def analyze_notebook(
     path: str | Path, package: str
 ) -> tuple[dict[str, str], dict[str, int]]:
+    """Analyze a Jupyter notebook (.ipynb) for package API usage.
+
+    All code cells are analyzed together as one script (minus Jupyter magics, shell
+    and help commands) so aliases imported in one cell resolve in later cells.
+    See `analyze_source` for the return values.
     """
-    Analyze API usage of a Jupyter notebook (.ipynb).
-
-    Args:
-        path: Path to the .ipynb file.
-        package: Package name to track (e.g., "numpy").
-
-    Returns:
-        aliases: Mapping of local alias -> fully qualified name
-        usage: Mapping of API call -> usage count
-    """
-
-    def clean_notebook_code(code: str) -> str:
-        """Remove Jupyter magics and shell commands."""
-        cleaned: list[str] = []
-        for line in code.splitlines():
-            if not line or line.lstrip().startswith(("!", "%", "?")):
-                continue  # skip shell/magic/help commands
-            cleaned.append(line)
-        return "\n".join(cleaned)
-
     path = Path(path)
     if path.suffix != ".ipynb":
         raise ValueError(f"cannot analyze non-ipynb file: {path}")
 
-    nb = json.loads(path.read_text(encoding="utf-8"))
-
-    # Collect all code cells together into one big script
-    combined_code_lines: list[str] = []
-    for cell in nb.get("cells", []):
-        if cell.get("cell_type") != "code":
-            continue
-        code = "".join(cell.get("source", []))
-        code = clean_notebook_code(code)
-        if code.strip():
-            combined_code_lines.append(code)
-    combined_code = "\n\n".join(combined_code_lines)
-
-    if not combined_code.strip():
-        return {}, {}
-
-    # Write full notebook code into one temp .py file
-    with NamedTemporaryFile("w", suffix=".py", delete=False) as tmp:
-        tmp.write(combined_code)
-        tmp_path = Path(tmp.name)
-
-    # Analyze once, with full context
-    aliases, usage = analyze_py(tmp_path, package, str(path))
-
-    # Clean up
-    tmp_path.unlink(missing_ok=True)
-
-    return aliases, usage
+    notebook = json.loads(path.read_text(encoding="utf-8"))
+    cell_codes = (
+        "\n".join(
+            line
+            for line in "".join(cell.get("source", [])).splitlines()
+            # skip blank lines and shell/magic/help commands
+            if line and not line.lstrip().startswith(("!", "%", "?"))
+        )
+        for cell in notebook.get("cells", [])
+        if cell.get("cell_type") == "code"
+    )
+    combined_code = "\n\n".join(code for code in cell_codes if code.strip())
+    return analyze_source(combined_code, package, path)
 
 
 def analyze_paths(
@@ -184,34 +148,23 @@ def analyze_paths(
     """
     if isinstance(paths, (str, Path)):
         paths = [paths]
-    resolved_paths = list(map(Path, paths))
+    exclude_set = {exclude} if isinstance(exclude, str) else set(exclude or [])
 
-    if exclude is None:
-        exclude = []
-    elif isinstance(exclude, str):
-        exclude = [exclude]
-    exclude_set = set(exclude)
+    def should_skip(path: Path) -> bool:
+        """Skip hidden files/dirs and anything below an excluded directory."""
+        return path.name.startswith(".") or any(
+            parent.name in exclude_set for parent in path.parents
+        )
 
     all_aliases: dict[str, str] = {}
-    all_usage: dict[str, int] = defaultdict(int)
-
-    def should_skip(p: Path) -> bool:
-        # skip hidden files/dirs
-        if p.name.startswith("."):
-            return True
-        # skip if any parent directory matches an excluded subdir
-        return any(parent.name in exclude_set for parent in p.parents)
-
-    for path in resolved_paths:
-        if not path.is_dir():
-            raise NotADirectoryError(f"{path} is not a directory")
-
-        if should_skip(path):
+    all_usage: Counter[str] = Counter()
+    for root in map(Path, paths):
+        if not root.is_dir():
+            raise NotADirectoryError(f"{root} is not a directory")
+        if should_skip(root):
             continue
 
-        candidates = path.rglob("*")
-
-        for file in candidates:
+        for file in root.rglob("*"):
             if should_skip(file):
                 continue
             if file.suffix == ".py":
@@ -227,7 +180,6 @@ def analyze_paths(
                 continue
 
             all_aliases.update(aliases)
-            for k, v in usage.items():
-                all_usage[k] += v
+            all_usage.update(usage)
 
     return all_aliases, dict(all_usage)

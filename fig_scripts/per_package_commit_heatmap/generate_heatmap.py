@@ -10,7 +10,6 @@ Rows (packages) sorted by total number of commits (descending).
 
 import os
 import subprocess
-from typing import Literal
 
 import numpy as np
 import pandas as pd
@@ -40,14 +39,6 @@ PACKAGES: dict[str, str] = {
 PLOT_START_DATE: str = "2012-01-01"
 PLOT_END_DATE: str = "2026-01-01"  # exclusive
 
-ROW_SORTING: Literal["total_num_of_commits", "chronology", "alphabetical"] = (
-    "total_num_of_commits"
-)
-
-# When pymatgen changed from flat to src layout
-# commit: 9100860d7d938560610bcfadd04923b53756548e
-LAYOUT_SWITCH_DATE: str = "2024-06-01"
-
 CSV_CACHE: str = "_monthly_commits_per_package.csv"
 
 # Set PMG_REPO_PATH to a local pymatgen clone to regenerate the commit counts,
@@ -55,29 +46,20 @@ CSV_CACHE: str = "_monthly_commits_per_package.csv"
 PMG_REPO_PATH: str = os.environ.get("PMG_REPO_PATH", "")
 
 
-def run_git_cmd(args: list[str]) -> subprocess.CompletedProcess[str]:
-    """Run a git command inside the pymatgen repo and return the completed process."""
-    return subprocess.run(
-        ["git", "-C", PMG_REPO_PATH, *args],
-        capture_output=True,
-        encoding="utf-8",
-        check=True,
-    )
+def get_git_dates(path_prefixes: list[str]) -> list[str]:
+    """Dates (YYYY-MM-DD) of non-merge commits touching any of path_prefixes in the plot window.
 
-
-def get_git_dates(path_prefix: str, since: str, until: str) -> list[str]:
-    """Dates (YYYY-MM-DD) of all non-merge commits touching path_prefix in [since, until]."""
-    flags = ["log", "main", "--no-merges", "--format=%ad", "--date=short"]
+    Each commit is counted once even if it touches several of the given paths.
+    """
     cmd = [
-        *flags,
-        "--since",
-        f"{since}T00:00:00Z",
-        "--until",
-        f"{until}T00:00:00Z",
-        "--",
-        path_prefix,
+        *["git", "-C", PMG_REPO_PATH, "log", "main", "--no-merges"],
+        *["--format=%ad", "--date=short"],
+        *["--since", f"{PLOT_START_DATE}T00:00:00Z"],
+        *["--until", f"{PLOT_END_DATE}T00:00:00Z"],
+        *["--", *path_prefixes],
     ]
-    return run_git_cmd(cmd).stdout.strip().splitlines()
+    process = subprocess.run(cmd, capture_output=True, encoding="utf-8", check=True)
+    return process.stdout.strip().splitlines()
 
 
 def get_monthly_commits_per_package() -> pd.DataFrame:
@@ -85,15 +67,10 @@ def get_monthly_commits_per_package() -> pd.DataFrame:
     package_series = {}
 
     for package in PACKAGES:
-        all_dates = []
-
-        # Flat layout (before June 2024)
-        flat_path = f"pymatgen/{package}"
-        all_dates.extend(get_git_dates(flat_path, PLOT_START_DATE, LAYOUT_SWITCH_DATE))
-
-        # Src layout (from June 2024 onward)
-        src_path = f"src/pymatgen/{package}"
-        all_dates.extend(get_git_dates(src_path, LAYOUT_SWITCH_DATE, PLOT_END_DATE))
+        # pymatgen moved from flat to src layout on 2024-06-26 (commit 9100860d7), so
+        # count both path spellings over the full window instead of a cutoff date
+        paths = [f"pymatgen/{package}", f"src/pymatgen/{package}"]
+        all_dates = get_git_dates(paths)
 
         # Count commits per month
         dates = pd.to_datetime(all_dates, format="%Y-%m-%d")
@@ -101,7 +78,7 @@ def get_monthly_commits_per_package() -> pd.DataFrame:
         monthly.index = monthly.index.strftime("%Y-%m")
         package_series[package] = monthly
 
-    df_git = pd.concat(package_series, axis=1).fillna(0).astype(int)
+    df_git = pd.concat(package_series, axis=1).fillna(0).astype(int).sort_index()
     return df_git.rename_axis("time")
 
 
@@ -129,34 +106,12 @@ heatmap_data = df_binned.T
 heatmap_data.columns = heatmap_data.columns.to_series().dt.strftime("%Y-%m")
 
 # Sort packages (rows) by total commit count (descending)
-print(f"Sorting packages by {ROW_SORTING}.")
-if ROW_SORTING == "total_num_of_commits":
-    heatmap_data["__total__"] = heatmap_data.sum(axis=1)
-    heatmap_data = heatmap_data.sort_values("__total__", ascending=False)
-    heatmap_data = heatmap_data.drop(columns="__total__")
-
-# Sort packages from oldest (top) to latest
-elif ROW_SORTING == "chronology":
-    # Find the earliest month with a non-zero commit for each package
-    first_commit_time = {
-        package: df_git[df_git[package] > 0].index.min() for package in df_git.columns
-    }
-
-    # Use this order to reorder the heatmap_data rows
-    package_order = [
-        mod for mod, _ in sorted(first_commit_time.items(), key=lambda x: x[1])
-    ]
-    heatmap_data = heatmap_data.loc[package_order]
-
-elif ROW_SORTING == "alphabetical":
-    heatmap_data = heatmap_data.sort_index()
-
-else:
-    raise ValueError(f"{ROW_SORTING=} not supported")
+heatmap_data = heatmap_data.loc[
+    heatmap_data.sum(axis=1).sort_values(ascending=False).index
+]
 
 # Replace 0 with NaN (grey color) and apply log10
-log_data = heatmap_data.replace(0, np.nan)
-log_data = np.log10(log_data)
+log_data = np.log10(heatmap_data.replace(0, np.nan))
 
 # Colorbar ticks still show original value
 zmin = np.nanmin(log_data.values)
@@ -181,12 +136,11 @@ fig.add_heatmap(
         ticktext=tick_text,
         tickfont=dict(size=TICK_LABEL_FONTSIZE),
         thickness=20,
-        # len=0.8,
         x=1.02,
         tickmode="array",
     ),
-    zmin=np.nanmin(log_data.values),
-    zmax=np.nanmax(log_data.values),
+    zmin=zmin,
+    zmax=zmax,
     customdata=heatmap_data.values,  # Original data for hover
     hovertemplate="<b>%{y}</b><br>Time: %{x}<br>Commits: %{customdata}<extra></extra>",
     hoverongaps=False,

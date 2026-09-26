@@ -73,15 +73,15 @@ def test_heatmap_calendar_bins_without_checkout(
         """Reject commands that could alter the supplied working tree."""
         commands.append(command)
         assert command[:5] == ["git", "-C", str(tmp_path), "log", "main"]
-        flat_layout = command[-1].startswith("pymatgen/")
-        assert command[command.index("--since") + 1] == (
-            "2012-01-01T00:00:00Z" if flat_layout else "2024-06-01T00:00:00Z"
-        )
-        assert command[command.index("--until") + 1] == (
-            "2024-06-01T00:00:00Z" if flat_layout else "2026-01-01T00:00:00Z"
-        )
-        output = "\n".join(dates[:6] if flat_layout else dates[6:])
-        return subprocess.CompletedProcess(command, 0, stdout=output)
+        # Both layouts are queried together over the full window so commits made
+        # before the 2024-06-26 src-layout move are not dropped
+        flat_path, src_path = command[-2:]
+        assert command[-3] == "--"
+        assert src_path == f"src/{flat_path}"
+        assert flat_path.startswith("pymatgen/")
+        assert command[command.index("--since") + 1] == "2012-01-01T00:00:00Z"
+        assert command[command.index("--until") + 1] == "2026-01-01T00:00:00Z"
+        return subprocess.CompletedProcess(command, 0, stdout="\n".join(dates))
 
     def save_image(figure: go.Figure, filename: str, **kwargs: object) -> None:
         """Record image export without rendering or changing the paper asset."""
@@ -102,13 +102,12 @@ def test_heatmap_calendar_bins_without_checkout(
         f"{ROOT}/fig_scripts/per_package_commit_heatmap/generate_heatmap.py",
         run_name="__main__",
     )
-    assert len(commands) == (2 * len(namespace["PACKAGES"]) if source == "git" else 0)
+    assert len(commands) == (len(namespace["PACKAGES"]) if source == "git" else 0)
     assert images == ["commits-per-package-heatmap.png"]
     binned = namespace["df_binned"]
     expected = [2, 2, 0, 1, *([0] * 23), 1]
     for package in binned:
-        assert binned[package].sum() == sum(expected)
-        assert binned[package].tolist() == expected
+        assert binned[package].tolist() == expected, package
     assert binned.index.strftime("%Y-%m-%d").tolist() == [
         f"{year}-{month_day}"
         for year in range(2012, 2026)
@@ -118,12 +117,6 @@ def test_heatmap_calendar_bins_without_checkout(
     assert list(figure.data[0].x) == binned.index.strftime("%Y-%m").tolist()
     assert figure.layout.xaxis.type == "category"
     assert list(figure.layout.xaxis.ticktext) == [
-        "2012",
-        "2014",
-        "2016",
-        "2018",
-        "2020",
-        "2022",
-        "2024",
+        *map(str, range(2012, 2025, 2)),
         "2025",
     ]

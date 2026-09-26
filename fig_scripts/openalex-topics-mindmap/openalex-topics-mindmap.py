@@ -13,7 +13,6 @@
 
 import re
 import subprocess
-from collections import Counter
 
 import requests
 import yaml
@@ -31,13 +30,11 @@ response = requests.get(
     "https://api.openalex.org/works", params=params, timeout=10
 ).json()
 
-topic_counter = Counter(
-    {
-        group.get("key_display_name", "None"): group["count"]
-        for group in response.get("group_by")
-        if group["count"] >= 10  # Count for top 50 topics is around 10
-    }
-)
+topic_counter = {
+    group.get("key_display_name", "None"): group["count"]
+    for group in response["group_by"]
+    if group["count"] >= 10  # Count for top 50 topics is around 10
+}
 
 print("Topics from OpenAlex:")
 for topic, count in topic_counter.items():
@@ -72,19 +69,13 @@ chat_response = client.responses.create(
     input=prompt,
 )
 
-# print(chat_response.output_text)
-
 
 def parse_mindmap(text: str) -> dict[str, list[tuple[str, int]]]:
-    """
-    Parse LLM response to machine-readable dict for plotter.
-    """
+    """Parse LLM response to machine-readable dict for plotter."""
     mindmap: dict[str, list[tuple[str, int]]] = {}
     current_topic = None
 
     for line in text.strip().splitlines():
-        line = line.rstrip()
-
         if not line.strip():
             continue
 
@@ -96,12 +87,10 @@ def parse_mindmap(text: str) -> dict[str, list[tuple[str, int]]]:
             subtopic_line = line.strip()
 
             # Extract the (name, count)
-            if match := re.match(r"^(.*)\s+\((\d+)\)$", subtopic_line):
-                name = match[1].strip()
-                count = int(match[2])
-                mindmap[current_topic].append((name, count))
-            else:
+            match = re.match(r"^(.*)\s+\((\d+)\)$", subtopic_line)
+            if not match:
                 raise ValueError(f"Cannot extract info from {subtopic_line=}")
+            mindmap[current_topic].append((match[1].strip(), int(match[2])))
 
     return mindmap
 
@@ -119,12 +108,14 @@ sorted_main_topics = sorted(
 
 # Limit max number of main/sub topics
 mindmap_dict = {
-    main_topic: sorted(subtopics, key=lambda x: x[1], reverse=True)[:NUM_OF_SUB_TOPICS]
+    main_topic: sorted(subtopics, key=lambda sub: sub[1], reverse=True)[
+        :NUM_OF_SUB_TOPICS
+    ]
     for main_topic, subtopics in sorted_main_topics[:NUM_OF_MAIN_TOPICS]
 }
 
 for main_topic, subtopics in mindmap_dict.items():
-    print(f"{main_topic} (total {sum(c for _, c in subtopics)}):")
+    print(f"{main_topic} (total {sum(count for _, count in subtopics)}):")
     for name, count in subtopics:
         print(f"    - {name} ({count})")
 
@@ -133,31 +124,31 @@ for main_topic, subtopics in mindmap_dict.items():
 START_ANGLES = [45, 10, -60, 200, 120]
 assert len(START_ANGLES) == NUM_OF_MAIN_TOPICS
 
-# Preserve current sorted/truncated order from Step 2
-ordered_main = list(mindmap_dict.items())
-if len(ordered_main) != NUM_OF_MAIN_TOPICS:
+if len(mindmap_dict) != NUM_OF_MAIN_TOPICS:
     raise ValueError(f"Unexpected number of topics, expect {NUM_OF_MAIN_TOPICS}")
 
 # Colors are derived from counts in Typst using the same scale as the legend.
-
-# --- Build YAML data ---
-branches = []
-for topic_idx, (main_title, subtopics) in enumerate(ordered_main):
-    children = [
-        {"title": sub_title, "value": int(count)} for sub_title, count in subtopics
-    ]
-    branches.append(
-        {
-            "title": main_title,
-            "start_angle_deg": START_ANGLES[topic_idx],
-            "children": children,
-        }
+# Branches keep the sorted/truncated order from Step 2.
+branches = [
+    {
+        "title": main_title,
+        "start_angle_deg": start_angle,
+        "children": [
+            {"title": sub_title, "value": count} for sub_title, count in subtopics
+        ],
+    }
+    for (main_title, subtopics), start_angle in zip(
+        mindmap_dict.items(), START_ANGLES, strict=True
     )
+]
 
-data = {"title": "pymatgen", "branches": branches}
-
-with open("_llm_summarized_topics.yml", "w", encoding="utf-8") as f:
-    yaml.safe_dump(data, f, sort_keys=False, allow_unicode=True)
+with open("_llm_summarized_topics.yml", "w", encoding="utf-8") as file:
+    yaml.safe_dump(
+        {"title": "pymatgen", "branches": branches},
+        file,
+        sort_keys=False,
+        allow_unicode=True,
+    )
 
 # %% Step 4: Compile Typst to SVG
 subprocess.run(

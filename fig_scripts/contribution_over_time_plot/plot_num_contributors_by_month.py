@@ -25,7 +25,7 @@ plotly.io.defaults.default_height = None  # ty: ignore[invalid-assignment]
 
 df = pd.read_csv(CSV_PATH)
 years = pd.to_datetime(df["year"].astype(str), format="%Y")
-year_ticks = [*range(2012, 2025, 2), 2025]
+year_ticks = range(2012, 2026, 2)
 
 fig = go.Figure()
 

@@ -149,8 +149,6 @@ fig.add_heatmap(
 )
 
 year_tick_vals = heatmap_data.columns[::4].tolist()
-if heatmap_data.columns[-1] not in year_tick_vals:
-    year_tick_vals.append(heatmap_data.columns[-1])
 fig.layout.xaxis.update(
     title=dict(text="Year", font=dict(size=XY_AXIS_CBAR_TITLE_FONTSIZE)),
     type="category",

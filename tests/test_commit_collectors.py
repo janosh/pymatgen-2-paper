@@ -12,41 +12,47 @@ import pytest
 from fig_scripts.pr_data import ROOT
 
 
-@pytest.mark.parametrize(
-    "separator", ["\n", "\n\n", "\n\n\n"], ids=["adjacent", "blank", "extra-blank"]
-)
-def test_commit_records_end_at_headers_or_eof(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, separator: str
+def test_annual_commit_activity_excludes_merges_and_bots(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    """Keep the last commit, empty merge commits and stats after blank lines."""
-    log = separator.join(
-        [
-            "--COMMIT--|first|Contributor|contributor@example.com|2025-01-02\n\n2\t1\tfile.py\n-\t-\timage.png",
-            "--COMMIT--|merge|Contributor|contributor@example.com|2025-02-03",
-            "--COMMIT--|last|Contributor|contributor@example.com|2025-03-04\n5\t3\tfile.py",
-        ]
+    """Collect only the annual non-merge, non-bot series required by the plot."""
+    log = (
+        "Contributor\x1fcontributor@example.com\x1f2024-12-31\n"
+        "Contributor\x1fcontributor@example.com\x1f2025-01-02\n"
+        "Alias\x1fcontributor@example.com\x1f2025-03-04\n"
+        "dependabot[bot]\x1fbot@example.com\x1f2025-03-05"
     )
     commands: list[list[str]] = []
 
-    def read_log(command: list[str], **kwargs: object) -> bytes:
-        """Supply representative git output without accessing another checkout."""
+    def read_log(command: list[str], **kwargs: object) -> str:
+        """Supply representative Git output without accessing another checkout."""
         commands.append(command)
-        return log.encode()
+        return log
 
-    monkeypatch.chdir(tmp_path)
     monkeypatch.setenv("PMG_REPO_PATH", str(tmp_path))
+    monkeypatch.setenv("CONTRIBUTION_OUTPUT_PATH", str(tmp_path / "annual.csv"))
     monkeypatch.setattr(subprocess, "check_output", read_log)
-    runpy.run_path(
+    namespace = runpy.run_path(
         f"{ROOT}/fig_scripts/contribution_over_time_plot/_retrieve_commit_info_over_time.py",
         run_name="__main__",
     )
 
     assert len(commands) == 1
-    assert commands[0][:5] == ["git", "-C", str(tmp_path), "log", "master"]
-    months = ["2025-01", "2025-02", "2025-03"]
-    for metric, expected in [("commits", [1, 1, 1]), ("lines_changed", [3, 0, 8])]:
-        frame = pd.read_csv(tmp_path / f"contributor_{metric}_by_month.csv.gz")
-        assert frame[months].sum().tolist() == expected, metric
+    assert commands[0][:6] == [
+        "git",
+        "-C",
+        str(tmp_path),
+        "log",
+        "main",
+        "--no-merges",
+    ]
+    assert "--since=2012-01-01" in commands[0]
+    assert "--until=2026-01-01" in commands[0]
+    frame = pd.read_csv(namespace["OUTPUT_PATH"])
+    assert frame.to_dict("records") == [
+        {"year": 2024, "active_contributors": 1, "commits": 1},
+        {"year": 2025, "active_contributors": 1, "commits": 2},
+    ]
 
 
 @pytest.mark.parametrize("source", ["git", "cache"])

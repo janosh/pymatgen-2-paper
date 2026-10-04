@@ -91,6 +91,6 @@ fig.update_geos(fitbounds="locations", visible=True)
 fig.update_layout(font=dict(size=22), margin=dict(l=10, r=0, t=0, b=0))
 
 fig.write_image(
-    f"{ROOT}/paper/figs/pr-contributors-worldmap.pdf", width=1200, height=600, scale=3
+    f"{ROOT}/figs/pr-contributors-worldmap.pdf", width=1200, height=600, scale=3
 )
 fig.show()

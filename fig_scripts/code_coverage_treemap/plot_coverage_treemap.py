@@ -132,7 +132,7 @@ def main() -> None:
                 f"{node_id:<30} {covered:>6,} / {statements:>6,} statements  {100 * covered / statements:5.1f}%"
             )
     make_figure(nodes).write_image(
-        f"{ROOT}/paper/figs/py-pkg-treemap-pymatgen-coverage.pdf",
+        f"{ROOT}/figs/py-pkg-treemap-pymatgen-coverage.pdf",
         width=1000,
         height=600,
     )

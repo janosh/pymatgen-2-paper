@@ -1,11 +1,11 @@
 <h1 align="center">
-  <img alt="Pymatgen 2 Logo" src="paper/figs/pymatgen-2-logo.svg" height="90" />
+  <img alt="Pymatgen 2 Logo" src="figs/pymatgen-2-logo.svg" height="90" />
   <br>
   Pymatgen 2nd Paper
 </h1>
 
-This repository contains the manuscript, figures, and analysis scripts for the
-second pymatgen paper: "pymatgen: 15 years of community growth, new functionality, and future prospects"
+This repository contains the figures and analysis scripts for the second pymatgen paper:
+"pymatgen: 15 years of community growth, new functionality, and future prospects"
 
 The README is intended as a high-level guide to the repository. Detailed
 implementation notes, data processing choices, prompts, and intermediate
@@ -14,9 +14,7 @@ to the code that uses them.
 
 ## Repository Structure
 
-- `paper/`: source for a draft version of the manuscript, references, journal template, and generated
-  figures used in the paper.
-- `paper/figs/`: final figure assets included by the manuscript.
+- `figs/`: final figure assets included by the manuscript.
 - `fig_scripts/`: reproducible scripts, notebooks, and cached data used to
   create the paper figures. Each subdirectory corresponds to one figure or
   closely related analysis.
@@ -67,7 +65,7 @@ Run the following commands from the repository root with the plotting dependenci
 uv run --no-project python -m fig_scripts.pr_topics_over_time.plot_stacked_bar
 uv run --no-project python -m fig_scripts.pr_contributors_bar_plot.plot_stacked_bar_plot
 uv run --no-project python -m fig_scripts.code_coverage_treemap.plot_coverage_treemap
-typst compile fig_scripts/openalex-topics-mindmap/mindmap.typ paper/figs/mindmap.pdf
+typst compile fig_scripts/openalex-topics-mindmap/mindmap.typ figs/mindmap.pdf
 uv run --no-project python -m pytest tests
 ```
 

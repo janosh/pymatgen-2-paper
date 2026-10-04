@@ -107,5 +107,5 @@ fig.update_layout(
 )
 fig.layout.font.update(size=20)
 
-fig.write_image(f"{ROOT}/paper/figs/active-contributors-colored.pdf")
+fig.write_image(f"{ROOT}/figs/active-contributors-colored.pdf")
 fig.show()

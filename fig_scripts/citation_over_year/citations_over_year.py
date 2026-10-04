@@ -48,4 +48,4 @@ fig.update_layout(
     ),
 )
 fig.update_traces(textposition="outside", textfont=dict(size=14, color="black"))
-fig.write_image(f"{ROOT}/paper/figs/citations.pdf")
+fig.write_image(f"{ROOT}/figs/citations.pdf")

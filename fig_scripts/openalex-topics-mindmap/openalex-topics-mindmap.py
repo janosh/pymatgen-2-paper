@@ -152,5 +152,5 @@ with open("_llm_summarized_topics.yml", "w", encoding="utf-8") as file:
 
 # %% Step 4: Compile Typst to SVG
 subprocess.run(
-    ["typst", "compile", "mindmap.typ", "../../paper/figs/mindmap.pdf"], check=True
+    ["typst", "compile", "mindmap.typ", "../../figs/mindmap.pdf"], check=True
 )

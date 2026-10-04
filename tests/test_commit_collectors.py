@@ -174,10 +174,7 @@ def test_annual_activity_plot(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -
     left, right = figure.layout.yaxis, figure.layout.yaxis2
     assert left.dtick * right.range[1] == right.dtick * left.range[1]
     assert right.showgrid and not left.showgrid and not figure.layout.xaxis.showgrid
-    assert list(figure.layout.xaxis.ticktext) == [
-        *map(str, range(2012, 2025, 2)),
-        "2025",
-    ]
+    assert list(figure.layout.xaxis.ticktext) == list(map(str, range(2012, 2026, 2)))
     assert not figure.layout.annotations
 
 
@@ -248,7 +245,4 @@ def test_heatmap_calendar_bins_without_checkout(
     figure = namespace["fig"]
     assert list(figure.data[0].x) == binned.index.strftime("%Y-%m").tolist()
     assert figure.layout.xaxis.type == "category"
-    assert list(figure.layout.xaxis.ticktext) == [
-        *map(str, range(2012, 2025, 2)),
-        "2025",
-    ]
+    assert list(figure.layout.xaxis.ticktext) == list(map(str, range(2012, 2026, 2)))

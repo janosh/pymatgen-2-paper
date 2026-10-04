@@ -1,33 +1,22 @@
-# /// script
-# dependencies = ["pandas"]
-# ///
-
 """Aggregate annual non-merge commit and contributor activity from pymatgen Git history.
 
-The output contains only the two annual series needed by the figure. Author names and
-email addresses are used transiently to reconcile aliases but are not written to disk.
-
-Environment Variables:
-    PMG_REPO_PATH: Path to a local pymatgen repository.
+PMG_REPO_PATH is required; CONTRIBUTION_OUTPUT_PATH optionally overrides the CSV path.
+Author names and emails link identities transiently and are not written to disk.
 """
 
+import csv
 import os
 import subprocess
-from pathlib import Path
 
-import pandas as pd
-
-START_DATE = "2012-01-01"
-CUTOFF_DATE = "2026-01-01"
-OUTPUT_PATH = Path(
-    os.environ.get(
-        "CONTRIBUTION_OUTPUT_PATH",
-        Path(__file__).with_name("contributor_activity_by_year.csv"),
-    )
+START_YEAR = 2012
+CUTOFF_YEAR = 2026
+OUTPUT_PATH = os.environ.get(
+    "CONTRIBUTION_OUTPUT_PATH",
+    f"{os.path.dirname(__file__)}/contributor_activity_by_year.csv",
 )
 PMG_REPO_PATH = os.environ.get("PMG_REPO_PATH")
 if PMG_REPO_PATH is None or not os.path.isdir(PMG_REPO_PATH):
-    raise OSError("PMG_REPO_PATH is not set or is invalid.")
+    raise OSError(f"PMG_REPO_PATH is not a directory: {PMG_REPO_PATH!r}")
 
 print("Extracting non-merge Git commit metadata...")
 git_log_output = subprocess.check_output(
@@ -38,52 +27,53 @@ git_log_output = subprocess.check_output(
         "log",
         "main",
         "--no-merges",
-        f"--since={START_DATE}",
-        f"--until={CUTOFF_DATE}",
+        # Git's date filters use committer timestamps; bin and filter author years below.
         "--pretty=format:%an%x1f%ae%x1f%ad",
-        "--date=short",
+        "--date=format:%Y",
     ],
     text=True,
 )
 
-records: list[dict[str, str]] = []
+annual_contributors: dict[int, list[str]] = {
+    year: [] for year in range(START_YEAR, CUTOFF_YEAR)
+}
+# Join all matching names/emails before counting annual contributors.
+parents: dict[str, str] = {}
+
+
+def find_root(identity: str) -> str:
+    """Resolve an alias group, compressing paths for subsequent lookups."""
+    parents.setdefault(identity, identity)
+    while identity != parents[identity]:
+        parents[identity] = parents[parents[identity]]
+        identity = parents[identity]
+    return identity
+
+
 for line in git_log_output.splitlines():
-    parts = line.split("\x1f")
-    if len(parts) != 3:
-        continue
-    name, email, date = parts
+    try:
+        name, email, year_text = line.split("\x1f")
+        year = int(year_text)
+    except ValueError as exc:
+        raise ValueError(f"Invalid Git log record: {line!r}") from exc
     name = name.strip()
-    if name.lower().endswith("[bot]"):
+    if name.lower().endswith("[bot]") or year not in annual_contributors:
         continue
-    records.append({"name": name, "email": email.strip().lower(), "year": date[:4]})
+    name_key = f"name:{name}"
+    parents[find_root(name_key)] = find_root(f"email:{email.strip().lower()}")
+    annual_contributors[year].append(name_key)
 
-if not records:
-    raise ValueError("Git history contains no non-bot commits before the cutoff")
-
-df = pd.DataFrame(records)
-
-# Reconcile aliases using the same heuristic as the original figure: an exact author
-# name or lower-cased email match assigns a record to an existing contributor.
-contributor_id_map: dict[tuple[str, str], str] = {}
-contributor_ids: list[str] = []
-for name, email in zip(df["name"], df["email"], strict=True):
-    matching_key = next(
-        (key for key in contributor_id_map if name == key[0] or email == key[1]),
-        None,
+if not any(annual_contributors.values()):
+    raise ValueError(
+        f"No non-bot, non-merge commits in {PMG_REPO_PATH!r} "
+        f"with author years in [{START_YEAR}, {CUTOFF_YEAR})"
     )
-    if matching_key is None:
-        matching_key = (name, email)
-        contributor_id_map[matching_key] = f"user_{len(contributor_id_map) + 1:04d}"
-    contributor_ids.append(contributor_id_map[matching_key])
 
-df["contributor_id"] = contributor_ids
-annual = (
-    df.groupby("year")
-    .agg(
-        active_contributors=("contributor_id", "nunique"),
-        commits=("contributor_id", "size"),
-    )
-    .reset_index()
-)
-annual.to_csv(OUTPUT_PATH, index=False)
+with open(OUTPUT_PATH, "w", newline="", encoding="utf-8") as output_file:
+    writer = csv.writer(output_file, lineterminator="\n")
+    writer.writerow(["year", "active_contributors", "commits"])
+    for year, authors in annual_contributors.items():
+        writer.writerow(
+            [year, len({find_root(author) for author in authors}), len(authors)]
+        )
 print(f"Saved {OUTPUT_PATH}")

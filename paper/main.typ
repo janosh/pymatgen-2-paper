@@ -342,7 +342,7 @@ As a core component of the base layer of the computational materials science inf
 
 #figure(
   image("figs/active-contributors-colored.pdf"),
-  caption: [Active contributors to #pmg over time.],
+  caption: [Annual active contributors and non-merge commits to #pmg from 2012 through 2025, grouped by commit author year and excluding bot authors. Exact author names or case-insensitive email matches link identities transitively across this period; each resulting group is counted once per year.],
 ) <fig:active-contributors>
 
 #place(top + center, float: true, scope: "parent")[

@@ -1,4 +1,4 @@
-// Compile with: typst compile mindmap.typ ../../paper/figs/mindmap.pdf
+// Compile with: typst compile mindmap.typ ../../figs/mindmap.pdf
 #import "@preview/cetz:0.4.1": canvas, draw
 #import draw: circle, content, line, on-layer
 

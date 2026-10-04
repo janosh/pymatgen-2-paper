@@ -57,4 +57,4 @@ def make_figure(records: dict[str, PaperPR]) -> go.Figure:
 
 
 if __name__ == "__main__":
-    make_figure(load_prs()).write_image(f"{ROOT}/paper/figs/pr-since-1st.pdf")
+    make_figure(load_prs()).write_image(f"{ROOT}/figs/pr-since-1st.pdf")

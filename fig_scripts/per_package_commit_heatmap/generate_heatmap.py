@@ -171,5 +171,5 @@ fig.layout.update(
     height=600, width=1400, plot_bgcolor="lightgrey", margin=dict(l=0, r=0, t=10, b=0)
 )
 
-fig.write_image("../../paper/figs/commits-per-package-heatmap.png", scale=4)
+fig.write_image("../../figs/commits-per-package-heatmap.png", scale=4)
 fig.show()

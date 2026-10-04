@@ -51,5 +51,5 @@ def make_figure(records: dict[str, PaperPR]) -> go.Figure:
 
 if __name__ == "__main__":
     make_figure(load_prs()).write_image(
-        f"{ROOT}/paper/figs/pr-topics-over-time-stacked-bar.pdf", width=800, height=650
+        f"{ROOT}/figs/pr-topics-over-time-stacked-bar.pdf", width=800, height=650
     )

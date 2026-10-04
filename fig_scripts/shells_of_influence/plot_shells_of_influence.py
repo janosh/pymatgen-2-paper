@@ -246,7 +246,7 @@ def make_figure() -> plt.Figure:
 
 def main() -> None:
     """Save the figure as a publication-ready PDF."""
-    output_path = ROOT / "paper" / "figs" / "shells-of-influence.pdf"
+    output_path = ROOT / "figs" / "shells-of-influence.pdf"
     output_path.parent.mkdir(parents=True, exist_ok=True)
     figure = make_figure()
 

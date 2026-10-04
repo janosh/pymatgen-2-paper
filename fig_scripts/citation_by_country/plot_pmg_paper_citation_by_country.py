@@ -114,7 +114,5 @@ fig.layout.geo.update(
 )
 fig.update_geos(fitbounds="locations", visible=True)
 
-fig.write_image(
-    "../../paper/figs/citations-by-country.pdf", width=1200, height=600, scale=3
-)
+fig.write_image("../../figs/citations-by-country.pdf", width=1200, height=600, scale=3)
 fig.show()

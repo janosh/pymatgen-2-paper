@@ -40,9 +40,12 @@ def make_figure(records: dict[str, PaperPR]) -> go.Figure:
         barmode="stack",
         font=dict(size=20),
         legend=dict(orientation="h", y=1.03, yanchor="bottom", x=0, title_text=""),
-        xaxis=dict(tickmode="array", tickvals=list(range(2013, 2026, 2))),
-        yaxis=dict(gridcolor="lightgray", griddash="dash"),
-        margin=dict(l=0, r=0, t=130, b=0),
+        xaxis=dict(
+            tickmode="array", tickvals=list(range(2013, 2026, 2)), automargin=True
+        ),
+        yaxis=dict(gridcolor="lightgray", griddash="dash", automargin=True),
+        # Keep axis titles inside the static image's bounding box.
+        margin=dict(l=110, r=20, t=130, b=75),
         plot_bgcolor="white",
         paper_bgcolor="white",
     )

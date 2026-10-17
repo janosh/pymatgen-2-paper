@@ -46,10 +46,14 @@ def make_figure(records: dict[str, PaperPR]) -> go.Figure:
     figure.update_layout(
         barmode="stack",
         font=dict(size=18),
-        xaxis=dict(tickmode="array", tickvals=list(range(2013, 2026, 2))),
-        yaxis=dict(gridcolor="lightgray", griddash="dash"),
+        xaxis=dict(
+            tickmode="array", tickvals=list(range(2013, 2026, 2)), automargin=True
+        ),
+        yaxis=dict(gridcolor="lightgray", griddash="dash", automargin=True),
         legend=dict(x=0.01, y=1, traceorder="reversed"),
-        margin=dict(l=0, r=0, t=10, b=0),
+        # Explicit margins prevent axis titles from being clipped by static export or
+        # by downstream PDF renderers. automargin handles font/rendering differences.
+        margin=dict(l=110, r=20, t=20, b=75),
         plot_bgcolor="white",
         paper_bgcolor="white",
     )

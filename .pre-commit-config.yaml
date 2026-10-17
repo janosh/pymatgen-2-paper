@@ -36,7 +36,7 @@ repos:
       - id: codespell
         stages: [pre-commit, commit-msg]
         exclude_types: [bib, svg, json]
-        exclude: pyproject.toml
+        exclude: pyproject.toml|paper/authors\.typ
         args:
           [
             --check-filenames,

@@ -14,8 +14,9 @@ to the code that uses them.
 
 ## Repository Structure
 
-- `paper/`: source for a draft version of the manuscript, references, journal template, and generated
-  figures used in the paper.
+- `paper/`: Typst version of the manuscript (`main.typ`, `template.typ`, `refs.bib`), synced with the
+  Overleaf source. `authors.typ` is generated from the Overleaf author and affiliation lists.
+  Compile with `typst compile paper/main.typ`.
 - `paper/figs/`: final figure assets included by the manuscript.
 - `fig_scripts/`: reproducible scripts, notebooks, and cached data used to
   create the paper figures. Each subdirectory corresponds to one figure or

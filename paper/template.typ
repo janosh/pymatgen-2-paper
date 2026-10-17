@@ -95,40 +95,34 @@
 
 #let author(author, affiliations: none) = {
   text(author.name)
-  if (author.corresponding == true) [#strong[\*]]
-  // Handle affiliations
-  if (author.at("affiliations", default: none) != none) {
-    // Map affiliation keys to labels
-    let aff_labels = ()
-
-    if (affiliations != none) {
-      for aff_key in author.affiliations {
-        for aff in affiliations {
-          if (aff.at("key", default: none) == aff_key) {
-            aff_labels.push(aff.label)
-          }
-        }
+  // Superscript marks: affiliation labels, then equal-contribution and corresponding-author symbols
+  let marks = ()
+  if affiliations != none and author.affiliations != none {
+    for aff_key in author.affiliations {
+      for aff in affiliations {
+        if aff.at("key", default: none) == aff_key { marks.push(aff.label) }
       }
     }
-
-    if (aff_labels.len() > 0) {
-      super(text(size: 1.3em, aff_labels.join(",")))
-    }
   }
-  if (author.at("orcid", default: none) != none) {
+  if author.equal-contrib { marks.push(sym.dagger) }
+  if author.corresponding { marks.push(sym.ast.op) }
+  if marks.len() > 0 { super(text(size: 1.3em, marks.join(","))) }
+  if author.orcid != none {
     h(0.3em)
     link("https://orcid.org/" + author.orcid, orcid-logo(height: 0.9em))
   }
 }
 
-#let display-affiliations(affiliations) = {
-  if affiliations != none {
-    block(inset: (top: 0.3em))[
-      #for aff in affiliations [
-        #aff.label: #aff.affiliation #h(0.5em)
-      ]
-    ]
-  }
+// Affiliations and author notes, set in small type at the start of the main text (as in RSC journals)
+#let display-affiliations(affiliations, notes: ()) = {
+  set text(size: 7pt)
+  set par(first-line-indent: 0cm, spacing: 0.3em)
+  for aff in affiliations [
+    #super(aff.label) #aff.affiliation   ]
+  for note in notes [
+    #note   ]
+  v(0.5em)
+  line(length: 100%, stroke: 0.5pt)
 }
 
 #let precis-title-authors-abstract(args) = {
@@ -138,10 +132,6 @@
   let affiliations = args.at("affiliations", default: none)
   let author_fn = author
   args.authors.map(auth => author_fn(auth, affiliations: affiliations)).join(", ", last: " and ")
-
-  if affiliations != none {
-    display-affiliations(affiliations)
-  }
 
   v(1.618em, weak: true)
 
@@ -235,10 +225,12 @@
     authors: get-array("authors", "author").map(a => (
       name: a.name,
       corresponding: a.at("corresponding", default: false),
+      equal-contrib: a.at("equal-contrib", default: false),
       orcid: a.at("orcid", default: none),
       affiliations: a.at("affiliations", default: none),
     )),
     affiliations: named.at("affiliations", default: named.at("affiliation", default: none)),
+    author-notes: named.at("author-notes", default: ()),
     abstracts: get-array("abstracts", "abstract").map(a => if type(a) == dictionary { a } else {
       (title: "Abstract", content: a)
     }),
@@ -297,6 +289,10 @@
   // Fix deprecated paragraph spacing syntax
   set par(spacing: 0.618em)
   show: columns.with(2, gutter: 1.618em)
+
+  if args.affiliations != none {
+    display-affiliations(args.affiliations, notes: args.author-notes)
+  }
 
   show figure.caption: c => {
     set par(justify: true, first-line-indent: 0cm)

@@ -25,8 +25,8 @@
   authors: authors,
   affiliations: affiliations,
   author-notes: (
-    [#sym.dagger These authors contributed equally.],
-    [#sym.ast.op Corresponding author: Shyue Ping Ong (#link("mailto:shyue@nus.edu.sg")[shyue\@nus.edu.sg]).],
+    [#super[#sym.dagger] These authors contributed equally.],
+    [#super[#sym.ast.op] Corresponding author: Shyue Ping Ong (#link("mailto:shyue@nus.edu.sg")[shyue\@nus.edu.sg]).],
   ),
   dates: (
     (type: [Received Date], date: datetime.today()),

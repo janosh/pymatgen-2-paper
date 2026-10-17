@@ -98,10 +98,8 @@
   // Superscript marks: affiliation labels, then equal-contribution and corresponding-author symbols
   let marks = ()
   if affiliations != none and author.affiliations != none {
-    for aff_key in author.affiliations {
-      for aff in affiliations {
-        if aff.at("key", default: none) == aff_key { marks.push(aff.label) }
-      }
+    for key in author.affiliations {
+      marks += affiliations.filter(aff => aff.key == key).map(aff => aff.label)
     }
   }
   if author.equal-contrib { marks.push(sym.dagger) }
@@ -113,14 +111,13 @@
   }
 }
 
-// Affiliations and author notes, set in small type at the start of the main text (as in RSC journals)
+// Affiliations (one run-on paragraph) and author notes, set in small type at the start of the main text (as in RSC journals)
 #let display-affiliations(affiliations, notes: ()) = {
   set text(size: 7pt)
   set par(first-line-indent: 0cm, spacing: 0.3em)
-  for aff in affiliations [
-    #super(aff.label) #aff.affiliation   ]
-  for note in notes [
-    #note   ]
+  affiliations.map(aff => [#super(aff.label)#aff.affiliation]).join(" ")
+  parbreak()
+  notes.join(" ")
   v(0.5em)
   line(length: 100%, stroke: 0.5pt)
 }
@@ -131,7 +128,7 @@
   // Pass affiliations to the author function
   let affiliations = args.at("affiliations", default: none)
   let author_fn = author
-  args.authors.map(auth => author_fn(auth, affiliations: affiliations)).join(", ", last: " and ")
+  args.authors.map(auth => author_fn(auth, affiliations: affiliations)).join(", ", last: ", and ")
 
   v(1.618em, weak: true)
 

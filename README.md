@@ -17,7 +17,8 @@ to the code that uses them.
 - `paper/`: Typst version of the manuscript (`main.typ`, `template.typ`, `refs.bib`), synced with the
   Overleaf source. `authors.typ` is generated from the Overleaf author and affiliation lists with
   `uv run paper/gen_authors.py path/to/overleaf/main.tex`.
-  Compile with `typst compile paper/main.typ`.
+  `si.typ` is the Supporting Information. Compile with `typst compile paper/main.typ` and
+  `typst compile paper/si.typ`.
 - `paper/figs/`: final figure assets included by the manuscript.
 - `fig_scripts/`: reproducible scripts, notebooks, and cached data used to
   create the paper figures. Each subdirectory corresponds to one figure or

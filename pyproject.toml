@@ -47,8 +47,18 @@ exclude = ["**/api-analyzer/tests/data/**", "**/*.ipynb"]
 [tool.typos.default]
 locale = "en-us"
 extend-ignore-words-re = ["\\b(ND|atomate2|atomate|dscribe|slee|basf|bse|aimd|pris)\\b"]
-# proper nouns in the manuscript's acknowledgements
-extend-ignore-re = ["Gauss Centre", "gauss-centre", "Supercomputing Centre", "National Centre for", "SuperMUC", "pn73da"]
+# proper nouns and acronyms in the manuscript and SI
+extend-ignore-re = [
+  "Gauss Centre",
+  "gauss-centre",
+  "Supercomputing Centre",
+  "National Centre for",
+  "SuperMUC",
+  "pn73da",
+  "O'Leary",
+  "Falke",
+  "\\b(BSE|AIMD)\\b",
+]
 
 [tool.typos.files]
 # generated from Overleaf author/affiliation lists: names, postcodes and label keys

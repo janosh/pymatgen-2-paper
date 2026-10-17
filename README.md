@@ -15,7 +15,8 @@ to the code that uses them.
 ## Repository Structure
 
 - `paper/`: Typst version of the manuscript (`main.typ`, `template.typ`, `refs.bib`), synced with the
-  Overleaf source. `authors.typ` is generated from the Overleaf author and affiliation lists.
+  Overleaf source. `authors.typ` is generated from the Overleaf author and affiliation lists with
+  `uv run paper/gen_authors.py path/to/overleaf/main.tex`.
   Compile with `typst compile paper/main.typ`.
 - `paper/figs/`: final figure assets included by the manuscript.
 - `fig_scripts/`: reproducible scripts, notebooks, and cached data used to
